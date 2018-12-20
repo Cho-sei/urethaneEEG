@@ -14,7 +14,7 @@ class MainFrame(wx.Frame):
 		self.SetBackgroundColour('white')
 
 		#キーイベント設定
-		self.Bind(wx.EVT_KEY_DOWN, self.Start)
+		self.Bind(wx.EVT_KEY_DOWN, self.KeyDown)
 
 		#中心座標取得
 		img_w,img_h = wait.GetSize()
@@ -29,23 +29,30 @@ class MainFrame(wx.Frame):
 	#--------------------------------------
 	#"Start soon!!"表示して、刺激のループ開始
 	#--------------------------------------
-	def Start(self, event):
+	def KeyDown(self, event):
 
-		#"Start soon!!"表示
-		start_display = wx.StaticBitmap(frame, -1, startsoon, size=startsoon.GetSize())
-		start_display.SetPosition((self.offset_w, self.offset_h))
-		time.sleep(1)
+		keycode = event.GetKeyCode()
 
-		for i in range(len(stimorder)):
-			blank_time = random.randint(8,12) * 0.1
-			self.stimulus(stimorder[i], blank_time)
+		#spaceキー判定
+		if keycode == 32:
+			#"Start soon!!"表示
+			start_display = wx.StaticBitmap(frame, -1, startsoon, size=startsoon.GetSize())
+			start_display.SetPosition((self.offset_w, self.offset_h))
+			time.sleep(1)
 
-		self.exit()
+			for i in range(len(stimorder)):
+				blank_time = random.randint(8,12) * 0.1
+				self.trial = i
+				self.stimulus(stimorder[i], blank_time)
+
+		self.exit()		
 
 	#--------------------------------------
 	#１周期分の刺激呈示
 	#--------------------------------------
 	def stimulus(self, stimkind, blank_time):
+
+		self.Bind(wx.EVT_KEY_DOWN, self.KeyDown)
 
 		#fixation表示
 		fixation_display = wx.StaticBitmap(frame, -1, fixation, size=fixation.GetSize())
@@ -88,7 +95,6 @@ class MainFrame(wx.Frame):
 		finish_display.SetPosition((self.offset_w, self.offset_h))
 		time.sleep(1)
 		self.Destroy()
-
 
 if __name__ == '__main__':
 	app = wx.App()
