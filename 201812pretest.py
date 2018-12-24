@@ -1,122 +1,64 @@
-import wx
-import pandas as pd
-import time
-import winsound
+from psychopy import visual, core, event
+from psychopy.sound import Sound
 import random
 
-class MainFrame(wx.Frame):
-	#--------------------------------------
-	#フレーム初期化
-	#--------------------------------------
-	def __init__(self):
-		super().__init__(None, wx.ID_ANY, 'urethaneEEG', style=wx.MAXIMIZE)
+class urethene201812pretest(visual.Window):
+    def __init__(self, *args, **keyargs):
+        """
+        stim_order : should be iterable
+        """
+        super().__init__(**keyargs)
 
-		self.SetBackgroundColour('white')
+        # load stimuli
+        landolt_up = visual.GratingStim(self, tex='landolt_up.tif')
+        landolt_down = visual.GratingStim(self, tex='landolt_down.tif')
+        beep_low = Sound(1000, secs=.2, loops=2)
+        beep_high = Sound(1020, secs=.2, loops=2)
 
-		#キーイベント設定
-		self.Bind(wx.EVT_KEY_DOWN, self.KeyDown)
+        self.fixation = visual.GratingStim(self, tex='fixation.tif')
+        self.visual_stimulus = [landolt_up, landolt_down, landolt_up, landolt_down]
+        self.audio_stimulus = [beep_high, beep_low, beep_low, beep_high]
 
-		#中心座標取得
-		img_w,img_h = wait.GetSize()
-		frame_w,frame_h = self.GetSize()
-		self.offset_w = int((frame_w - img_w)/2)
-		self.offset_h = int((frame_h - img_h)/2)
+        # display "Wait..."
+        wait_msg = visual.TextStim(self, "Wait...", color=(-1, -1, -1))#black letters
+        wait_msg.draw(self)
+        self.flip()
 
-		#"Wait..."表示
-		self.default_display = wx.StaticBitmap(self, -1, wait, size=wait.GetSize())
-		self.default_display.SetPosition((self.offset_w,self.offset_h))
+    def stimulus(self, stim_type):
+        self.fixation.draw(self)
+        self.flip()
+        core.wait(1.5)
 
-	#--------------------------------------
-	#"Start soon!!"表示して、刺激のループ開始
-	#--------------------------------------
-	def KeyDown(self, event):
+        self.flip()# show blank
+        blank_time = random.choice([.8, .9, 1., 1.1, 1.2])
+        core.wait(blank_time)
 
-		keycode = event.GetKeyCode()
+        self.visual_stimulus[stim_type].draw(self)
+        self.audio_stimulus[stim_type].play()
+        self.flip()
+        core.wait(.2)#.play(blocking=True)
+        self.audio_stimulus[stim_type].stop(reset=True)
+        # need more wait ?
 
-		#spaceキー判定
-		if keycode == 32:
-			#"Start soon!!"表示
-			start_display = wx.StaticBitmap(frame, -1, startsoon, size=startsoon.GetSize())
-			start_display.SetPosition((self.offset_w, self.offset_h))
-			time.sleep(1)
-
-			for i in range(len(stimorder)):
-				blank_time = random.randint(8,12) * 0.1
-				self.trial = i
-				self.stimulus(stimorder[i], blank_time)
-
-		self.exit()		
-
-	#--------------------------------------
-	#１周期分の刺激呈示
-	#--------------------------------------
-	def stimulus(self, stimkind, blank_time):
-
-		self.Bind(wx.EVT_KEY_DOWN, self.KeyDown)
-
-		#fixation表示
-		fixation_display = wx.StaticBitmap(frame, -1, fixation, size=fixation.GetSize())
-		fixation_display.SetPosition((self.offset_w, self.offset_h))
-		time.sleep(1.5)
-
-		#blank
-		blank_display = wx.StaticBitmap(frame, -1, blank, size=blank.GetSize())
-		blank_display.SetPosition((self.offset_w, self.offset_h))
-		time.sleep(blank_time)
-
-		#刺激呈示
-		if stimkind == 0:
-			stimulus_display = wx.StaticBitmap(frame, -1, landolt_up, size=landolt_up.GetSize())
-			stimulus_display.SetPosition((self.offset_w, self.offset_h))
-			#winsound.Beep(audtarget,200)
-			time.sleep(visduration)
-		elif stimkind == 1:
-			stimulus_display = wx.StaticBitmap(frame, -1, landolt_down, size=landolt_down.GetSize())
-			stimulus_display.SetPosition((self.offset_w, self.offset_h))
-			#winsound.Beep(audnomal,200)
-			time.sleep(visduration)
-		elif stimkind == 2:
-			stimulus_display = wx.StaticBitmap(frame, -1, landolt_up, size=landolt_up.GetSize())
-			stimulus_display.SetPosition((self.offset_w, self.offset_h))
-			#winsound.Beep(audnomal,200)
-			time.sleep(visduration)
-		else:
-			stimulus_display = wx.StaticBitmap(frame, -1, landolt_down, size=landolt_down.GetSize())
-			stimulus_display.SetPosition((self.offset_w, self.offset_h))
-			#winsound.Beep(audtarget,200)
-			time.sleep(visduration)
-
-	#--------------------------------------
-	#終了処理
-	#--------------------------------------
-	def exit(self):
-
-		finish_display = wx.StaticBitmap(frame, -1, finish, size=finish.GetSize())
-		finish_display.SetPosition((self.offset_w, self.offset_h))
-		time.sleep(1)
-		self.Destroy()
+    def end(self):
+        self.flip()
+        core.wait(1.)
+        
+        end_msg = visual.TextStim(self, "End", color=(-1, -1, -1))
+        end_msg.draw(self)
+        self.flip()
 
 if __name__ == '__main__':
-	app = wx.App()
+    import sys
+    import numpy
+    stim_order = numpy.loadtxt(sys.argv[1], dtype=numpy.int16, delimiter=',')
 
-	#画像読み込み
-	landolt_up = wx.Image('landolt_up.tif').ConvertToBitmap()
-	landolt_down = wx.Image('landolt_down.tif').ConvertToBitmap()
-	fixation = wx.Image('fixation.tif').ConvertToBitmap()
-	wait = wx.Image('wait.jpg').ConvertToBitmap()
-	startsoon = wx.Image('startsoon.jpg').ConvertToBitmap()
-	blank = wx.Image('blank.jpg').ConvertToBitmap()
-	finish = wx.Image('finish.jpg').ConvertToBitmap()
+    app = urethene201812pretest(stim_order, color=(1, 1, 1))#white back
 
-	stimorder = [0,1,2,3]
+    event.waitKeys(keyList=['space'])
 
-	#パラメータ
-	visduration = 0.05
-	audtarget = 1020
-	audnomal = 1000
+    for stim_type in stim_order:
+        app.stimulus(stim_type)
 
-	#frame初期化
-	frame = MainFrame()	
-
-	frame.Show()
-	app.MainLoop()
+    app.end()
+    event.waitKeys(keyList=['space'])
