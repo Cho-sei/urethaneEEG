@@ -53,7 +53,7 @@ if __name__ == '__main__':
     import numpy
     stim_order = numpy.loadtxt(sys.argv[1], dtype=numpy.int16, delimiter=',')
 
-    app = urethene201812pretest(stim_order, color=(1, 1, 1))#white back
+    app = urethene201812pretest(stim_order, color=(1, 1, 1), fullscr=True)#white back
 
     event.waitKeys(keyList=['space'])
 
