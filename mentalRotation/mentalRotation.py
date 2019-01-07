@@ -43,13 +43,11 @@ for i, row in df.iterrows():
 	target.setText(row['character'])
 	target.setOri(row['rotation'])
 
-	fixation.setOpacity(1.0)
 	fixation.draw()
 	win.flip()
 
 	core.wait(1.5)
 
-	fixation.setOpacity(0.0)
 	win.flip()
 
 	core.wait(np.random.random() / 2 + 0.5)  # 0.5 ~ 1秒
