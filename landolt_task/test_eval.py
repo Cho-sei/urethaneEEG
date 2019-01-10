@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import mne
@@ -30,13 +29,13 @@ for index in range(1, len(Trigger_Check)):
 
 	if No_Response_Flag == 2:
 		Response_List.append(0)
-		No_Response_Flag = 0
+		No_Response_Flag = 1
 
 if len(Trigger_List) != len(Response_List):
 	Response_List.append(0)
 
 Tri_Res_array = pd.DataFrame(np.array([stim_order, Trigger_List, Response_List]).T)
-Tri_Res_array.columns = ['stimulus','Trigger','Response']
+Tri_Res_array.columns = ['stimulus', 'Trigger', 'Response']
 
 #evalate and calclate Response Time
 	#0,1 -> Response

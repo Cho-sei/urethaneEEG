@@ -11,7 +11,7 @@ class urethene201812pretest(visual.Window):
         super().__init__(**keyargs)
 
         #open COM port
-        self.ser = serial.Serial("COM5", 57600)
+        self.ser = serial.Serial("COM6", 57600)
 
         # load stimuli
         landolt_up = visual.GratingStim(self, tex='landolt_up.tif')
