@@ -1,0 +1,8 @@
+,1,2,3,4
+stimulus,0.0,1.0,2.0,3.0
+Trigger,5380.0,6763.0,8131.0,9455.0
+Response,6226.0,0.0,9092.0,0.0
+RT,1.692,0.0,1.922,0.0
+,Responsed,NonResponsed
+target,1,1
+Nontarget,1,1
