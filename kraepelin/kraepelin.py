@@ -17,9 +17,9 @@ def arrangement(text, num, position):
 		text_view.draw()
 
 #parameter
-trial_duration = 60
+trial_duration = 5
 trial_length = 2
-stim_length = 100
+stim_length = 50
 
 #file defined
 res_columns = ['trials', 'all', 'accuracy', 'RT']
@@ -40,9 +40,9 @@ answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
 #progress bar
 max_bar = visual.ShapeStim(
     win, vertices=((-200, -10), (-200, 10), (200, 10), (200, -10)),
-    pos=(0, 200), fillColor='white', lineColor='black', lineWidth=0.1)
+    pos=(0, 200), fillColor='#a9a9a9', lineColor='black', lineWidth=0.1)
 progress_bar = visual.ShapeStim(
-	win, pos=(0, 200), fillColor='green', lineColor='black', lineWidth=0.1)
+	win, pos=(0, 200), fillColor='#696969', lineColor='black', lineWidth=0.1)
 pre_progress = visual.ShapeStim(
 	win, vertices=((0, 10), (0, -10)), lineColor='black')
 
