@@ -17,7 +17,7 @@ def arrangement(text, num, position):
 		text_view.draw()
 
 #parameter
-trial_duration = 5
+trial_duration = 60
 trial_length = 2
 stim_length = 50
 
