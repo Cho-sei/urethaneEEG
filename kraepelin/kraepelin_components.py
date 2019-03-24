@@ -8,10 +8,10 @@ class MatrixStim:
             base = numpy.arange((count+1) // 2)
             if count % 2 == 0: #even
                 points = interval/2 + interval*base + center
-                return numpy.concatenate([points[::-1], points])
+                return numpy.concatenate([-points[::-1], points])
             else: #odd
                 points = interval*base + center
-                return numpy.concatenate([points[::-1], points[1:]])
+                return numpy.concatenate([-points[::-1], points[1:]])
 
         x_axis = axis_positions(matrix_shape[1], interval[0], center_pos[0])
         y_axis = axis_positions(matrix_shape[0], interval[1], center_pos[1])
