@@ -38,9 +38,6 @@ def generate_matrix(counts_of_number, number):
 	position = numpy.random.permutation(numpy.arange(matrix_shape[0]*matrix_shape[1])).reshape(matrix_shape)
 	return numpy.where(position < counts_of_number, str(number), "")
 
-pre_progress_number = 0
-single_progress = 400/stim_length
-
 clock = core.Clock()
 
 msg_wait.draw()
@@ -102,8 +99,6 @@ for trials in range(trial_length):
 		pre_stimulus = new_stimulus
 
 		core.wait(0.2)
-
-	pre_progress_number = len(rt_list)
 
 	if len(rt_list) == 0:
 		result = [trials+1, 0, 0]
