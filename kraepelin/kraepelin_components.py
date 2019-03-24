@@ -30,4 +30,5 @@ def draw_matrix(win, array2d, interval, center_pos, **textstim_keyargs):
     #draw numbers
     for number, x, y in zip(numpy.nditer(array2d), numpy.nditer(grid_positions[0]), numpy.nditer(grid_positions[1])):
         number_stim = visual.TextStim(win, text=str(number), pos=(x, y), **textstim_keyargs)
+        number_stim.draw()
 
