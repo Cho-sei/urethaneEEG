@@ -29,14 +29,6 @@ msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
 msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
 answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
 
-#progress bar
-max_bar = visual.ShapeStim(
-    win, vertices=((-200, -10), (-200, 10), (200, 10), (200, -10)),
-    pos=(0, 200), fillColor='#a9a9a9', lineColor='black', lineWidth=0.1)
-progress_bar = visual.ShapeStim(
-	win, pos=(0, 200), fillColor='#696969', lineColor='black', lineWidth=0.1)
-pre_progress = visual.ShapeStim(
-	win, vertices=((0, 10), (0, -10)), lineColor='black')
 
 #matrix-like stimulus
 matrix_shape = (3, 3)
@@ -75,16 +67,6 @@ for trials in range(trial_length):
 		matrixstim_left.set_matrix(pre_stimulus)
 		matrixstim_right.set_matrix(new_stimulus)
 
-		#display progress bar
-		progress_bar.vertices = (
-			(-200, -10), (-200, 10), 
-			(counter*single_progress-199, 10), (counter*single_progress-199, -10))
-		max_bar.draw()
-		progress_bar.draw()
-		
-		pre_progress.setPos((pre_progress_number*single_progress-200, 200))
-		pre_progress.draw()
-
 		win.flip()
 
 		#enter keys and measure response time
@@ -109,9 +91,6 @@ for trials in range(trial_length):
 		matrixstim_right.set_matrix(new_stimulus)
 		answer.setText(keys[0][4])
 		answer.draw()
-		max_bar.draw()
-		progress_bar.draw()
-		pre_progress.draw()
 		win.flip()
 
 		#check the answer
