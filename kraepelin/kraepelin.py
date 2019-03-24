@@ -28,6 +28,7 @@ msg_wait = visual.TextStim(win, text='Wait...', height=80, bold=True)
 msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
 msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
 answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
+count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 
 #matrix-like stimulus
@@ -58,12 +59,17 @@ for trials in range(trial_length):
 	task_start = clock.getTime()
 
 	for counter in range(stim_length):
+		# display fixation
+		count_fixation.setText(counter)
+		count_fixation.draw()
+		win.flip()
+		core.wait(1)
+
+		#display numbers
 		new_number = [random.randint(1, 9), random.randint(1, 9)]
 		new_stimulus = generate_matrix(new_number[0], new_number[1])
-		#display numbers
 		matrixstim_left.set_matrix(pre_stimulus)
 		matrixstim_right.set_matrix(new_stimulus)
-
 		win.flip()
 
 		#enter keys and measure response time
