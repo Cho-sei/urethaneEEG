@@ -71,6 +71,8 @@ for trials in range(trial_length):
 		matrixstim_left.set_matrix(pre_stimulus)
 		matrixstim_right.set_matrix(new_stimulus)
 		win.flip()
+		core.wait(0.2)
+		win.flip()
 
 		#enter keys and measure response time
 		key_start = clock.getTime()
@@ -90,14 +92,12 @@ for trials in range(trial_length):
 		rt_list.append(rt)
 
 		#display after answered
-		matrixstim_left.set_matrix(pre_stimulus)
-		matrixstim_right.set_matrix(new_stimulus)
 		answer.setText(keys[0][4])
 		answer.draw()
 		win.flip()
 
 		#check the answer
-		cor_answer = (pre_number[1] + new_number[1]) % 10
+		cor_answer = (pre_number[0] + new_number[0]) % 10
 		if keys[0][4] == str(cor_answer):
 			correct += 1
 
