@@ -2,7 +2,20 @@ from psychopy import visual
 import numpy
 
 class MatrixStim:
+    """draw a matrix using visual.TextStim as it seems.
+
+    Attributes:
+        textstim_list (list): contains position & other options of each element as visual.TextStim.
+    """
     def __init__(self, win, matrix_shape, interval, center_pos, **textstim_keyargs):
+        """
+        Args:
+            win (visual.Window):
+            matrix_shape (tuple): should be tuple of ints
+            interval (tuple): (interval_x, interval_y)
+            center_pos (tuple): (center_x, center_y)
+            textstim_keyargs (dict):
+        """
 
         def axis_positions(count, interval, center):
             base = numpy.arange((count+1) // 2)
@@ -27,6 +40,11 @@ class MatrixStim:
         ]
 
     def set_matrix(self, matrix):
+        """set each element in matrix to corresponding ones.
+        
+        Args:
+            matrix (iterable): 
+        """
         for textstim, text in zip(self.textstim_list, numpy.nditer(matrix)):
             textstim.setText(text)
             textstim.draw()
