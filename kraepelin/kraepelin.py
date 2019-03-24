@@ -3,18 +3,10 @@ import random
 import csv
 import numpy as np
 import itertools
+import math
+import numpy
 
-x = y = np.array([-50, 0, 50])
-
-def arrangement(text, num, position):
-	text_view = visual.TextStim(win, height=50)
-	text_view.setText(text)
-
-	matrix = list(itertools.product(x+position, y))
-	
-	for i in range(num):
-		text_view.setPos(matrix[i])
-		text_view.draw()
+from kraepelin_components import MatrixStim
 
 #parameter
 trial_duration = 60
@@ -46,6 +38,14 @@ progress_bar = visual.ShapeStim(
 pre_progress = visual.ShapeStim(
 	win, vertices=((0, 10), (0, -10)), lineColor='black')
 
+#matrix-like stimulus
+matrix_shape = (3, 3)
+matrixstim_left = MatrixStim(win, matrix_shape, (50, 50), (-200, 0), height=50)
+matrixstim_right = MatrixStim(win, matrix_shape, (50, 50), (200, 0), height=50)
+def generate_matrix(counts_of_number, number):
+	position = numpy.random.permutation(numpy.arange(matrix_shape[0]*matrix_shape[1])).reshape(matrix_shape)
+	return numpy.where(position < counts_of_number, str(number), "")
+
 pre_progress_number = 0
 single_progress = 400/stim_length
 
@@ -62,6 +62,7 @@ core.wait(2)
 
 for trials in range(trial_length):
 	pre_number = [random.randint(1, 9), random.randint(1, 9)]
+	pre_stimulus = generate_matrix(pre_number[0], pre_number[1])
 
 	rt_list = []
 	correct = 0
@@ -69,9 +70,10 @@ for trials in range(trial_length):
 
 	for counter in range(stim_length):
 		new_number = [random.randint(1, 9), random.randint(1, 9)]
+		new_stimulus = generate_matrix(new_number[0], new_number[1])
 		#display numbers
-		arrangement(pre_number[0], pre_number[1], -200)
-		arrangement(new_number[0], new_number[1], 200)
+		matrixstim_left.set_matrix(pre_stimulus)
+		matrixstim_right.set_matrix(new_stimulus)
 
 		#display progress bar
 		progress_bar.vertices = (
@@ -103,8 +105,8 @@ for trials in range(trial_length):
 		rt_list.append(rt)
 
 		#display after answered
-		arrangement(pre_number[0], pre_number[1], -200)
-		arrangement(new_number[0], new_number[1], 200)
+		matrixstim_left.set_matrix(pre_stimulus)
+		matrixstim_right.set_matrix(new_stimulus)
 		answer.setText(keys[0][4])
 		answer.draw()
 		max_bar.draw()
@@ -118,6 +120,7 @@ for trials in range(trial_length):
 			correct += 1
 
 		pre_number = new_number
+		pre_stimulus = new_stimulus
 
 		core.wait(0.2)
 
