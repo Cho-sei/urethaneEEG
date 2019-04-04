@@ -2,11 +2,11 @@ from psychopy import visual, core, event
 
 win = visual.Window(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 
-text = visual.TextStim(win, height=50)
+allow = visual.ShapeStim(
+	win, vertices=((-15,0),(-15,30),(15,30),(15,0),(30,0),(0,-30),(-30,0)),
+	pos=(0,-100), lineColor='red', lineWidth=5)
 
-for i in range(5):
-	keys = event.waitKeys()
-	text.setText(keys[0][4])
+allow.draw()
+win.flip()
 
-	text.draw()
-	win.flip()
+event.waitKeys(keyList=['space'])

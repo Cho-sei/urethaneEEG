@@ -6,50 +6,34 @@ import itertools
 
 x = y = np.array([-50, 0, 50])
 
-def arrangement(text, num, position):
+def arrangement(text, num, position, posList):
 	text_view.setText(text)
 
 	matrix = list(itertools.product(x+position, y))
 	
 	for i in range(num):
-		text_view.setPos(matrix[i])
+		text_view.setPos(matrix[posList[i]])
 		text_view.draw()
 
-#parameter
-trial_duration = 60
-trial_length = 2
-stim_length = 50
 
 #window defined
 win = visual.Window(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 
-#visual text
+#define components
 msg_inst = visual.TextStim(win, height=80, bold=True)
-balloon = visual.ShapeStim(
-	win, vertices=((0,0),(10,0),(15,10),(13,0),(20,0),(20,-10),(0,-10)))
-empha_rect = visual.Rect(win, width=100, height=200, lineColor='red', lineWidth=5)
+empha_rect = visual.Rect(win, width=200, height=200, lineColor='red', lineWidth=5)
 demo_ans = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
-
-msg_wait = visual.TextStim(win, text='Wait...', height=80, bold=True)
-msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
-msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
-answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
+allow = visual.ShapeStim(
+	win, vertices=((-15,0),(-15,30),(15,30),(15,0),(30,0),(0,-30),(-30,0)),
+	pos=(0,-200), lineColor='white',fillColor='white')
+demo_cor_ans = visual.TextStim(win, pos=(0, -300), height=80, bold=True)
+fixation = visual.ShapeStim(
+    win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0)))
+count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 text_view = visual.TextStim(win, height=50)
 
-#progress bar
-max_bar = visual.ShapeStim(
-    win, vertices=((-200, -10), (-200, 10), (200, 10), (200, -10)),
-    pos=(0, 200), fillColor='#a9a9a9', lineColor='black', lineWidth=0.1)
-progress_bar = visual.ShapeStim(
-	win, pos=(0, 200), fillColor='#696969', lineColor='black', lineWidth=0.1)
-pre_progress = visual.ShapeStim(
-	win, vertices=((0, 10), (0, -10)), lineColor='black')
 
-pre_progress_number = 0
-single_progress = 400/stim_length
-
-clock = core.Clock()
 
 #instruction start
 msg_inst.setText("課題説明")
@@ -58,38 +42,52 @@ win.flip()
 
 event.waitKeys(keyList=['space'])
 
-arrangement(6, 4, -200)
-arrangement(8, 3, 200)
-progress_bar.vertices = ((-200, -10), (-200, 10),(-100, 10), (-100, -10))
-max_bar.draw()
-progress_bar.draw()
-pre_progress.setPos((60, 200))
-pre_progress.draw()
-max_bar.setAutoDraw(True)
-progress_bar.setAutoDraw(True)
-pre_progress.setAutoDraw(True)
+#1st block-----------------------------------------------------------------------------
+
+count_fixation.setText("0")
+count_fixation.draw()
 win.flip()
 
 event.waitKeys(keyList=['space'])
 
-arrangement(6, 4, -200)
-arrangement(8, 3, 200)
-empha_rect.setPos((-225, 0))
+empha_rect.setPos((0,0))
+empha_rect.draw()
+count_fixation.draw()
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+pos_left = random.sample(range(9), k=4)
+pos_right = random.sample(range(9), k=3)
+arrangement(6, 4, -200, pos_left)
+arrangement(8, 3, 200, pos_right)
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+fixation.draw()
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+arrangement(6, 4, -200, pos_left)
+arrangement(8, 3, 200, pos_right)
+empha_rect.setPos((-200, 0))
 empha_rect.setAutoDraw(True)
 win.flip()
 
 event.waitKeys(keyList=['space'])
 
-arrangement(6, 4, -200)
-arrangement(8, 3, 200)
-empha_rect.setPos((175, 0))
+arrangement(6, 4, -200, pos_left)
+arrangement(8, 3, 200, pos_right)
+empha_rect.setPos((200, 0))
 empha_rect.setAutoDraw(True)
 win.flip()
 
 event.waitKeys(keyList=['space'])
 
-arrangement(6, 4, -200)
-arrangement(8, 3, 200)
+arrangement(6, 4, -200, pos_left)
+arrangement(8, 3, 200, pos_right)
 demo_ans.setText("7")
 demo_ans.draw()
 win.flip()
@@ -97,67 +95,65 @@ win.flip()
 event.waitKeys(keyList=['space'])
 
 
-"""
+#2nd block-----------------------------------------------------------------------------
 
-msg_wait.draw()
+count_fixation.setText("1")
+count_fixation.draw()
+empha_rect.setAutoDraw(False)
 win.flip()
+
 event.waitKeys(keyList=['space'])
 
-msg_start.draw()
+pos_left = random.sample(range(9), k=8)
+pos_right = random.sample(range(9), k=5)
+arrangement(4, 8, -200, pos_left)
+arrangement(1, 5, 200, pos_right)
 win.flip()
 
-core.wait(2)
-
-pre_number = [random.randint(1, 9), random.randint(1, 9)]
-
-task_start = clock.getTime()
-
-for counter in range(stim_length):
-	new_number = [random.randint(1, 9), random.randint(1, 9)]
-	#display numbers
-	arrangement(pre_number[0], pre_number[1], -200)
-	arrangement(new_number[0], new_number[1], 200)
-
-	#display progress bar
-	progress_bar.vertices = (
-		(-200, -10), (-200, 10), 
-		(counter*single_progress-199, 10), (counter*single_progress-199, -10))
-	max_bar.draw()
-	progress_bar.draw()
-		
-	pre_progress.setPos((pre_progress_number*single_progress-200, 200))
-	pre_progress.draw()
-
-	win.flip()
-
-	#enter keys and measure response time
-	task_time = clock.getTime() - task_start
-	keys = event.waitKeys(
-		maxWait=trial_duration-task_time,
-		keyList=['num_0','num_1','num_2','num_3','num_4',
-			'num_5','num_6','num_7','num_8','num_9','escape'])
-	if keys == None:
-		break
-	elif keys == 'escape' :
-		win.close()
-		
-	#display after answered
-	arrangement(pre_number[0], pre_number[1], -200)
-	arrangement(new_number[0], new_number[1], 200)
-	answer.setText(keys[0][4])
-	answer.draw()
-	max_bar.draw()
-	progress_bar.draw()
-	pre_progress.draw()
-	win.flip()
-
-	pre_number = new_number
-
-	core.wait(0.2)
-
-pre_progress_number = len(rt_list)
-
-msg_finish.draw()
-win.flip()
 event.waitKeys(keyList=['space'])
-"""
+
+fixation.draw()
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+arrangement(4, 8, -200, pos_left)
+arrangement(1, 5, 200, pos_right)
+empha_rect.setPos((-200, 0))
+empha_rect.setAutoDraw(True)
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+arrangement(4, 8, -200, pos_left)
+arrangement(1, 5, 200, pos_right)
+empha_rect.setPos((200, 0))
+empha_rect.setAutoDraw(True)
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+arrangement(4, 8, -200, pos_left)
+arrangement(1, 5, 200, pos_right)
+demo_ans.setText("13")
+demo_ans.setAutoDraw(True)
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+arrangement(4, 8, -200, pos_left)
+arrangement(1, 5, 200, pos_right)
+allow.setAutoDraw(True)
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+arrangement(4, 8, -200, pos_left)
+arrangement(1, 5, 200, pos_right)
+demo_cor_ans.setText("3")
+demo_cor_ans.draw()
+win.flip()
+
+event.waitKeys(keyList=['space'])
+
+
