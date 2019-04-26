@@ -50,6 +50,8 @@ win.flip()
 
 core.wait(2)
 
+key_list=['num_0','num_1','num_2','num_3','num_4','num_5','num_6','num_7','num_8','num_9','escape']
+
 for trials in range(trial_length):
 	pre_number = [random.randint(1, 9), random.randint(1, 9)]
 	pre_stimulus = generate_matrix(pre_number[0], pre_number[1])
@@ -79,8 +81,9 @@ for trials in range(trial_length):
 		task_time = clock.getTime() - task_start
 		keys = event.waitKeys(
 			maxWait=trial_duration-task_time,
-			keyList=['num_0','num_1','num_2','num_3','num_4',
-				'num_5','num_6','num_7','num_8','num_9','escape'])
+			keyList=key_list
+		)
+
 		if keys == None:
 			break
 		elif keys == 'escape' :
@@ -92,7 +95,7 @@ for trials in range(trial_length):
 		rt_list.append(rt)
 
 		#display after answered
-		answer.setText(keys[0][4])
+		answer.setText(key_list.index(keys[0]))
 		answer.draw()
 		win.flip()
 
