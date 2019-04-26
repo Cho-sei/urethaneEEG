@@ -7,7 +7,7 @@ import math
 import numpy
 import sys
 
-from kraepelin_components import FixationStim, MatrixStim
+from kraepelin_components import MatrixStim
 
 #parameter
 trial_duration = 60
