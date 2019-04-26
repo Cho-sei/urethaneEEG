@@ -5,6 +5,7 @@ import numpy as np
 import itertools
 import math
 import numpy
+import sys
 
 from kraepelin_components import MatrixStim
 
@@ -12,6 +13,9 @@ from kraepelin_components import MatrixStim
 trial_duration = 60
 trial_length = 2
 stim_length = 50
+
+#set global escape
+event.globalKeys.add(key='escape', func=sys.exit)
 
 #file defined
 res_columns = ['trials', 'all', 'accuracy', 'RT']
@@ -50,7 +54,7 @@ win.flip()
 
 core.wait(2)
 
-key_list=['0','1','2','3','4','5','6','7','8','9','escape']
+key_list=['0','1','2','3','4','5','6','7','8','9']
 
 for trials in range(trial_length):
 	pre_number = [random.randint(1, 9), random.randint(1, 9)]
@@ -86,8 +90,6 @@ for trials in range(trial_length):
 
 		if keys == None:
 			break
-		elif keys == 'escape' :
-			win.close()
 		
 		key_end = clock.getTime()
 

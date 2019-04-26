@@ -3,6 +3,10 @@ import random
 import csv
 import numpy as np
 import itertools
+import sys
+
+#set global escape
+event.globalKeys.add(key='escape', func=sys.exit)
 
 x = y = np.array([-50, 0, 50])
 
