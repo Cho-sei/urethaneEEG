@@ -1,11 +1,11 @@
-from psychopy import visual, core, event
-import random
 import csv
-import numpy as np
-import itertools
 import math
-import numpy
+import itertools
+import random
 import sys
+
+import numpy
+from psychopy import visual, core, event
 
 from kraepelin_components import MatrixStim
 
