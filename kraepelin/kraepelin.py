@@ -7,7 +7,7 @@ import math
 import numpy
 import sys
 
-from kraepelin_components import MatrixStim
+from kraepelin_components import FixationStim, MatrixStim
 
 #parameter
 trial_duration = 60
@@ -34,6 +34,8 @@ msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
 answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
 count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
+#fixation
+fixation = FixationStim(win)
 
 #matrix-like stimulus
 matrix_shape = (3, 3)
@@ -78,6 +80,7 @@ for trials in range(trial_length):
 		matrixstim_right.set_matrix(new_stimulus)
 		win.flip()
 		core.wait(0.2)
+		fixation.draw()
 		win.flip()
 
 		#enter keys and measure response time
