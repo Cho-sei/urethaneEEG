@@ -94,14 +94,17 @@ for trials in range(trial_length):
 		rt = key_end - key_start
 		rt_list.append(rt)
 
+		answer_number = key_list.index(keys[0])
+
 		#display after answered
-		answer.setText(key_list.index(keys[0]))
+
+		answer.setText(answer_number)
 		answer.draw()
 		win.flip()
 
 		#check the answer
 		cor_answer = (pre_number[0] + new_number[0]) % 10
-		if keys[0][4] == str(cor_answer):
+		if answer_number == cor_answer:
 			correct += 1
 
 		pre_number = new_number
