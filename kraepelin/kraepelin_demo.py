@@ -5,7 +5,7 @@ import numpy as np
 import itertools
 import sys
 
-from kraepelin_components import FixationStim, MatrixStim
+from kraepelin_components import MatrixStim
 
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)
@@ -33,7 +33,7 @@ allow = visual.ShapeStim(
 	win, vertices=((-15,0),(-15,30),(15,30),(15,0),(30,0),(0,-30),(-30,0)),
 	pos=(0,-200), lineColor='white',fillColor='white')
 demo_cor_ans = visual.TextStim(win, pos=(0, -300), height=80, bold=True)
-fixation = FixationStim(win)
+fixation = visual.ShapeStim(win,  vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0)))
 count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 text_view = visual.TextStim(win, height=50)

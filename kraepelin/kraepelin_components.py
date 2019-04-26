@@ -1,19 +1,6 @@
 from psychopy import visual
 import numpy
 
-class FixationStim(visual.ShapeStim):
-    """draw a fixation cross using visual.ShapeStim.
-    Attributes:
-
-    This class should be written other styles, I think.
-    """
-    def __init__(self, win, **keyargs):
-        super().__init__(
-            win,
-            vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0)),
-            **keyargs
-            )
-
 class MatrixStim:
     """draw a matrix using visual.TextStim as it seems.
 

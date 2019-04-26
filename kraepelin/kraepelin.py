@@ -35,7 +35,7 @@ answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
 count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 #fixation
-fixation = FixationStim(win)
+fixation = visual.ShapeStim(win,  vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0)))
 
 #matrix-like stimulus
 matrix_shape = (3, 3)
