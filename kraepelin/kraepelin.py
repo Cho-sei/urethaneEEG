@@ -32,7 +32,7 @@ msg_wait = visual.TextStim(win, text='Wait...', height=80, bold=True)
 msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
 msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
 answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
-count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
+msg_count = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 #fixation
 fixation = get_fixation_stim(win)
@@ -68,8 +68,8 @@ for trials in range(trial_length):
 
 	for counter in range(stim_length):
 		# display fixation
-		count_fixation.setText(counter)
-		count_fixation.draw()
+		msg_count.setText(counter)
+		msg_count.draw()
 		win.flip()
 		core.wait(1)
 
