@@ -1,5 +1,13 @@
-from psychopy import visual
+import functools
+
 import numpy
+from psychopy import visual
+from psychopy.visual import ShapeStim #because of lazy_import.py
+
+def get_fixation_stim(win):
+    return visual.ShapeStim(
+        win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0))
+    )
 
 class MatrixStim:
     """draw a matrix using visual.TextStim as it seems.
@@ -53,3 +61,6 @@ class MatrixStim:
         """
         for textstim in self.textstim_list:
             textstim.draw()
+
+if __name__ == "__main__":
+    pass
