@@ -5,7 +5,7 @@ import numpy as np
 import itertools
 import sys
 
-from kraepelin_components import get_fixation_stim, MatrixStim
+from kraepelin_stimuli import get_fixation_stim, MatrixStim
 
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)

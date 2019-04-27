@@ -7,7 +7,7 @@ import sys
 import numpy
 from psychopy import visual, core, event
 
-from kraepelin_components import get_fixation_stim, MatrixStim
+from kraepelin_stimuli import get_fixation_stim, MatrixStim
 
 #parameter
 trial_duration = 60
