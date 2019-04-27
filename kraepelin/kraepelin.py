@@ -78,6 +78,8 @@ for trials in range(trial_length):
 		new_stimulus = generate_matrix(new_number[0], new_number[1])
 		matrixstim_left.set_matrix(pre_stimulus)
 		matrixstim_right.set_matrix(new_stimulus)
+		matrixstim_left.draw()
+		matrixstim_right.draw()
 		win.flip()
 		core.wait(0.2)
 		fixation.draw()

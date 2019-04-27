@@ -41,10 +41,15 @@ class MatrixStim:
 
     def set_matrix(self, matrix):
         """set each element in matrix to corresponding ones.
-        
+
         Args:
             matrix (iterable): 
         """
         for textstim, text in zip(self.textstim_list, numpy.nditer(matrix)):
             textstim.setText(text)
+
+    def draw(self):
+        """draw matrix
+        """
+        for textstim in self.textstim_list:
             textstim.draw()
