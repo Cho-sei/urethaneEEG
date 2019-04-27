@@ -10,125 +10,127 @@ from psychopy import visual, core, event
 from kraepelin_stimuli import get_fixation_stim, MatrixStim
 
 #parameter
-trial_duration = 60
-trial_length = 2
-stim_length = 50
+TRIAL_DURATION = 60
+TRIAL_LENGTH = 2
+STIM_LENGTH = 50
 
-#set global escape
-event.globalKeys.add(key='escape', func=sys.exit)
 
-#file defined
-res_columns = ['trials', 'all', 'accuracy', 'RT']
+if __name__ == "__main__":
+    #set global escape
+    event.globalKeys.add(key='escape', func=sys.exit)
 
-with open('result.csv', 'w') as file:
-	writer = csv.writer(file, lineterminator='\n')
-	writer.writerow(res_columns)
+    #file defined
+    res_columns = ['trials', 'all', 'accuracy', 'RT']
 
-#window defined
-win = visual.Window(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
+    with open('result.csv', 'w') as file:
+        writer = csv.writer(file, lineterminator='\n')
+        writer.writerow(res_columns)
 
-#visual text
-msg_wait = visual.TextStim(win, text='Wait...', height=80, bold=True)
-msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
-msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
-answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
-msg_count = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
+    #window defined
+    win = visual.Window(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 
-#fixation
-fixation = get_fixation_stim(win)
+    #visual text
+    msg_wait = visual.TextStim(win, text='Wait...', height=80, bold=True)
+    msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
+    msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
+    answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
+    msg_count = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
-#matrix-like stimulus
-matrix_shape = (3, 3)
-matrixstim_left = MatrixStim(win, matrix_shape, (50, 50), (-200, 0), height=50)
-matrixstim_right = MatrixStim(win, matrix_shape, (50, 50), (200, 0), height=50)
-def generate_matrix(counts_of_number, number):
-	position = numpy.random.permutation(numpy.arange(matrix_shape[0]*matrix_shape[1])).reshape(matrix_shape)
-	return numpy.where(position < counts_of_number, str(number), "")
+    #fixation
+    fixation = get_fixation_stim(win)
 
-clock = core.Clock()
+    #matrix-like stimulus
+    matrix_shape = (3, 3)
+    matrixstim_left = MatrixStim(win, matrix_shape, (50, 50), (-200, 0), height=50)
+    matrixstim_right = MatrixStim(win, matrix_shape, (50, 50), (200, 0), height=50)
+    def generate_matrix(counts_of_number, number):
+        position = numpy.random.permutation(numpy.arange(matrix_shape[0]*matrix_shape[1])).reshape(matrix_shape)
+        return numpy.where(position < counts_of_number, str(number), "")
 
-msg_wait.draw()
-win.flip()
-event.waitKeys(keyList=['space'])
+    clock = core.Clock()
 
-msg_start.draw()
-win.flip()
+    msg_wait.draw()
+    win.flip()
+    event.waitKeys(keyList=['space'])
 
-core.wait(2)
+    msg_start.draw()
+    win.flip()
 
-key_list=['0','1','2','3','4','5','6','7','8','9']
+    core.wait(2)
 
-for trials in range(trial_length):
-	pre_number = [random.randint(1, 9), random.randint(1, 9)]
-	pre_stimulus = generate_matrix(pre_number[0], pre_number[1])
+    key_list=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
-	rt_list = []
-	correct = 0
-	task_start = clock.getTime()
+    for trials in range(TRIAL_LENGTH):
+        pre_number = [random.randint(1, 9), random.randint(1, 9)]
+        pre_stimulus = generate_matrix(pre_number[0], pre_number[1])
 
-	for counter in range(stim_length):
-		# display fixation
-		msg_count.setText(counter)
-		msg_count.draw()
-		win.flip()
-		core.wait(1)
+        rt_list = []
+        correct = 0
+        task_start = clock.getTime()
 
-		#display numbers
-		new_number = [random.randint(1, 9), random.randint(1, 9)]
-		new_stimulus = generate_matrix(new_number[0], new_number[1])
-		matrixstim_left.set_matrix(pre_stimulus)
-		matrixstim_right.set_matrix(new_stimulus)
-		matrixstim_left.draw()
-		matrixstim_right.draw()
-		win.flip()
-		core.wait(0.2)
-		fixation.draw()
-		win.flip()
+        for counter in range(STIM_LENGTH):
+            # display fixation
+            msg_count.setText(counter)
+            msg_count.draw()
+            win.flip()
+            core.wait(1)
 
-		#enter keys and measure response time
-		key_start = clock.getTime()
-		task_time = clock.getTime() - task_start
-		keys = event.waitKeys(
-			maxWait=trial_duration-task_time,
-			keyList=key_list
-		)
+            #display numbers
+            new_number = [random.randint(1, 9), random.randint(1, 9)]
+            new_stimulus = generate_matrix(new_number[0], new_number[1])
+            matrixstim_left.set_matrix(pre_stimulus)
+            matrixstim_right.set_matrix(new_stimulus)
+            matrixstim_left.draw()
+            matrixstim_right.draw()
+            win.flip()
+            core.wait(0.2)
+            fixation.draw()
+            win.flip()
 
-		if keys == None:
-			break
-		
-		key_end = clock.getTime()
+            #enter keys and measure response time
+            key_start = clock.getTime()
+            task_time = clock.getTime() - task_start
+            keys = event.waitKeys(
+                maxWait=TRIAL_DURATION-task_time,
+                keyList=key_list
+            )
 
-		rt = key_end - key_start
-		rt_list.append(rt)
+            if keys == None:
+                break
+            
+            key_end = clock.getTime()
 
-		answer_number = key_list.index(keys[0])
+            rt = key_end - key_start
+            rt_list.append(rt)
 
-		#display after answered
+            answer_number = key_list.index(keys[0])
 
-		answer.setText(answer_number)
-		answer.draw()
-		win.flip()
+            #display after answered
 
-		#check the answer
-		cor_answer = (pre_number[0] + new_number[0]) % 10
-		if answer_number == cor_answer:
-			correct += 1
+            answer.setText(answer_number)
+            answer.draw()
+            win.flip()
 
-		pre_number = new_number
-		pre_stimulus = new_stimulus
+            #check the answer
+            cor_answer = (pre_number[0] + new_number[0]) % 10
+            if answer_number == cor_answer:
+                correct += 1
 
-		core.wait(0.2)
+            pre_number = new_number
+            pre_stimulus = new_stimulus
 
-	if len(rt_list) == 0:
-		result = [trials+1, 0, 0]
-	else:
-		result = [trials+1, len(rt_list), correct/len(rt_list)]
-		result.extend(rt_list)
-	
-	with open('result.csv','a') as file:
-		writer = csv.writer(file, lineterminator='\n')
-		writer.writerow(result)
+            core.wait(0.2)
 
-msg_finish.draw()
-win.flip()
-event.waitKeys(keyList=['space'])
+        if len(rt_list) == 0:
+            result = [trials+1, 0, 0]
+        else:
+            result = [trials+1, len(rt_list), correct/len(rt_list)]
+            result.extend(rt_list)
+        
+        with open('result.csv', 'a') as file:
+            writer = csv.writer(file, lineterminator='\n')
+            writer.writerow(result)
+
+    msg_finish.draw()
+    win.flip()
+    event.waitKeys(keyList=['space'])    
