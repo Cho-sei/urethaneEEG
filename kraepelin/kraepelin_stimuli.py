@@ -2,7 +2,6 @@ import functools
 
 import numpy
 from psychopy import visual
-from psychopy.visual import ShapeStim #because of lazy_import.py
 
 def get_fixation_stim(win):
     return visual.ShapeStim(
