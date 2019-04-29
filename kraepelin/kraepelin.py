@@ -7,11 +7,11 @@ import sys
 import numpy
 from psychopy import visual, core, event
 
-from kraepelin_stimuli import get_fixation_stim, get_cue_stim, MatrixStim
+from kraepelin_stimuli import get_fixation_stim, get_Lcue_stim, get_Rcue_stim, MatrixStim
 
 #parameter
 TRIAL_DURATION = 60
-TRIAL_LENGTH = 2
+TRIAL_LENGTH = 4
 BLOCK_LENGTH = 50
 MATRIX_SHAPE = (3, 3)
 
@@ -29,7 +29,7 @@ class KraepelinWindow(visual.Window):
         self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
 
         self.fixation = get_fixation_stim(self)
-        self.cue = get_cue_stim(self)
+        self.LRcue = [get_Lcue_stim(self), get_Rcue_stim(self)]
 
         self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)
         self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)
@@ -42,7 +42,11 @@ class KraepelinWindow(visual.Window):
         task_start = clock.getTime()
 
         self.correct = 0
-        cueflag_list = random.shuffle([True]*(TRIAL_LENGTH/2) + [False]*(TRIAL_LENGTH-TRIAL_LENGTH/2))
+
+        assert TRIAL_LENGTH%4 == 0, "TRIAL_LENGTH should be multiple of 4"
+        cueflag_list = random.shuffle(
+            [(False, False)]*(TRIAL_LENGTH/4) + [(False, True)]*(TRIAL_LENGTH/4) + [(True, False)]*(TRIAL_LENGTH/4) + [(True, True)]*(TRIAL_LENGTH/4)
+        )
 
         for count, cue_flag in enumerate(cueflag_list):
             #display count
@@ -52,8 +56,9 @@ class KraepelinWindow(visual.Window):
             core.wait(1.)
 
             #display cue
-            if cue_flag:
-                self.cue.draw()
+            for cue, flag in zip(self.LRcue, cue_flag):
+                if flag:
+                    cue.draw()
             self.flip()
             core.wait(0.5)
             self.flip()
@@ -83,10 +88,8 @@ class KraepelinWindow(visual.Window):
             rt = key_end - key_start
             #check the answer
             answer_number = self.KEY_LIST.index(keys[0])
-            if cue_flag:
-                cor_answer = (pre_number[0] + new_number[0]) % 10
-            else:
-                cor_answer = (pre_number[1] + new_number[1]) % 10
+
+            cor_answer = (pre_number[1 if cue_flag[0] else 0] + new_number[1 if cue_flag[1] else 0]) % 10
             if answer_number == cor_answer:
                 self.correct += 1
 
