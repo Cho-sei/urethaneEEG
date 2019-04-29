@@ -12,7 +12,7 @@ from psychopy import visual, core, event
 from kraepelin_stimuli import get_fixation_stim, get_cue_stim, MatrixStim
 
 #parameter
-TRIAL_DURATION = 60
+TRIAL_DURATION = 5
 TRIAL_LENGTH = 50
 BLOCK_LENGTH = 2
 MATRIX_SHAPE = (3, 3)
@@ -101,7 +101,7 @@ class KraepelinWindow(visual.Window):
             win.flip()
 
             #output list
-            output_list = [count+1, answer_number, rt, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
+            output_list = [count+1, answer_number, rt, cue_flag, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
 
             pre_status = new_status
             pre_stimulus = new_stimulus
@@ -114,7 +114,7 @@ if __name__ == "__main__":
     event.globalKeys.add(key='escape', func=sys.exit)
 
     #file defined
-    res_columns = ['Trials', 'answer', 'RT', 'cor_answer', 'stim_left', 'stim_right']
+    res_columns = ['Trials', 'answer', 'RT', 'Cue', 'cor_answer', 'stim_left', 'stim_right']
 
     #window defined
     win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
