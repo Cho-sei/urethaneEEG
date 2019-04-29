@@ -6,6 +6,7 @@ import random
 import sys
 
 import numpy
+import pandas
 from psychopy import visual, core, event
 
 from kraepelin_stimuli import get_fixation_stim, get_Lcue_stim, get_Rcue_stim, MatrixStim
@@ -103,19 +104,21 @@ class KraepelinWindow(visual.Window):
             self.msg_answer.draw()
             win.flip()
 
+            #output list
+            output_list = [count+1, answer_number, rt, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
+
+            pre_number = new_number
+            pre_stimulus = new_stimulus
+           
             core.wait(0.2)
-            yield rt
+            yield output_list
 
 if __name__ == "__main__":
     #set global escape
     event.globalKeys.add(key='escape', func=sys.exit)
 
     #file defined
-    res_columns = ['trials', 'all', 'accuracy', 'RT']
-
-    with open('result.csv', 'w') as file:
-        writer = csv.writer(file, lineterminator='\n')
-        writer.writerow(res_columns)
+    res_columns = ['Trials', 'answer', 'RT', 'cor_answer', 'stim_left', 'stim_right']
 
     #window defined
     win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
@@ -134,14 +137,19 @@ if __name__ == "__main__":
 
     core.wait(2)
 
-    for blocks in range(BLOCK_LENGTH):
-        rt_list = [i for i in win.block()]
-      
-        with open('result.csv', 'a') as file:
-            writer = csv.writer(file, lineterminator='\n')
-            writer.writerow(
-                [blocks+1, len(rt_list), win.correct/len(rt_list) if len(rt_list)>0 else 0] + rt_list
-            )
+    #output dataframe
+    Final_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
+    
+    for blocks in range(TRIAL_LENGTH):
+        df_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
+        for output_list in win.block():
+            outputSeries = pandas.Series(output_list, index = res_columns)
+            df_output = df_output.append(outputSeries, ignore_index=True)
+        df_output['Blocks'] = blocks+1
+        
+        Final_output = pandas.concat([Final_output, df_output])
+
+        Final_output.to_csv('result.csv', index=False)
 
     msg_finish.draw()
     win.flip()
