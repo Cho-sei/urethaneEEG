@@ -10,12 +10,12 @@ def get_fixation_stim(win):
 
 def get_Lcue_stim(win):
     return visual.Circle(
-        win, radius=1, edges=64, pos=(-200, -60)
+        win, radius=30, edges=64, pos=(-200, 0), fillColor='white'
     )
 
 def get_Rcue_stim(win):
     return visual.Circle(
-        win, radius=1, edges=64, pos=(200, -60)
+        win, radius=30, edges=64, pos=(200, 0), fillColor='white'
     )
 
 class MatrixStim:
