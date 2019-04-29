@@ -1,3 +1,4 @@
+import collections
 import csv
 import math
 import itertools
@@ -19,6 +20,8 @@ def generate_matrix(counts_of_number, number):
     position = numpy.random.permutation(numpy.arange(MATRIX_SHAPE[0]*MATRIX_SHAPE[1])).reshape(MATRIX_SHAPE)
     return numpy.where(position < counts_of_number, str(number), "")
 
+StimStatus = collections.namedtuple('StimStatus', ['articles_of_number', 'number'])
+
 class KraepelinWindow(visual.Window):
 
     KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -35,8 +38,8 @@ class KraepelinWindow(visual.Window):
         self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)
 
     def block(self):
-        pre_number = [random.randint(1, 9), random.randint(1, 9)]
-        pre_stimulus = generate_matrix(*pre_number)
+        pre_status = StimStatus(random.randint(1, 9), random.randint(1, 9))
+        pre_stimulus = generate_matrix(*pre_status)
 
         clock = core.Clock()
         task_start = clock.getTime()
@@ -45,7 +48,7 @@ class KraepelinWindow(visual.Window):
 
         assert TRIAL_LENGTH%4 == 0, "TRIAL_LENGTH should be multiple of 4"
         cueflag_list = random.shuffle(
-            [(False, False)]*(TRIAL_LENGTH/4) + [(False, True)]*(TRIAL_LENGTH/4) + [(True, False)]*(TRIAL_LENGTH/4) + [(True, True)]*(TRIAL_LENGTH/4)
+            [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
         )
 
         for count, cue_flag in enumerate(cueflag_list):
@@ -66,8 +69,8 @@ class KraepelinWindow(visual.Window):
             
             #display fixation cross & stimuli
             self.fixation.draw()
-            new_number = [random.randint(1, 9), random.randint(1, 9)]
-            new_stimulus = generate_matrix(new_number[0], new_number[1])
+            new_status = StimStatus(random.randint(1, 9), random.randint(1, 9))
+            new_stimulus = generate_matrix(*new_status)
             self.matrixstim_left.set_matrix(pre_stimulus)
             self.matrixstim_right.set_matrix(new_stimulus)
             self.matrixstim_left.draw()
@@ -93,7 +96,7 @@ class KraepelinWindow(visual.Window):
             if answer_number == cor_answer:
                 self.correct += 1
 
-            pre_number = new_number
+            pre_status = new_status
             pre_stimulus = new_stimulus
 
             #display after answered
