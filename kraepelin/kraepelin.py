@@ -136,7 +136,7 @@ if __name__ == "__main__":
         with open('result.csv', 'a') as file:
             writer = csv.writer(file, lineterminator='\n')
             writer.writerow(
-                [trials+1, len(rt_list), win.correct/len(rt_list) if len(rt_list)>0 else 0] + rt_list
+                [blocks+1, len(rt_list), win.correct/len(rt_list) if len(rt_list)>0 else 0] + rt_list
             )
 
     msg_finish.draw()
