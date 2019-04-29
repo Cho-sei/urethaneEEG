@@ -1,4 +1,3 @@
-import collections
 import functools
 
 import numpy
