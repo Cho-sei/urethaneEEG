@@ -42,7 +42,7 @@ class KraepelinWindow(visual.Window):
         task_start = clock.getTime()
 
         self.correct = 0
-        cueflag_list = random.shuffle([True]*(TRIAL_LENGTH/2) + [False]*(TRIAL_LENGTH-TRIAL_LENGTH/2))
+        cueflag_list = random.shuffle([True]*(TRIAL_LENGTH//2) + [False]*(TRIAL_LENGTH-TRIAL_LENGTH//2))
 
         for count, cue_flag in enumerate(cueflag_list):
             #display count
