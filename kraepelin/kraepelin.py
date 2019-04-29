@@ -51,10 +51,16 @@ class KraepelinWindow(visual.Window):
             self.flip()
             core.wait(1.)
 
-            #display fixation cross & cue & stimuli
-            self.fixation.draw()
+            #display cue
             if cue_flag:
                 self.cue.draw()
+            self.flip()
+            core.wait(0.5)
+            self.flip()
+            core.wait(0.5)
+            
+            #display fixation cross & stimuli
+            self.fixation.draw()
             new_number = [random.randint(1, 9), random.randint(1, 9)]
             new_stimulus = generate_matrix(new_number[0], new_number[1])
             self.matrixstim_left.set_matrix(pre_stimulus)
