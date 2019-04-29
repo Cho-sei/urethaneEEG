@@ -1,12 +1,10 @@
+import collections
 import functools
 
 import numpy
 from psychopy import visual
 
-def get_fixation_stim(win):
-    return visual.ShapeStim(
-        win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0))
-    )
+MATRIX_SHAPE = (3, 3)
 
 class MatrixStim:
     """draw a matrix using visual.TextStim as it seems.
@@ -68,7 +66,9 @@ class KraepelinWindow(visual.Window):
         self.msg_answer = visual.TextStim(self, pos=(0, -100), height=80, bold=True)
         self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
 
-        self.fixation = get_fixation_stim(self)
+        self.fixation = visual.ShapeStim(
+            win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0))
+        )
 
         self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)
         self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)
@@ -80,6 +80,15 @@ class KraepelinWindow(visual.Window):
     def draw_answer(self, answer):
         self.msg_answer.setText(answer)
         self.msg_answer.draw()
+
+    def draw_fixation(self):
+        self.fixation.draw()
+
+    def draw_matrices(self, matrix_left, matrix_right):
+        self.matrixstim_left.set_matrix(matrix_left)
+        self.matrixstim_right.set_matrix(matrix_right)
+        self.matrix_left.draw()
+        self.matrix_right.draw()
 
 if __name__ == "__main__":
     pass
