@@ -63,7 +63,7 @@ class MatrixStim:
             matrix (iterable): 
         """
         for textstim, text in zip(self.textstim_list, numpy.nditer(matrix)):
-            textstim.setText(text)
+            textstim.setText(str(text))
 
     def draw(self):
         """draw matrix
