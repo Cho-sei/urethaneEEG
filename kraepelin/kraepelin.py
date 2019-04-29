@@ -25,15 +25,8 @@ class KraepelinExperiment:
     BLOCK_LENGTH = 50
     KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
-    def __init__(self, *args, **keyargs):
-        super().__init__(*args, **keyargs)
-        self.msg_answer = visual.TextStim(self, pos=(0, -100), height=80, bold=True)
-        self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
-
-        self.fixation = get_fixation_stim(self)
-
-        self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)
-        self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)
+    def __init__(self):
+        self.win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 
     def block(self):
         pre_number = [random.randint(1, 9), random.randint(1, 9)]
@@ -46,24 +39,20 @@ class KraepelinExperiment:
 
         for count in range(TRIAL_LENGTH):
             #display count
-            self.msg_count.setText(count)
-            self.msg_count.draw()
-            self.flip()
+            self.win.draw_count(count)
+            self.win.flip()
             core.wait(1.)
 
             #display stimuli
             new_number = [random.randint(1, 9), random.randint(1, 9)]
             new_stimulus = generate_matrix(new_number[0], new_number[1])
-            self.matrixstim_left.set_matrix(pre_stimulus)
-            self.matrixstim_right.set_matrix(new_stimulus)
-            self.matrixstim_left.draw()
-            self.matrixstim_right.draw()
+            self.win.draw_matrices(pre_stimulus, new_stimulus)
             win.flip()
             core.wait(0.2)
 
             #display fixation cross
-            self.fixation.draw()
-            win.flip()            
+            self.win.fixation.draw()
+            win.flip()
 
             #enter keys and measure response time
             key_start = clock.getTime()
@@ -87,8 +76,7 @@ class KraepelinExperiment:
             pre_stimulus = new_stimulus
 
             #display after answered
-            self.msg_answer.setText(answer_number)
-            self.msg_answer.draw()
+            self.win.draw_answer(answer_number)
             win.flip()
 
             core.wait(0.2)
