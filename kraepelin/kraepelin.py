@@ -13,8 +13,8 @@ from kraepelin_stimuli import get_fixation_stim, get_cue_stim, MatrixStim
 
 #parameter
 TRIAL_DURATION = 60
-TRIAL_LENGTH = 2
-BLOCK_LENGTH = 50
+TRIAL_LENGTH = 50
+BLOCK_LENGTH = 2
 MATRIX_SHAPE = (3, 3)
 
 def generate_matrix(counts_of_number, number):
