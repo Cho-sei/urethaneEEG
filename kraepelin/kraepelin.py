@@ -13,11 +13,10 @@ from kraepelin_stimuli import get_fixation_stim, MatrixStim
 TRIAL_DURATION = 60
 TRIAL_LENGTH = 2
 BLOCK_LENGTH = 50
-MATRIX_SHAPE = (3, 3)
 
-def generate_matrix(counts_of_number, number):
+def generate_matrix(articles_of_number, number):
     position = numpy.random.permutation(numpy.arange(MATRIX_SHAPE[0]*MATRIX_SHAPE[1])).reshape(MATRIX_SHAPE)
-    return numpy.where(position < counts_of_number, str(number), "")
+    return numpy.where(position < articles_of_number, str(number), "")
 
 class KraepelinWindow(visual.Window):
 
