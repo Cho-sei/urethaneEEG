@@ -13,8 +13,8 @@ from kraepelin_stimuli import get_fixation_stim, get_Lcue_stim, get_Rcue_stim, M
 
 #parameter
 TRIAL_DURATION = 60
-TRIAL_LENGTH = 4
-BLOCK_LENGTH = 50
+TRIAL_LENGTH = 50
+BLOCK_LENGTH = 2
 MATRIX_SHAPE = (3, 3)
 
 def generate_matrix(counts_of_number, number):
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     #output dataframe
     Final_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
     
-    for blocks in range(TRIAL_LENGTH):
+    for blocks in range(BLOCK_LENGTH):
         df_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
         for output_list in win.block():
             outputSeries = pandas.Series(output_list, index = res_columns)
