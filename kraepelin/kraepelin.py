@@ -42,17 +42,19 @@ class KraepelinWindow(visual.Window):
         task_start = clock.getTime()
 
         self.correct = 0
+        cueflag_list = random.shuffle([True]*(TRIAL_LENGTH/2) + [False]*(TRIAL_LENGTH-TRIAL_LENGTH/2))
 
-        for count in range(TRIAL_LENGTH):
+        for count, cue_flag in enumerate(cueflag_list):
             #display count
             self.msg_count.setText(count)
             self.msg_count.draw()
             self.flip()
             core.wait(1.)
 
-            #display fixation cross & que & stimuli
+            #display fixation cross & cue & stimuli
             self.fixation.draw()
-            self.que.draw()
+            if cue_flag:
+                self.cue.draw()
             new_number = [random.randint(1, 9), random.randint(1, 9)]
             new_stimulus = generate_matrix(new_number[0], new_number[1])
             self.matrixstim_left.set_matrix(pre_stimulus)
