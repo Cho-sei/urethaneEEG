@@ -131,4 +131,5 @@ if __name__ == "__main__":
 
     msg_finish.draw()
     win.flip()
-    event.waitKeys(keyList=['space'])    
+    event.waitKeys(keyList=['space'])
+	
