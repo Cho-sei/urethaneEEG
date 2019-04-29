@@ -10,7 +10,7 @@ from psychopy import visual, core, event
 from kraepelin_stimuli import get_fixation_stim, MatrixStim
 
 #parameter
-TRIAL_DURATION = 60
+TRIAL_DURATION = 5
 TRIAL_LENGTH = 2
 STIM_LENGTH = 50
 MATRIX_SHAPE = (3, 3)
@@ -81,23 +81,27 @@ class KraepelinWindow(visual.Window):
             if answer_number == cor_answer:
                 self.correct += 1
 
-            pre_number = new_number
-            pre_stimulus = new_stimulus
 
             #display after answered
             self.msg_answer.setText(answer_number)
             self.msg_answer.draw()
             win.flip()
 
+            #output list
+            output = [count, answer_number, rt, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
+
+            pre_number = new_number
+            pre_stimulus = new_stimulus
+           
             core.wait(0.2)
-            yield rt
+            yield output
 
 if __name__ == "__main__":
     #set global escape
     event.globalKeys.add(key='escape', func=sys.exit)
 
     #file defined
-    res_columns = ['trials', 'all', 'accuracy', 'RT']
+    res_columns = ['Blocks', 'Trials', 'answer', 'RT', 'cor_answer', 'stim_left', 'stim_right']
 
     with open('result.csv', 'w') as file:
         writer = csv.writer(file, lineterminator='\n')
@@ -122,11 +126,13 @@ if __name__ == "__main__":
 
     for trials in range(TRIAL_LENGTH):
         rt_list = [i for i in win.trial()]
+
+        print(type(rt_list))
       
         with open('result.csv', 'a') as file:
             writer = csv.writer(file, lineterminator='\n')
             writer.writerow(
-                [trials+1, len(rt_list), win.correct/len(rt_list) if len(rt_list)>0 else 0] + rt_list
+                [trials+1] + rt_list
             )
 
     msg_finish.draw()
