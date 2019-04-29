@@ -83,7 +83,10 @@ class KraepelinWindow(visual.Window):
             rt = key_end - key_start
             #check the answer
             answer_number = self.KEY_LIST.index(keys[0])
-            cor_answer = (pre_number[0] + new_number[0]) % 10
+            if cue_flag:
+                cor_answer = (pre_number[0] + new_number[0]) % 10
+            else:
+                cor_answer = (pre_number[1] + new_number[1]) % 10
             if answer_number == cor_answer:
                 self.correct += 1
 
