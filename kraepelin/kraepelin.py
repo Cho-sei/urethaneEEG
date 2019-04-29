@@ -96,9 +96,6 @@ class KraepelinWindow(visual.Window):
             if answer_number == cor_answer:
                 self.correct += 1
 
-            pre_status = new_status
-            pre_stimulus = new_stimulus
-
             #display after answered
             self.msg_answer.setText(answer_number)
             self.msg_answer.draw()
@@ -107,7 +104,7 @@ class KraepelinWindow(visual.Window):
             #output list
             output_list = [count+1, answer_number, rt, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
 
-            pre_number = new_number
+            pre_status = new_status
             pre_stimulus = new_stimulus
            
             core.wait(0.2)
