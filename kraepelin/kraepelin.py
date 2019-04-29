@@ -47,9 +47,8 @@ class KraepelinWindow(visual.Window):
         self.correct = 0
 
         assert TRIAL_LENGTH%4 == 0, "TRIAL_LENGTH should be multiple of 4"
-        cueflag_list = random.shuffle(
-            [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
-        )
+        cueflag_list = [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
+        random.shuffle(cueflag_list)
 
         for count, cue_flag in enumerate(cueflag_list):
             #display count
