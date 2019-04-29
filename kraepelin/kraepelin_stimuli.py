@@ -61,5 +61,25 @@ class MatrixStim:
         for textstim in self.textstim_list:
             textstim.draw()
 
+class KraepelinWindow(visual.Window):
+    def __init__(self, *args, **keyargs):
+        super().__init__(*args, **keyargs)
+
+        self.msg_answer = visual.TextStim(self, pos=(0, -100), height=80, bold=True)
+        self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
+
+        self.fixation = get_fixation_stim(self)
+
+        self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)
+        self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)
+
+    def draw_count(self, count):
+        self.msg_count.setText(count)
+        self.msg_count.draw()
+    
+    def draw_answer(self, answer):
+        self.msg_answer.setText(answer)
+        self.msg_answer.draw()
+
 if __name__ == "__main__":
     pass
