@@ -12,7 +12,7 @@ from kraepelin_stimuli import get_fixation_stim, MatrixStim
 #parameter
 TRIAL_DURATION = 60
 TRIAL_LENGTH = 2
-STIM_LENGTH = 50
+BLOCK_LENGTH = 50
 MATRIX_SHAPE = (3, 3)
 
 def generate_matrix(counts_of_number, number):
@@ -33,7 +33,7 @@ class KraepelinWindow(visual.Window):
         self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)
         self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)
 
-    def trial(self):
+    def block(self):
         pre_number = [random.randint(1, 9), random.randint(1, 9)]
         pre_stimulus = generate_matrix(*pre_number)
 
@@ -42,7 +42,7 @@ class KraepelinWindow(visual.Window):
 
         self.correct = 0
 
-        for count in range(STIM_LENGTH):
+        for count in range(TRIAL_LENGTH):
             #display count
             self.msg_count.setText(count)
             self.msg_count.draw()
@@ -120,8 +120,8 @@ if __name__ == "__main__":
 
     core.wait(2)
 
-    for trials in range(TRIAL_LENGTH):
-        rt_list = [i for i in win.trial()]
+    for blocks in range(BLOCK_LENGTH):
+        rt_list = [i for i in win.block()]
       
         with open('result.csv', 'a') as file:
             writer = csv.writer(file, lineterminator='\n')
