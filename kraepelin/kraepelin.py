@@ -7,7 +7,7 @@ import sys
 import numpy
 from psychopy import visual, core, event
 
-from kraepelin_stimuli import get_fixation_stim, get_que_stim, MatrixStim
+from kraepelin_stimuli import get_fixation_stim, get_cue_stim, MatrixStim
 
 #parameter
 TRIAL_DURATION = 60
@@ -29,7 +29,7 @@ class KraepelinWindow(visual.Window):
         self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
 
         self.fixation = get_fixation_stim(self)
-        self.que = get_que_stim(self)
+        self.cue = get_cue_stim(self)
 
         self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)
         self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)

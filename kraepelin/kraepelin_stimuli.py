@@ -8,7 +8,7 @@ def get_fixation_stim(win):
         win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0))
     )
 
-def get_que_stim(win):
+def get_cue_stim(win):
     return visual.Circle(
         win, radius=1, edges=64, pos=(0, -60)
     )
