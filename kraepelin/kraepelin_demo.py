@@ -3,7 +3,7 @@ import random
 import numpy as np
 import itertools
 import math
-from kraepelin_components import MatrixStim
+from kraepelin_stimuli import MatrixStim
 import sys
 
 from kraepelin_stimuli import get_fixation_stim, MatrixStim
