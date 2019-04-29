@@ -13,7 +13,7 @@ from kraepelin_stimuli import get_fixation_stim, get_Lcue_stim, get_Rcue_stim, M
 
 #parameter
 TRIAL_DURATION = 60
-TRIAL_LENGTH = 50
+TRIAL_LENGTH = 52
 BLOCK_LENGTH = 2
 MATRIX_SHAPE = (3, 3)
 
