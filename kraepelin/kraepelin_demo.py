@@ -6,7 +6,7 @@ import math
 from kraepelin_components import MatrixStim
 import sys
 
-from kraepelin_components import MatrixStim
+from kraepelin_stimuli import get_fixation_stim, MatrixStim
 
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)
@@ -40,7 +40,7 @@ allow = visual.ShapeStim(
 	win, vertices=((-15,0),(-15,30),(15,30),(15,0),(30,0),(0,-30),(-30,0)),
 	pos=(0,-200), lineColor='white',fillColor='white')
 demo_cor_ans = visual.TextStim(win, pos=(0, -300), height=80, bold=True)
-fixation = visual.ShapeStim(win,  vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0)))
+fixation = get_fixation_stim(win)
 count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 text_view = visual.TextStim(win, height=50)

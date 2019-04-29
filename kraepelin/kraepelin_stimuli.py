@@ -1,5 +1,12 @@
-from psychopy import visual
+import functools
+
 import numpy
+from psychopy import visual
+
+def get_fixation_stim(win):
+    return visual.ShapeStim(
+        win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0))
+    )
 
 class MatrixStim:
     """draw a matrix using visual.TextStim as it seems.
@@ -41,10 +48,18 @@ class MatrixStim:
 
     def set_matrix(self, matrix):
         """set each element in matrix to corresponding ones.
-        
+
         Args:
             matrix (iterable): 
         """
         for textstim, text in zip(self.textstim_list, numpy.nditer(matrix)):
             textstim.setText(text)
+
+    def draw(self):
+        """draw matrix
+        """
+        for textstim in self.textstim_list:
             textstim.draw()
+
+if __name__ == "__main__":
+    pass
