@@ -12,7 +12,7 @@ from psychopy import visual, core, event
 from kraepelin_stimuli import get_fixation_stim, get_cue_stim, MatrixStim
 
 #parameter
-TRIAL_DURATION = 5
+TRIAL_DURATION = 60
 TRIAL_LENGTH = 2
 BLOCK_LENGTH = 50
 MATRIX_SHAPE = (3, 3)
@@ -106,7 +106,7 @@ class KraepelinWindow(visual.Window):
             #output list
             output_list = [count+1, answer_number, rt, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
 
-            pre_number = new_number
+            pre_status = new_status
             pre_stimulus = new_stimulus
            
             core.wait(0.2)
@@ -139,7 +139,7 @@ if __name__ == "__main__":
     #output dataframe
     Final_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
     
-    for blocks in range(TRIAL_LENGTH):
+    for blocks in range(BLOCK_LENGTH):
         df_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
         for output_list in win.block():
             outputSeries = pandas.Series(output_list, index = res_columns)
