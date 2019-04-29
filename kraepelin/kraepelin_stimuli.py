@@ -10,7 +10,7 @@ def get_fixation_stim(win):
 
 def get_cue_stim(win):
     return visual.Circle(
-        win, radius=1, edges=64, pos=(0, -60)
+        win, radius=30, edges=64, pos=(0, 150), fillColor='white'
     )
 
 class MatrixStim:
