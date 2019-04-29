@@ -7,6 +7,8 @@ import sys
 import numpy
 from psychopy import visual, core, event
 
+import pandas
+
 from kraepelin_stimuli import get_fixation_stim, MatrixStim
 
 #parameter
@@ -88,24 +90,20 @@ class KraepelinWindow(visual.Window):
             win.flip()
 
             #output list
-            output = [count, answer_number, rt, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
+            output_list = [count+1, answer_number, rt, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
 
             pre_number = new_number
             pre_stimulus = new_stimulus
            
             core.wait(0.2)
-            yield output
+            yield output_list
 
 if __name__ == "__main__":
     #set global escape
     event.globalKeys.add(key='escape', func=sys.exit)
 
     #file defined
-    res_columns = ['Blocks', 'Trials', 'answer', 'RT', 'cor_answer', 'stim_left', 'stim_right']
-
-    with open('result.csv', 'w') as file:
-        writer = csv.writer(file, lineterminator='\n')
-        writer.writerow(res_columns)
+    res_columns = ['Trials', 'answer', 'RT', 'cor_answer', 'stim_left', 'stim_right']
 
     #window defined
     win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
@@ -124,16 +122,19 @@ if __name__ == "__main__":
 
     core.wait(2)
 
+    #output dataframe
+    Final_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
+    
     for trials in range(TRIAL_LENGTH):
-        rt_list = [i for i in win.trial()]
+        df_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
+        for output_list in win.trial():
+            outputSeries = pandas.Series(output_list, index = res_columns)
+            df_output = df_output.append(outputSeries, ignore_index=True)
+        df_output['Blocks'] = trials+1
+        
+        Final_output = pandas.concat([Final_output, df_output])
 
-        print(type(rt_list))
-      
-        with open('result.csv', 'a') as file:
-            writer = csv.writer(file, lineterminator='\n')
-            writer.writerow(
-                [trials+1] + rt_list
-            )
+        Final_output.to_csv('result.csv', index=False)
 
     msg_finish.draw()
     win.flip()
