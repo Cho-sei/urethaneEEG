@@ -4,6 +4,12 @@ import numpy as np
 import itertools
 import math
 from kraepelin_components import MatrixStim
+import sys
+
+from kraepelin_components import MatrixStim
+
+#set global escape
+event.globalKeys.add(key='escape', func=sys.exit)
 
 x = y = np.array([-50, 0, 50])
 
@@ -34,8 +40,7 @@ allow = visual.ShapeStim(
 	win, vertices=((-15,0),(-15,30),(15,30),(15,0),(30,0),(0,-30),(-30,0)),
 	pos=(0,-200), lineColor='white',fillColor='white')
 demo_cor_ans = visual.TextStim(win, pos=(0, -300), height=80, bold=True)
-fixation = visual.ShapeStim(
-    win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0)))
+fixation = visual.ShapeStim(win,  vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0)))
 count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 text_view = visual.TextStim(win, height=50)
@@ -54,9 +59,9 @@ def generate_matrix(counts_of_number, number):
 	position = np.random.permutation(np.arange(matrix_shape[0]*matrix_shape[1])).reshape(matrix_shape)
 	return np.where(position < counts_of_number, str(number), "")
 
-conf_inst = visual.TextStim(win, text='instruction → １', height=80, bold=True, pos=(0, 200))
-conf_demo = visual.TextStim(win, text='demonstration → ２', height=80, bold=True, pos=(0, 0))
-conf_pro = visual.TextStim(win, text='exit → ３', height=80, bold=True, pos=(0, -200))
+conf_inst = visual.TextStim(win, text='instruction → 1', height=80, bold=True, pos=(0, 200))
+conf_demo = visual.TextStim(win, text='demonstration → 2', height=80, bold=True, pos=(0, 0))
+conf_pro = visual.TextStim(win, text='exit → 3', height=80, bold=True, pos=(0, -200))
 
 
 #defined sounds
