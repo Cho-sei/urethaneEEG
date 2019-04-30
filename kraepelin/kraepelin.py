@@ -101,13 +101,12 @@ class KraepelinWindow(visual.Window):
             win.flip()
 
             #output list
-            output_list = [count+1, answer_number, rt, cue_flag, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
+            yield [count+1, answer_number, rt, cue_flag, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
 
             pre_status = new_status
             pre_stimulus = new_stimulus
            
             core.wait(0.2)
-            yield output_list
 
 if __name__ == "__main__":
     #set global escape
