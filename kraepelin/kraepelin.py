@@ -12,9 +12,9 @@ from psychopy import visual, core, event
 from kraepelin_stimuli import get_fixation_stim, get_cue_stim, MatrixStim
 
 #parameter
-TRIAL_DURATION = 5
+TRIAL_DURATION = 60
 TRIAL_LENGTH = 50
-BLOCK_LENGTH = 2
+BLOCK_LENGTH = 10
 MATRIX_SHAPE = (3, 3)
 
 def generate_matrix(counts_of_number, number):
@@ -25,7 +25,7 @@ StimStatus = collections.namedtuple('StimStatus', ['articles_of_number', 'number
 
 class KraepelinWindow(visual.Window):
 
-    KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    KEY_LIST = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
 
     def __init__(self, *args, **keyargs):
         super().__init__(*args, **keyargs)
