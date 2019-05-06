@@ -12,7 +12,7 @@ from psychopy import visual, core, event
 from kraepelin_stimuli import get_fixation_stim, get_Lcue_stim, get_Rcue_stim, MatrixStim
 
 #parameter
-TRIAL_DURATION = 5
+TRIAL_DURATION = 60
 TRIAL_LENGTH = 52
 BLOCK_LENGTH = 2
 MATRIX_SHAPE = (3, 3)

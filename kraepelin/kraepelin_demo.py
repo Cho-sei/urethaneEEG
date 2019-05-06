@@ -25,7 +25,7 @@ def arrangement(text, num, position, posList):
 
 #parameter
 trial_duration = 5
-trial_length = 2
+block_length = 2
 stim_length = 50
 
 
@@ -52,6 +52,8 @@ msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
 msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
 answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
 count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
+Lcue = visual.Circle(win, radius=30, edges=64, pos=(-200, 0), fillColor='white')
+Rcue = visual.Circle(win, radius=30, edges=64, pos=(200, 0), fillColor='white')
 matrix_shape = (3, 3)
 matrixstim_left = MatrixStim(win, matrix_shape, (50, 50), (-200, 0), height=50)
 matrixstim_right = MatrixStim(win, matrix_shape, (50, 50), (200, 0), height=50)
@@ -66,8 +68,12 @@ conf_pro = visual.TextStim(win, text='exit → 3', height=80, bold=True, pos=(0,
 
 #defined sounds
 introduction = sound.Sound('sounds/introduction.wav')
-inst_progress = sound.Sound('sounds/inst_progress.wav')
+inst_calc = sound.Sound('sounds/inst_calc.wav')	#
+inst_cue_num = sound.Sound('sounds/inst_cue_num.wav')
+inst_progress = sound.Sound('sounds/inst_progress.wav')#
 firstblock = sound.Sound('sounds/firstblock.wav')
+inst_cue_value = sound.Sound('sounds/inst_cue_value.wav')
+into_second =  sound.Sound('sounds/into_second.wav')
 secondblock = sound.Sound('sounds/secondblock.wav')
 into_demo = sound.Sound('sounds/into_demo.wav')
 start_demo = sound.Sound('sounds/start_demo.wav')
@@ -89,6 +95,17 @@ def instruction():
 
 	core.wait(8)
 
+	fixation.draw()
+	pos_left = random.sample(range(9), k=6)
+	pos_right = random.sample(range(9), k=3)
+	arrangement(4, 6, -200, pos_left)
+	arrangement(8, 3, 200, pos_right)
+	win.flip()
+
+	inst_calc.play()
+
+	core.wait(35)
+
 	#1st block-----------------------------------------------------------------------------
 
 	count_fixation.setText("0")
@@ -104,12 +121,12 @@ def instruction():
 	count_fixation.draw()
 	win.flip()
 
-	core.wait(15)
+	core.wait(16)
 
 	count_fixation.draw()
 	win.flip()
 
-	core.wait(4)
+	core.wait(5)
 
 	count_fixation.draw()
 	empha_rect.setPos((-200,0))
@@ -120,32 +137,44 @@ def instruction():
 
 	core.wait(8)
 
-	pos_left = random.sample(range(9), k=4)
+	Lcue.draw()
+	win.flip()
+
+	core.wait(0.5)
+
+	win.flip()
+
+	inst_cue_num.play()
+
+	core.wait(2)
+
+	Lcue.draw()
+	win.flip()
+
+	core.wait(23)
+
+	fixation.draw()
+	pos_left = random.sample(range(9), k=6)
 	pos_right = random.sample(range(9), k=3)
-	arrangement(6, 4, -200, pos_left)
+	arrangement(4, 6, -200, pos_left)
 	arrangement(8, 3, 200, pos_right)
 	win.flip()
 
-	core.wait(0.2)
-
-	fixation.draw()
-	win.flip()
-
-	core.wait(1)
-
 	firstblock.play()
 
-	core.wait(4)
+	core.wait(12)
 
-	arrangement(6, 4, -200, pos_left)
+	fixation.draw()
+	arrangement(4, 6, -200, pos_left)
 	arrangement(8, 3, 200, pos_right)
 	empha_rect.setPos((-200, 0))
 	empha_rect.draw()
 	win.flip()
 
-	core.wait(4)
+	core.wait(2)
 
-	arrangement(6, 4, -200, pos_left)
+	fixation.draw()
+	arrangement(4, 6, -200, pos_left)
 	arrangement(8, 3, 200, pos_right)
 	empha_rect.setPos((200, 0))
 	empha_rect.draw()
@@ -153,19 +182,46 @@ def instruction():
 
 	core.wait(4)
 
-	arrangement(6, 4, -200, pos_left)
+	fixation.draw()
+	arrangement(4, 6, -200, pos_left)
 	arrangement(8, 3, 200, pos_right)
 	win.flip()
 
-	core.wait(12)
+	core.wait(1)
 
-	arrangement(6, 4, -200, pos_left)
+	fixation.draw()
+	arrangement(4, 6, -200, pos_left)
 	arrangement(8, 3, 200, pos_right)
 	demo_ans.setText("7")
 	demo_ans.draw()
 	win.flip()
 
-	core.wait(8)
+	core.wait(5)
+
+	win.flip()
+	inst_cue_value.play()
+
+	core.wait(3)
+
+	Lcue.draw()
+	win.flip()
+
+	core.wait(5)
+
+	Rcue.draw()
+	win.flip()
+
+	core.wait(3)
+	
+	Lcue.draw()
+	Rcue.draw()
+	win.flip()
+
+	core.wait(4)
+
+	win.flip()
+
+	core.wait(17)
 
 
 	#2nd block-----------------------------------------------------------------------------
@@ -175,33 +231,35 @@ def instruction():
 	empha_rect.setAutoDraw(False)
 	win.flip()
 
-	core.wait(8)
+	into_second.play()
 
+	core.wait(12)
+
+	win.flip()
+
+	core.wait(1)
+
+	fixation.draw()
 	pos_left = random.sample(range(9), k=8)
 	pos_right = random.sample(range(9), k=5)
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	win.flip()
 
-	core.wait(0.2)
-
-	fixation.draw()
-	win.flip()
-
-	core.wait(1)
-
 	secondblock.play()
 
-	core.wait(2)
+	core.wait(14)
 
+	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	empha_rect.setPos((-200, 0))
 	empha_rect.draw()
 	win.flip()
 
-	core.wait(4)
+	core.wait(2)
 
+	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	empha_rect.setPos((200, 0))
@@ -210,20 +268,23 @@ def instruction():
 
 	core.wait(4)
 
+	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	win.flip()
 
-	core.wait(9)
+	core.wait(3)
 
+	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	demo_ans.setText("13")
 	demo_ans.draw()
 	win.flip()
 
-	core.wait(6)
+	core.wait(7)
 
+	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	demo_ans.draw()
@@ -232,6 +293,7 @@ def instruction():
 
 	core.wait(2)
 
+	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	demo_cor_ans.setText("3")
@@ -240,14 +302,14 @@ def instruction():
 	demo_cor_ans.draw()
 	win.flip()
 
-	core.wait(3)
-
-	inst_fixa.play()
+	core.wait(5)
 
 	fixation.draw()
 	win.flip()
 
-	core.wait(11)
+	inst_fixa.play()
+
+	core.wait(14)
 
 
 #start demo---------------------------------------------------------------------------
@@ -264,7 +326,7 @@ def demo():
 
 	core.wait(2)
 
-	for trials in range(trial_length):
+	for blocks in range(block_length):
 		pre_number = [random.randint(1, 9), random.randint(1, 9)]
 		pre_stimulus = generate_matrix(pre_number[0], pre_number[1])
 
@@ -279,15 +341,30 @@ def demo():
 			win.flip()
 			core.wait(1)
 
+			#display cues
+			cue_flag = random.randint(0,3)
+			if cue_flag == 0:
+				Lcue.draw()
+			elif cue_flag == 1:
+				Rcue.draw()
+			elif cue_flag == 2:
+				Lcue.draw()
+				Rcue.draw()
+			
+			win.flip()
+			core.wait(0.5)
+
+			win.flip()
+			core.wait(0.5)
+
 			#display numbers
+			fixation.draw()
 			new_number = [random.randint(1, 9), random.randint(1, 9)]
 			new_stimulus = generate_matrix(new_number[0], new_number[1])
 			matrixstim_left.set_matrix(pre_stimulus)
 			matrixstim_right.set_matrix(new_stimulus)
-			win.flip()
-			core.wait(0.2)
-
-			fixation.draw()
+			matrixstim_left.draw()
+			matrixstim_right.draw()
 			win.flip()
 
 			#enter keys and measure response time
@@ -295,12 +372,9 @@ def demo():
 			task_time = clock.getTime() - task_start
 			keys = event.waitKeys(
 				maxWait=trial_duration-task_time,
-				keyList=['num_0','num_1','num_2','num_3','num_4',
-					'num_5','num_6','num_7','num_8','num_9','escape'])
+				keyList=['0','1','2','3','4','5','6','7','8','9'])
 			if keys == None:
 				break
-			elif keys == 'escape' :
-				win.close()
 			
 			key_end = clock.getTime()
 
@@ -322,7 +396,6 @@ def demo():
 
 	finish_demo.play()
 	core.wait(4)
-
 
 #confirmation------------------------------------------------------------------------
 def display_confirmation():
@@ -356,3 +429,10 @@ while True:
 		break
 	
 	display_confirmation()
+
+#--------------------------------------------------------
+#
+#	まとめスライド
+#	Cueについて箇条書きor表にしてまとめ
+#
+#------------------------------------------------------
