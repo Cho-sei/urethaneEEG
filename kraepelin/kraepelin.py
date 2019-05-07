@@ -17,6 +17,13 @@ TRIAL_LENGTH = 52
 BLOCK_LENGTH = 10
 MATRIX_SHAPE = (3, 3)
 
+#----------------------------------------------------------------------------
+#   
+#   各セッション開始前にCueについてのサマリーを提示する
+#
+#
+#-------------------------------------------------------------------------------
+
 def generate_matrix(counts_of_number, number):
     position = numpy.random.permutation(numpy.arange(MATRIX_SHAPE[0]*MATRIX_SHAPE[1])).reshape(MATRIX_SHAPE)
     return numpy.where(position < counts_of_number, str(number), "")

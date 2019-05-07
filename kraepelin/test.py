@@ -2,11 +2,17 @@ from psychopy import visual, core, event
 
 win = visual.Window(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 
-allow = visual.ShapeStim(
-	win, vertices=((-15,0),(-15,30),(15,30),(15,0),(30,0),(0,-30),(-30,0)),
-	pos=(0,-100), lineColor='red', lineWidth=5)
+Lcue = visual.Circle(win, radius=30, edges=64, pos=(-200, 0), fillColor='white')
+summary_text1 = visual.TextStim(win, " :  数字", bold=True, height=100, pos=(50,100))
+summary_text2 = visual.TextStim(win, " :  個数", bold=True, height=100, pos=(50,-100))
 
-allow.draw()
+Lcue.setPos((-150, 85))
+Lcue.draw()
+summary_text1.draw()
+summary_text2.draw()
+
 win.flip()
 
-event.waitKeys(keyList=['space'])
+core.wait(5)
+
+

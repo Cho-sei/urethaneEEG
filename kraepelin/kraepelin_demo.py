@@ -24,7 +24,7 @@ def arrangement(text, num, position, posList):
 
 
 #parameter
-trial_duration = 5
+trial_duration = 60
 block_length = 2
 stim_length = 50
 
@@ -45,8 +45,12 @@ count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 text_view = visual.TextStim(win, height=50)
 
+summary_text1 = visual.TextStim(win, " :  数字", bold=True, height=100, pos=(50,100))
+summary_text2 = visual.TextStim(win, " :  個数", bold=True, height=100, pos=(50,-100))
+
 
 #define components for demo
+msg_demo = visual.TextStim(win, text='demonstration', height=80, bold=True)
 msg_wait = visual.TextStim(win, text='Wait...', height=80, bold=True)
 msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
 msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
@@ -80,6 +84,7 @@ start_demo = sound.Sound('sounds/start_demo.wav')
 finish_demo = sound.Sound('sounds/finish_demo.wav')
 confirmation = sound.Sound('sounds/confirmation.wav')
 inst_fixa = sound.Sound('sounds/inst_fixa.wav')
+summary_cue = sound.Sound('sounds/summary_cue.wav')
 
 
 clock = core.Clock()
@@ -114,7 +119,7 @@ def instruction():
 
 	inst_progress.play()
 
-	core.wait(4)
+	core.wait(5)
 
 	empha_rect.setPos((0,0))
 	empha_rect.draw()
@@ -144,6 +149,8 @@ def instruction():
 
 	win.flip()
 
+	core.wait(0.5)
+
 	inst_cue_num.play()
 
 	core.wait(2)
@@ -162,7 +169,7 @@ def instruction():
 
 	firstblock.play()
 
-	core.wait(12)
+	core.wait(13)
 
 	fixation.draw()
 	arrangement(4, 6, -200, pos_left)
@@ -185,28 +192,21 @@ def instruction():
 	fixation.draw()
 	arrangement(4, 6, -200, pos_left)
 	arrangement(8, 3, 200, pos_right)
-	win.flip()
-
-	core.wait(1)
-
-	fixation.draw()
-	arrangement(4, 6, -200, pos_left)
-	arrangement(8, 3, 200, pos_right)
 	demo_ans.setText("7")
 	demo_ans.draw()
 	win.flip()
 
-	core.wait(5)
+	core.wait(3)
 
 	win.flip()
 	inst_cue_value.play()
 
-	core.wait(3)
+	core.wait(4)
 
 	Lcue.draw()
 	win.flip()
 
-	core.wait(5)
+	core.wait(6)
 
 	Rcue.draw()
 	win.flip()
@@ -217,11 +217,11 @@ def instruction():
 	Rcue.draw()
 	win.flip()
 
-	core.wait(4)
+	core.wait(3)
 
 	win.flip()
 
-	core.wait(17)
+	core.wait(13)
 
 
 	#2nd block-----------------------------------------------------------------------------
@@ -248,7 +248,7 @@ def instruction():
 
 	secondblock.play()
 
-	core.wait(14)
+	core.wait(15)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
@@ -257,7 +257,7 @@ def instruction():
 	empha_rect.draw()
 	win.flip()
 
-	core.wait(2)
+	core.wait(3)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
@@ -302,7 +302,7 @@ def instruction():
 	demo_cor_ans.draw()
 	win.flip()
 
-	core.wait(5)
+	core.wait(3)
 
 	fixation.draw()
 	win.flip()
@@ -311,6 +311,17 @@ def instruction():
 
 	core.wait(14)
 
+#summary------------------------------------------------------------------------------
+	Lcue.setPos((-150, 85))
+	Lcue.draw()
+	summary_text1.draw()
+	summary_text2.draw()
+
+	win.flip()
+
+	summary_cue.play()
+
+	core.wait(17)
 
 #start demo---------------------------------------------------------------------------
 def demo():
@@ -333,6 +344,8 @@ def demo():
 		rt_list = []
 		correct = 0
 		task_start = clock.getTime()
+
+		KEYLIST = ['0','1','2','3','4','5','6','7','8','9']
 
 		for counter in range(stim_length):
 			# display fixation
@@ -372,7 +385,7 @@ def demo():
 			task_time = clock.getTime() - task_start
 			keys = event.waitKeys(
 				maxWait=trial_duration-task_time,
-				keyList=['0','1','2','3','4','5','6','7','8','9'])
+				keyList=KEYLIST)
 			if keys == None:
 				break
 			
@@ -382,7 +395,8 @@ def demo():
 			rt_list.append(rt)
 
 			#display after answered
-			answer.setText(keys[0][4])
+			answer_number = KEYLIST.index(keys[0])
+			answer.setText(answer_number)
 			answer.draw()
 			win.flip()
 
@@ -413,7 +427,12 @@ win.flip()
 
 into_demo.play()
 
-core.wait(7)
+core.wait(4)
+
+msg_demo.draw()
+win.flip()
+
+core.wait(12)
 
 demo()
 
