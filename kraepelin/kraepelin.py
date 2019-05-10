@@ -52,8 +52,6 @@ class KraepelinWindow(visual.Window):
         clock = core.Clock()
         task_start = clock.getTime()
 
-        self.correct = 0
-
         assert TRIAL_LENGTH%4 == 0, "TRIAL_LENGTH should be multiple of 4"
         cueflag_list = [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
         random.shuffle(cueflag_list)
@@ -101,8 +99,6 @@ class KraepelinWindow(visual.Window):
             def choose_status(status, flag):
                 return status.value if flag else status.number
             cor_answer = (choose_status(pre_status, cue_flag[0]) + choose_status(new_status, cue_flag[1])) % 10
-            if answer_number == cor_answer:
-                self.correct += 1
 
             #display after answered
             self.msg_answer.setText(answer_number)
