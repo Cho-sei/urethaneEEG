@@ -8,6 +8,16 @@ def get_fixation_stim(win):
         win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0))
     )
 
+def get_Lcue_stim(win):
+    return visual.Circle(
+        win, radius=30, edges=64, pos=(-200, 0), fillColor='white'
+    )
+
+def get_Rcue_stim(win):
+    return visual.Circle(
+        win, radius=30, edges=64, pos=(200, 0), fillColor='white'
+    )
+
 class MatrixStim:
     """draw a matrix using visual.TextStim as it seems.
 
