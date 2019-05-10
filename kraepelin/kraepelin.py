@@ -14,7 +14,7 @@ from kraepelin_stimuli import get_fixation_stim, get_arrowcue_dict, MatrixStim
 #parameter
 TRIAL_DURATION = 60
 TRIAL_LENGTH = 52
-BLOCK_LENGTH = 10
+BLOCK_LENGTH = 2
 MATRIX_SHAPE = (3, 3)
 
 #----------------------------------------------------------------------------
@@ -32,7 +32,7 @@ StimStatus = collections.namedtuple('StimStatus', ['articles_of_number', 'number
 
 class KraepelinWindow(visual.Window):
 
-    KEY_LIST = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
+    KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
     def __init__(self, *args, **keyargs):
         super().__init__(*args, **keyargs)
