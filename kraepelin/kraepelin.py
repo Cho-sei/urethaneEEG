@@ -28,7 +28,7 @@ def generate_matrix(counts_of_number, number):
     position = numpy.random.permutation(numpy.arange(MATRIX_SHAPE[0]*MATRIX_SHAPE[1])).reshape(MATRIX_SHAPE)
     return numpy.where(position < counts_of_number, str(number), "")
 
-StimStatus = collections.namedtuple('StimStatus', ['articles_of_number', 'number'])
+StimStatus = collections.namedtuple('StimStatus', ['number', 'value'])
 
 class KraepelinWindow(visual.Window):
 
@@ -98,7 +98,9 @@ class KraepelinWindow(visual.Window):
             #check the answer
             answer_number = self.KEY_LIST.index(keys[0])
 
-            cor_answer = (pre_status[1 if cue_flag[0] else 0] + new_status[1 if cue_flag[1] else 0]) % 10
+            def choose_status(status, flag):
+                return status.value if flag else status.number
+            cor_answer = (choose_status(pre_status, cue_flag[0]) + choose_status(new_status, cue_flag[1])) % 10
             if answer_number == cor_answer:
                 self.correct += 1
 
