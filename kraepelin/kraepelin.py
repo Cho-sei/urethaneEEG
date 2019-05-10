@@ -9,7 +9,7 @@ import numpy
 import pandas
 from psychopy import visual, core, event
 
-from kraepelin_stimuli import get_fixation_stim, get_Lcue_stim, get_Rcue_stim, MatrixStim
+from kraepelin_stimuli import get_fixation_stim, get_charcue_stim_dict, MatrixStim
 
 #parameter
 TRIAL_DURATION = 60
@@ -40,7 +40,7 @@ class KraepelinWindow(visual.Window):
         self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
 
         self.fixation = get_fixation_stim(self)
-        self.LRcue = [get_Lcue_stim(self), get_Rcue_stim(self)]
+        self.LRcue_dict = get_charcue_stim_dict(self)
 
         self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)
         self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)
@@ -66,9 +66,8 @@ class KraepelinWindow(visual.Window):
             core.wait(1.)
 
             #display cue
-            for cue, flag in zip(self.LRcue, cue_flag):
-                if flag:
-                    cue.draw()
+            cues = self.LRcue_dict[cue_flag]
+            cues.draw()
             self.flip()
             core.wait(0.5)
             self.flip()

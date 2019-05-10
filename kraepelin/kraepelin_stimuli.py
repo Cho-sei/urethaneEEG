@@ -1,4 +1,4 @@
-import functools
+import itertools
 
 import numpy
 from psychopy import visual
@@ -8,15 +8,21 @@ def get_fixation_stim(win):
         win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0))
     )
 
-def get_Lcue_stim(win):
-    return visual.Circle(
-        win, radius=30, edges=64, pos=(-200, 0), fillColor='white'
-    )
+def get_charcue_stim_dict(win):
+    """return dict of TextStim
+    V & N stands for Value & Number
 
-def get_Rcue_stim(win):
-    return visual.Circle(
-        win, radius=30, edges=64, pos=(200, 0), fillColor='white'
-    )
+    Args:
+        win (visual.Window): window that cues belong
+    """
+    def get_charcue(flag):
+        return "V" if flag else "N"
+    return {
+        flags:visual.TextStim(
+            win, text=get_charcue(flags[0])+get_charcue(flags[1]), height=80, bold=True
+        )
+        for flags in itertools.product([True, False], repeat=2)
+    }
 
 class MatrixStim:
     """draw a matrix using visual.TextStim as it seems.
