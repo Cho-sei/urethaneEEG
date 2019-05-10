@@ -9,7 +9,7 @@ import numpy
 import pandas
 from psychopy import visual, core, event
 
-from kraepelin_stimuli import get_fixation_stim, get_Lcue_stim, get_Rcue_stim, MatrixStim
+from kraepelin_stimuli import get_fixation_stim, get_arrowcue_dict, MatrixStim
 
 #parameter
 TRIAL_DURATION = 60
@@ -40,10 +40,17 @@ class KraepelinWindow(visual.Window):
         self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
 
         self.fixation = get_fixation_stim(self)
-        self.LRcue = [get_Lcue_stim(self), get_Rcue_stim(self)]
+        LRcue_black_dict = get_arrowcue_dict(self, fillColor='black')#directed number
+        LRcue_white_dict = get_arrowcue_dict(self, fillColor='white')#directed article
+        self.LRcue_dict = {'white':LRcue_white_dict, 'black':LRcue_black_dict}
 
         self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)
         self.matrixstim_right = MatrixStim(self, MATRIX_SHAPE, (50, 50), (200, 0), height=50)
+
+        assert BLOCK_LENGTH//len(self.LRcue_dict) == BLOCK_LENGTH/len(self.LRcue_dict), "BLOCK_LENGTH should be multiple of len(LRcue_dict)"
+        cuename_list = sum([[cuename]*(BLOCK_LENGTH//len(self.LRcue_dict)) for cuename in self.LRcue_dict.keys()],[])
+        random.shuffle(cuename_list)
+        self.LRcue_name_iter = iter(cuename_list)
 
     def block(self):
         pre_status = StimStatus(random.randint(1, 9), random.randint(1, 9))
@@ -53,6 +60,9 @@ class KraepelinWindow(visual.Window):
         task_start = clock.getTime()
 
         self.correct = 0
+
+        cue_name = next(self.LRcue_name_iter)
+        cue_dict = self.LRcue_dict[cue_name]
 
         assert TRIAL_LENGTH%4 == 0, "TRIAL_LENGTH should be multiple of 4"
         cueflag_list = [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
@@ -66,9 +76,7 @@ class KraepelinWindow(visual.Window):
             core.wait(1.)
 
             #display cue
-            for cue, flag in zip(self.LRcue, cue_flag):
-                if flag:
-                    cue.draw()
+            cue_dict[cue_flag].draw()
             self.flip()
             core.wait(0.5)
             self.flip()

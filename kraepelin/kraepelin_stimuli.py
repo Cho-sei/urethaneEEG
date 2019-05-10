@@ -1,4 +1,5 @@
 import functools
+import itertools
 
 import numpy
 from psychopy import visual
@@ -17,6 +18,19 @@ def get_Rcue_stim(win):
     return visual.Circle(
         win, radius=30, edges=64, pos=(200, 0), fillColor='white'
     )
+
+def get_arrowcue_dict(win, **arrow_keyargs):
+    """return arrow_cue shapestims
+    
+    """
+    conditions = itertools.product([True, False], repeat=2)
+    arrow_vertices = [
+        ((-30, 0),(-10,10),(-10,5),(10,5),(10,10),(30,0),(10,-10),(10,-5),(-10,-5),(-10,-10)),#both side
+        ((10,5),(10,-5),(-10,-5),(-10,-10),(-30,0),(-10,10),(-10,5)),#left
+        ((-10,5),(-10,-5),(10,-5),(10,-10),(30,0),(10,10),(10,5)),#right
+        ((-20,5),(-20,-5),(20,-5),(20,5)),#no side
+    ]
+    return {condition:visual.ShapeStim(win, vertices=vertices, **arrow_keyargs) for condition, vertices in zip(conditions, arrow_vertices)}
 
 class MatrixStim:
     """draw a matrix using visual.TextStim as it seems.
