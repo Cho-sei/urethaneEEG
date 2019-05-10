@@ -122,7 +122,7 @@ if __name__ == "__main__":
     res_columns = ['Trials', 'answer', 'RT', 'Cue', 'cor_answer', 'stim_left', 'stim_right']
 
     #window defined
-    win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
+    win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
     #visual text
     msg_wait = visual.TextStim(win, text='Wait...', height=80, bold=True)
