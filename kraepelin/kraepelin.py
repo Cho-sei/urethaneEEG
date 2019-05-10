@@ -40,8 +40,8 @@ class KraepelinWindow(visual.Window):
         self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
 
         self.fixation = get_fixation_stim(self)
-        LRcue_black_dict = get_arrowcue_dict(self, fillColor='black')#directed number
-        LRcue_white_dict = get_arrowcue_dict(self, fillColor='white')#directed article
+        LRcue_black_dict = get_arrowcue_dict(self, fillColor='black', lineColor='black')#directed number
+        LRcue_white_dict = get_arrowcue_dict(self, fillColor='white', lineColor='white')#directed article
         self.LRcue_dict = {'white':LRcue_white_dict, 'black':LRcue_black_dict}
 
         self.matrixstim_left = MatrixStim(self, MATRIX_SHAPE, (50, 50), (-200, 0), height=50)

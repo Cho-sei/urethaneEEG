@@ -21,14 +21,14 @@ def get_Rcue_stim(win):
 
 def get_arrowcue_dict(win, **arrow_keyargs):
     """return arrow_cue shapestims
-    
+
     """
     conditions = itertools.product([True, False], repeat=2)
     arrow_vertices = [
-        ((-30, 0),(-10,10),(-10,5),(10,5),(10,10),(30,0),(10,-10),(10,-5),(-10,-5),(-10,-10)),#both side
-        ((10,5),(10,-5),(-10,-5),(-10,-10),(-30,0),(-10,10),(-10,5)),#left
-        ((-10,5),(-10,-5),(10,-5),(10,-10),(30,0),(10,10),(10,5)),#right
-        ((-20,5),(-20,-5),(20,-5),(20,5)),#no side
+        ((-60, 0),(-20,20),(-20,10),(20,10),(20,20),(60,0),(20,-20),(20,-10),(-20,-10),(-20,-20)),#both side
+        ((20,10),(20,-10),(-20,-10),(-20,-20),(-60,0),(-20,20),(-20,10)),#left
+        ((-20,10),(-20,-10),(20,-10),(20,-20),(60,0),(20,20),(20,10)),#right
+        ((-40,10),(-40,-10),(40,-10),(40,10)),#no side
     ]
     return {condition:visual.ShapeStim(win, vertices=vertices, **arrow_keyargs) for condition, vertices in zip(conditions, arrow_vertices)}
 
