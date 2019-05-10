@@ -106,7 +106,7 @@ class KraepelinWindow(visual.Window):
             win.flip()
 
             #output list
-            output_list = [count+1, answer_number, rt, cue_flag, cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
+            output_list = [count+1, cue_flag, rt, answer_number, cor_answer, answer_number==cor_answer, pre_stimulus.reshape(-1,), new_stimulus.reshape(-1,)]
 
             pre_status = new_status
             pre_stimulus = new_stimulus
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     event.globalKeys.add(key='escape', func=sys.exit)
 
     #file defined
-    res_columns = ['Trials', 'answer', 'RT', 'Cue', 'cor_answer', 'stim_left', 'stim_right']
+    res_columns = ['Trials', 'Cue', 'RT', 'answer', 'cor_answer', 'is_correct', 'stim_left', 'stim_right']
 
     #window defined
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
@@ -139,10 +139,10 @@ if __name__ == "__main__":
     core.wait(2)
 
     #output dataframe
-    Final_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
+    Final_output = pandas.DataFrame(columns=['Blocks']+res_columns)
     
     for blocks in range(BLOCK_LENGTH):
-        df_output = pandas.DataFrame(columns = ['Blocks'] + res_columns)
+        df_output = pandas.DataFrame(columns=['Blocks']+res_columns)
         for output_list in win.block():
             outputSeries = pandas.Series(output_list, index = res_columns)
             df_output = df_output.append(outputSeries, ignore_index=True)
