@@ -3,10 +3,9 @@ import random
 import numpy as np
 import itertools
 import math
-from kraepelin_stimuli import MatrixStim
 import sys
 
-from kraepelin_stimuli import get_fixation_stim, MatrixStim
+from kraepelin_stimuli import get_fixation_stim, KraepelinMatrixStim
 
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)
@@ -58,12 +57,8 @@ answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
 count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 Lcue = visual.Circle(win, radius=30, edges=64, pos=(-200, 0), fillColor='white')
 Rcue = visual.Circle(win, radius=30, edges=64, pos=(200, 0), fillColor='white')
-matrix_shape = (3, 3)
-matrixstim_left = MatrixStim(win, matrix_shape, (50, 50), (-200, 0), height=50)
-matrixstim_right = MatrixStim(win, matrix_shape, (50, 50), (200, 0), height=50)
-def generate_matrix(counts_of_number, number):
-	position = np.random.permutation(np.arange(matrix_shape[0]*matrix_shape[1])).reshape(matrix_shape)
-	return np.where(position < counts_of_number, str(number), "")
+matrixstim_left = KraepelinMatrixStim(win, (50, 50), (-200, 0), height=50)
+matrixstim_right = KraepelinMatrixStim(win, (50, 50), (200, 0), height=50)
 
 conf_inst = visual.TextStim(win, text='instruction → 1', height=80, bold=True, pos=(0, 200))
 conf_demo = visual.TextStim(win, text='demonstration → 2', height=80, bold=True, pos=(0, 0))
@@ -338,8 +333,7 @@ def demo():
 	core.wait(2)
 
 	for blocks in range(block_length):
-		pre_number = [random.randint(1, 9), random.randint(1, 9)]
-		pre_stimulus = generate_matrix(pre_number[0], pre_number[1])
+		matrixstim_left.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
 
 		rt_list = []
 		correct = 0
@@ -372,10 +366,7 @@ def demo():
 
 			#display numbers
 			fixation.draw()
-			new_number = [random.randint(1, 9), random.randint(1, 9)]
-			new_stimulus = generate_matrix(new_number[0], new_number[1])
-			matrixstim_left.set_matrix(pre_stimulus)
-			matrixstim_right.set_matrix(new_stimulus)
+			matrixstim_right.set_random_matrix(random.randint(1, 9),random.randint(1, 9))
 			matrixstim_left.draw()
 			matrixstim_right.draw()
 			win.flip()
@@ -400,8 +391,7 @@ def demo():
 			answer.draw()
 			win.flip()
 
-			pre_number = new_number
-			pre_stimulus = new_stimulus
+			matrixstim_left.copy_status(matrixstim_right)
 
 			core.wait(0.2)
 
