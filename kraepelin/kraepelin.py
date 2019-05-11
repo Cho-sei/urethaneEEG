@@ -66,8 +66,7 @@ class KraepelinWindow(visual.Window):
             core.wait(1.)
 
             #display cue
-            cues = self.LRcue_dict[cue_flag]
-            cues.draw()
+            self.LRcue_dict[cue_flag].draw()
             self.flip()
             core.wait(0.5)
             self.flip()
