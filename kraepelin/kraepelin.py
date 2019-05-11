@@ -9,7 +9,7 @@ import pandas
 from psychopy import visual, core, event
 
 from kraepelin_stimuli import get_fixation_stim, get_charcue_stim_dict, KraepelinMatrixStim
-
+from namedlist import namedlist
 #parameter
 TRIAL_DURATION = 60
 TRIAL_LENGTH = 52
@@ -22,7 +22,10 @@ BLOCK_LENGTH = 10
 #
 #-------------------------------------------------------------------------------
 
-
+TrialStatus = namedlist(
+    'TrialStatus',
+    ['blocks', 'trials', 'cue_flag', 'response_time', 'response', 'correct_response', 'is_correct', 'stim_left', 'stim_right', 'trial_endtime']
+)
 
 class KraepelinWindow(visual.Window):
 
@@ -39,7 +42,7 @@ class KraepelinWindow(visual.Window):
         self.matrixstim_left = KraepelinMatrixStim(self, (50, 50), (-200, 0), height=50)
         self.matrixstim_right = KraepelinMatrixStim(self, (50, 50), (200, 0), height=50)
 
-    def block(self):
+    def block(self, blocks):
         clock = core.Clock()
         task_start = clock.getTime()
 
@@ -49,9 +52,15 @@ class KraepelinWindow(visual.Window):
         cueflag_list = [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
         random.shuffle(cueflag_list)
 
-        for count, cue_flag in enumerate(cueflag_list):
+        for trials, cue_flag in enumerate(cueflag_list):
+            #make trial log
+            trial_status = TrialStatus()
+            trial_status.blocks = blocks + 1#add 1 for log
+            trial_status.trials = trials + 1#add 1 for log
+            trial_status.cue_flag = cue_flag
+
             #display count
-            self.msg_count.setText(count)
+            self.msg_count.setText(trials)
             self.msg_count.draw()
             self.flip()
             core.wait(1.)
@@ -80,26 +89,25 @@ class KraepelinWindow(visual.Window):
             )
             if keys == None:
                 break
-            
-            key_end = clock.getTime()
-            rt = key_end - key_start
+            trial_status.response_time = clock.getTime() - key_start
             #check the answer
-            answer_number = self.KEY_LIST.index(keys[0])
-
+            trial_status.response = self.KEY_LIST.index(keys[0])
             def choose_status(status, flag):
                 return status.value if flag else status.number
-            cor_answer = (
-                choose_status(self.matrixstim_left.matrix_status, cue_flag[0]) + choose_status(self.matrixstim_right.matrix_status, cue_flag[1])
-                ) % 10
+            trial_status.correct_response = (choose_status(self.matrixstim_left.matrix_status, trial_status.cue_flag[0]) + choose_status(self.matrixstim_right.matrix_status, trial_status.cue_flag[1])) % 10
+            trial_status.is_correct = trial_status.response == trial_status.correct_response
 
             #display after answered
-            self.msg_answer.setText(answer_number)
+            self.msg_answer.setText(trial_status.response)
             self.msg_answer.draw()
             win.flip()
             core.wait(0.2)
 
             #output log
-            yield [count+1, cue_flag, rt, answer_number, cor_answer, answer_number==cor_answer, self.matrixstim_left.matrix.reshape(-1,), self.matrixstim_right.matrix.reshape(-1,)]
+            trial_status.stim_left = self.matrixstim_left.matrix.reshape(-1,)
+            trial_status.stim_right = self.matrixstim_right.matrix.reshape(-1,)
+            trial_status.trial_endtime = clock.getTime() - task_start
+            yield trial_status
             self.matrixstim_left.copy_status(self.matrixstim_right)
 
             if clock.getTime()-task_start < 2.:
@@ -108,9 +116,6 @@ class KraepelinWindow(visual.Window):
 if __name__ == "__main__":
     #set global escape
     event.globalKeys.add(key='escape', func=sys.exit)
-
-    #file defined
-    res_columns = ['Trials', 'Cue', 'RT', 'answer', 'cor_answer', 'is_correct', 'stim_left', 'stim_right']
 
     #window defined
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
@@ -129,20 +134,16 @@ if __name__ == "__main__":
 
     core.wait(2)
 
-    #output dataframe
-    Final_output = pandas.DataFrame(columns=['Blocks']+res_columns)
+    with open('result.csv', 'w') as log:
+        writer = csv.writer(log)
+        writer.writerow(TrialStatus._fields)
     
     for blocks in range(BLOCK_LENGTH):
-        df_output = pandas.DataFrame(columns=['Blocks']+res_columns)
-        for output_list in win.block():
-            outputSeries = pandas.Series(output_list, index = res_columns)
-            df_output = df_output.append(outputSeries, ignore_index=True)
-        df_output['Blocks'] = blocks+1
+        for output_list in win.block(blocks):
+            with open('result.csv', 'a') as log:
+                writer = csv.writer(log)
+                writer.writerow(output_list)
         
-        Final_output = pandas.concat([Final_output, df_output])
-
-        Final_output.to_csv('result.csv', index=False)
-
     msg_finish.draw()
     win.flip()
     event.waitKeys(keyList=['space'])
