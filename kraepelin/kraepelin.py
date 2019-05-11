@@ -11,7 +11,7 @@ from psychopy import visual, core, event
 from kraepelin_stimuli import get_fixation_stim, get_charcue_stim_dict, KraepelinMatrixStim
 from namedlist import namedlist
 #parameter
-TRIAL_DURATION = 60
+BLOCK_DURATION = 60#[s]
 TRIAL_LENGTH = 52
 BLOCK_LENGTH = 10
 
@@ -44,7 +44,7 @@ class KraepelinWindow(visual.Window):
 
     def block(self, blocks):
         clock = core.Clock()
-        task_start = clock.getTime()
+        block_start = clock.getTime()
 
         self.matrixstim_left.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
 
@@ -82,9 +82,9 @@ class KraepelinWindow(visual.Window):
 
             #enter keys and measure response time
             key_start = clock.getTime()
-            task_time = key_start - task_start
+            block_time = key_start - block_start
             keys = event.waitKeys(
-                maxWait=TRIAL_DURATION-task_time,
+                maxWait=BLOCK_DURATION-block_time,
                 keyList=self.KEY_LIST
             )
             if keys == None:
@@ -106,11 +106,11 @@ class KraepelinWindow(visual.Window):
             #output log
             trial_status.stim_left = self.matrixstim_left.matrix.reshape(-1,)
             trial_status.stim_right = self.matrixstim_right.matrix.reshape(-1,)
-            trial_status.trial_endtime = clock.getTime() - task_start
+            trial_status.trial_endtime = clock.getTime() - block_start
             yield trial_status
             self.matrixstim_left.copy_status(self.matrixstim_right)
 
-            if clock.getTime()-task_start < 2.:
+            if clock.getTime()-block_start < 2.:
                 break
 
 if __name__ == "__main__":
