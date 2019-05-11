@@ -109,6 +109,7 @@ class KraepelinWindow(visual.Window):
             yield trial_status
             self.matrixstim_left.copy_status(self.matrixstim_right)
 
+            #end block if no time to response next trial
             if clock.getTime()-block_start > BLOCK_DURATION - 2.:
                 break
 
@@ -137,8 +138,8 @@ if __name__ == "__main__":
         writer = csv.writer(log)
         writer.writerow(TrialStatus._fields)
     
-    for blocks in range(BLOCK_LENGTH):
-        for output_list in win.block(blocks):
+    for count_blocks in range(BLOCK_LENGTH):
+        for output_list in win.block(count_blocks):
             with open('result.csv', 'a') as log:
                 writer = csv.writer(log)
                 writer.writerow(output_list)
