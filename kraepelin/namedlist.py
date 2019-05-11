@@ -31,18 +31,18 @@ def namedlist(list_name, member_list, *, default=None):
             elif len(default) == len(member_list):
                 super().__init__(default)
             else:
-                raise RuntimeError("The number of initial elements should be equal to the number of member.")
+                raise RuntimeError("The number of initial elements should be equal to the number of members.")
 
         def __get__(self, key):
             return self[index_dict[key]]
-        
-        @classmethod
-        def getp(cls, x, p):
-            return x[cls.__index_dict[p]]
-        
-        @classmethod
-        def indexp(cls, p):
-            return cls.__index_dict[p]
+
+#        @classmethod
+#        def getp(cls, x, p):
+#            return x[cls.__index_dict[p]]
+#
+#        @classmethod
+#        def indexp(cls, p):
+#            return cls.__index_dict[p]
 
         def __set__(self, key, value):
             self[index_dict[key]] = value
@@ -53,6 +53,7 @@ def namedlist(list_name, member_list, *, default=None):
         ))
 
 #    NamedList.__name__ == list_name
+    NamedList._fields = [member_list]
 
     return NamedList
 
