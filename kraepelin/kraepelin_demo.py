@@ -158,7 +158,7 @@ def instruction():
 	Lcue.draw()
 	win.flip()
 
-	core.wait(23)
+	core.wait(41)
 
 	fixation.draw()
 	pos_left = random.sample(range(9), k=6)
@@ -169,7 +169,7 @@ def instruction():
 
 	firstblock.play()
 
-	core.wait(13)
+	core.wait(13) 
 
 	fixation.draw()
 	arrangement(4, 6, -200, pos_left)
@@ -206,12 +206,12 @@ def instruction():
 	Lcue.draw()
 	win.flip()
 
-	core.wait(6)
+	core.wait(7)
 
 	Rcue.draw()
 	win.flip()
 
-	core.wait(3)
+	core.wait(4)
 	
 	Lcue.draw()
 	Rcue.draw()
@@ -248,7 +248,7 @@ def instruction():
 
 	secondblock.play()
 
-	core.wait(15)
+	core.wait(17)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
