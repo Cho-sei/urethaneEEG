@@ -1,4 +1,4 @@
-def namedlist(list_name, member_list)#, *, default=None):
+def namedlist(list_name, member_list):#, *, default=None):
 #    if default is not None and len(member_list) == len(default):
 #        member_dict = {member:value for member, value in zip(member_list, default)}
 #    elif default is None:
@@ -53,7 +53,7 @@ def namedlist(list_name, member_list)#, *, default=None):
         ))
 
 #    NamedList.__name__ == list_name
-    NamedList._fields = [member_list]
+    NamedList._fields = member_list
 
     return NamedList
 
@@ -68,6 +68,7 @@ if __name__ == "__main__":
     TestList2 = namedlist("TestList2", ['d','e','f'])
     print(TestList2)
     print(TestList2.__name__)
+    print(TestList2._fields)
     tl2 = TestList2([4, 5, 6])
     print(tl2)
     print(tl2.d)
