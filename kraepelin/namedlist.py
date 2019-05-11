@@ -1,10 +1,10 @@
-def namedlist(list_name, member_list, *, default=None):
-    if default is not None and len(member_list) == len(default):
-        member_dict = {member:value for member, value in zip(member_list, default)}
-    elif default is None:
-        member_dict = {member:None for member in member_list}
-    else:
-        raise RuntimeError("failed to create namedlist "+list_name+".")
+def namedlist(list_name, member_list)#, *, default=None):
+#    if default is not None and len(member_list) == len(default):
+#        member_dict = {member:value for member, value in zip(member_list, default)}
+#    elif default is None:
+#        member_dict = {member:None for member in member_list}
+#    else:
+#        raise RuntimeError("failed to create namedlist "+list_name+".")
 
     index_dict = dict(zip(member_list, range(len(member_list))))
 
