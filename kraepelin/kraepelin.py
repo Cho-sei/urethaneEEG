@@ -96,14 +96,14 @@ class KraepelinWindow(visual.Window):
             self.msg_answer.setText(answer_number)
             self.msg_answer.draw()
             win.flip()
-
-            #output list
-            output_list = [count+1, cue_flag, rt, answer_number, cor_answer, answer_number==cor_answer, self.matrixstim_left.matrix.reshape(-1,), self.matrixstim_right.matrix.reshape(-1,)]
-
-            self.matrixstim_left.copy_status(self.matrixstim_right)
-           
             core.wait(0.2)
-            yield output_list
+
+            #output log
+            yield [count+1, cue_flag, rt, answer_number, cor_answer, answer_number==cor_answer, self.matrixstim_left.matrix.reshape(-1,), self.matrixstim_right.matrix.reshape(-1,)]
+            self.matrixstim_left.copy_status(self.matrixstim_right)
+
+            if clock.getTime()-task_start < 2.:
+                break
 
 if __name__ == "__main__":
     #set global escape
