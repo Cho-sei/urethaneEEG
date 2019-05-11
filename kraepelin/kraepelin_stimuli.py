@@ -9,8 +9,16 @@ from common_stimuli import MatrixStim
 MATRIX_SHAPE = (3, 3)
 
 def get_fixation_stim(win):
+    thick = 2
+    length = 30
     return visual.ShapeStim(
-        win, vertices=((-30, 0), (30, 0), (0, 0), (0, -30), (0, 30), (0, 0))
+        win, vertices=(
+            (-length, thick), (-thick, thick), (-thick, length),
+            (thick, length), (thick, thick), (length, thick),
+            (length, -thick), (thick, -thick), (thick, -length),
+            (-thick, -length), (-thick, -thick), (-length, -thick)
+        ),
+        fillColor='white'
     )
 
 def get_charcue_stim_dict(win):
