@@ -109,7 +109,7 @@ class KraepelinWindow(visual.Window):
             yield trial_status
             self.matrixstim_left.copy_status(self.matrixstim_right)
 
-            if clock.getTime()-block_start < 2.:
+            if clock.getTime()-block_start > BLOCK_DURATION - 2.:
                 break
 
 if __name__ == "__main__":
