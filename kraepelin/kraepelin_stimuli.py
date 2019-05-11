@@ -1,7 +1,12 @@
+import collections
 import itertools
 
 import numpy
 from psychopy import visual
+
+from common_stimuli import MatrixStim
+
+MATRIX_SHAPE = (3, 3)
 
 def get_fixation_stim(win):
     return visual.ShapeStim(
@@ -24,58 +29,22 @@ def get_charcue_stim_dict(win):
         for flags in itertools.product([True, False], repeat=2)
     }
 
-class MatrixStim:
-    """draw a matrix using visual.TextStim as it seems.
+StimStatus = collections.namedtuple('StimStatus', ['number', 'value'])
 
-    Attributes:
-        textstim_list (list): contains position & other options of each element as visual.TextStim.
-    """
-    def __init__(self, win, matrix_shape, interval, center_pos, **textstim_keyargs):
-        """
-        Args:
-            win (visual.Window):
-            matrix_shape (tuple): should be tuple of ints
-            interval (tuple): (interval_x, interval_y)
-            center_pos (tuple): (center_x, center_y)
-            textstim_keyargs (dict):
-        """
+class KraepelinMatrixStim(MatrixStim):
+    def __init__(self, win, interval, center_pos, **textstim_keyargs):
+        super().__init__(win, MATRIX_SHAPE, interval, center_pos, **textstim_keyargs)
 
-        def axis_positions(count, interval, center):
-            base = numpy.arange((count+1) // 2)
-            if count % 2 == 0: #even
-                points = interval/2 + interval*base
-                return numpy.concatenate(
-                    [-points[::-1]+center, points+center]
-                    )
-            else: #odd
-                points = interval*base
-                return numpy.concatenate(
-                    [-points[::-1]+center, points[1:]+center]
-                    )
+    def set_random_matrix(self, number, value):
+        self.matrix_status = StimStatus(number, value)
+        position = numpy.random.permutation(numpy.arange(MATRIX_SHAPE[0]*MATRIX_SHAPE[1])).reshape(MATRIX_SHAPE)
+        self.set_matrix(numpy.where(position < number, str(value), ""))
 
-        x_axis = axis_positions(matrix_shape[1], interval[0], center_pos[0])
-        y_axis = axis_positions(matrix_shape[0], interval[1], center_pos[1])
-        grid_positions = numpy.meshgrid(x_axis, y_axis)
+    def copy_status(self, other):
+        assert isinstance(other, self.__class__), "copy status only from the same class"
+        self.matrix_status = other.matrix_status
+        self.set_matrix(other.matrix)
 
-        self.textstim_list = [
-            visual.TextStim(win, pos = (x, y), **textstim_keyargs)
-            for x, y in zip(numpy.nditer(grid_positions[0]), numpy.nditer(grid_positions[1]))
-        ]
-
-    def set_matrix(self, matrix):
-        """set each element in matrix to corresponding ones.
-
-        Args:
-            matrix (iterable): 
-        """
-        for textstim, text in zip(self.textstim_list, numpy.nditer(matrix)):
-            textstim.setText(str(text))
-
-    def draw(self):
-        """draw matrix
-        """
-        for textstim in self.textstim_list:
-            textstim.draw()
 
 if __name__ == "__main__":
     pass
