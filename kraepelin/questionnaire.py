@@ -1,12 +1,12 @@
 from psychopy import core, visual
 
-def control_ratingscale(ratingscale, question_textstim, last_showtime=0.5):
+def control_ratingscale(ratingscale, question_explainstim, last_showtime=0.5):
     while ratingscale.noResponse:
-        question_textstim.draw()
+        question_explainstim.draw()
         ratingscale.draw()
         win.flip()
     #show the question is over
-    question_textstim.draw()
+    question_explainstim.draw()
     ratingscale.draw()
     win.flip()
     core.wait(last_showtime)
