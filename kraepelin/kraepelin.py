@@ -91,9 +91,9 @@ class KraepelinWindow(visual.Window):
             trial_status.response_time = clock.getTime() - key_start
             #check the answer
             trial_status.response = self.KEY_LIST.index(keys[0])
-            def choose_status(status, flag):
-                return status.value if flag else status.number
-            trial_status.correct_response = (choose_status(self.matrixstim_left.matrix_status, trial_status.cue_flag[0]) + choose_status(self.matrixstim_right.matrix_status, trial_status.cue_flag[1])) % 10
+            def choose_status(status_list, flags):
+                return sum([status.value if flag else status.number for status, flag in zip(status_list, flags)]) % 10
+            trial_status.correct_response = choose_status([self.matrixstim_left.matrix_status, self.matrixstim_right.matrix_status], trial_status.cue_flag)
             trial_status.is_correct = trial_status.response == trial_status.correct_response
 
             #display after answered
