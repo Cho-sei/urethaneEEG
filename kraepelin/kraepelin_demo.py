@@ -5,7 +5,7 @@ import itertools
 import math
 import sys
 
-from kraepelin_stimuli import get_fixation_stim, KraepelinMatrixStim
+from kraepelin_stimuli import get_fixation_stim, get_charcue_stim_dict, KraepelinMatrixStim
 
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)
@@ -25,7 +25,7 @@ def arrangement(text, num, position, posList):
 #parameter
 trial_duration = 60
 block_length = 2
-stim_length = 50
+TRIAL_LENGTH = 52
 
 
 #window defined
@@ -44,8 +44,8 @@ count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 text_view = visual.TextStim(win, height=50)
 
-summary_text1 = visual.TextStim(win, " :  数字", bold=True, height=100, pos=(50,100))
-summary_text2 = visual.TextStim(win, " :  個数", bold=True, height=100, pos=(50,-100))
+summary_text1 = visual.TextStim(win, " V :  数字", bold=True, height=80, pos=(50,100))
+summary_text2 = visual.TextStim(win, " N :  個数", bold=True, height=80, pos=(50,-100))
 
 
 #define components for demo
@@ -55,8 +55,7 @@ msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
 msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
 answer = visual.TextStim(win, pos=(0, -100), height=80, bold=True)
 count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
-Lcue = visual.Circle(win, radius=30, edges=64, pos=(-200, 0), fillColor='white')
-Rcue = visual.Circle(win, radius=30, edges=64, pos=(200, 0), fillColor='white')
+LRcue_dict = get_charcue_stim_dict(win)
 matrixstim_left = KraepelinMatrixStim(win, (50, 50), (-200, 0), height=50)
 matrixstim_right = KraepelinMatrixStim(win, (50, 50), (200, 0), height=50)
 
@@ -126,18 +125,9 @@ def instruction():
 	count_fixation.draw()
 	win.flip()
 
-	core.wait(5)
+	core.wait(13)
 
-	count_fixation.draw()
-	empha_rect.setPos((-200,0))
-	empha_rect.draw()
-	empha_rect.setPos((200,0))
-	empha_rect.draw()
-	win.flip()
-
-	core.wait(8)
-
-	Lcue.draw()
+	LRcue_dict[(True,False)].draw()
 	win.flip()
 
 	core.wait(0.5)
@@ -150,10 +140,10 @@ def instruction():
 
 	core.wait(2)
 
-	Lcue.draw()
+	LRcue_dict[(True,False)].draw()
 	win.flip()
 
-	core.wait(23)
+	core.wait(41)
 
 	fixation.draw()
 	pos_left = random.sample(range(9), k=6)
@@ -164,7 +154,7 @@ def instruction():
 
 	firstblock.play()
 
-	core.wait(13)
+	core.wait(13) 
 
 	fixation.draw()
 	arrangement(4, 6, -200, pos_left)
@@ -198,22 +188,22 @@ def instruction():
 
 	core.wait(4)
 
-	Lcue.draw()
+	LRcue_dict[(True,False)].draw()
 	win.flip()
 
-	core.wait(6)
+	core.wait(7)
 
-	Rcue.draw()
+	LRcue_dict[(False,True)].draw()
 	win.flip()
 
-	core.wait(3)
+	core.wait(5)
 	
-	Lcue.draw()
-	Rcue.draw()
+	LRcue_dict[(True,True)].draw()
 	win.flip()
 
 	core.wait(3)
 
+	LRcue_dict[(False,False)].draw()
 	win.flip()
 
 	core.wait(13)
@@ -230,9 +220,14 @@ def instruction():
 
 	core.wait(12)
 
+	LRcue_dict[(False,False)].draw()
 	win.flip()
 
-	core.wait(1)
+	core.wait(0.5)
+
+	win.flip()
+
+	core.wait(0.5)
 
 	fixation.draw()
 	pos_left = random.sample(range(9), k=8)
@@ -243,7 +238,7 @@ def instruction():
 
 	secondblock.play()
 
-	core.wait(15)
+	core.wait(16)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
@@ -307,8 +302,6 @@ def instruction():
 	core.wait(14)
 
 #summary------------------------------------------------------------------------------
-	Lcue.setPos((-150, 85))
-	Lcue.draw()
 	summary_text1.draw()
 	summary_text2.draw()
 
@@ -341,23 +334,18 @@ def demo():
 
 		KEYLIST = ['0','1','2','3','4','5','6','7','8','9']
 
-		for counter in range(stim_length):
+		cueflag_list = [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
+		random.shuffle(cueflag_list)
+		
+		for trials, cue_flag in enumerate(cueflag_list):
 			# display fixation
-			count_fixation.setText(counter)
+			count_fixation.setText(trials)
 			count_fixation.draw()
 			win.flip()
 			core.wait(1)
 
 			#display cues
-			cue_flag = random.randint(0,3)
-			if cue_flag == 0:
-				Lcue.draw()
-			elif cue_flag == 1:
-				Rcue.draw()
-			elif cue_flag == 2:
-				Lcue.draw()
-				Rcue.draw()
-			
+			LRcue_dict[cue_flag].draw()			
 			win.flip()
 			core.wait(0.5)
 
@@ -422,7 +410,7 @@ core.wait(4)
 msg_demo.draw()
 win.flip()
 
-core.wait(12)
+core.wait(15)
 
 demo()
 
