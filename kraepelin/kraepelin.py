@@ -12,7 +12,7 @@ from kraepelin_stimuli import get_fixation_stim, get_charcue_stim_dict, Kraepeli
 from namedlist import namedlist
 #parameter
 BLOCK_DURATION = 60#[s]
-TRIAL_LENGTH = 52
+TRIAL_MAXLENGTH = 100
 BLOCK_LENGTH = 10
 
 #----------------------------------------------------------------------------
@@ -42,22 +42,21 @@ class KraepelinWindow(visual.Window):
         self.matrixstim_left = KraepelinMatrixStim(self, (50, 50), (-200, 0), height=50)
         self.matrixstim_right = KraepelinMatrixStim(self, (50, 50), (200, 0), height=50)
 
+        cue_list = list(itertools.product((True, False), repeat=2))
+        self.cueflag_cyclic_iter = itertools.cycle(sum([random.sample(cue_list, k=len(cue_list)) for _ in range(100)],[]))
+
     def block(self, blocks):
         clock = core.Clock()
         block_start = clock.getTime()
 
         self.matrixstim_left.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
 
-        assert TRIAL_LENGTH%4 == 0, "TRIAL_LENGTH should be multiple of 4"
-        cueflag_list = [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
-        random.shuffle(cueflag_list)
-
-        for trials, cue_flag in enumerate(cueflag_list):
+        for trials in range(TRIAL_MAXLENGTH):
             #make trial log
             trial_status = TrialStatus()
             trial_status.blocks = blocks + 1#add 1 for log
             trial_status.trials = trials + 1#add 1 for log
-            trial_status.cue_flag = cue_flag
+            trial_status.cue_flag = next(self.cueflag_cyclic_iter)
 
             #display count
             self.msg_count.setText(trials)
@@ -66,7 +65,7 @@ class KraepelinWindow(visual.Window):
             core.wait(1.)
 
             #display cue
-            self.LRcue_dict[cue_flag].draw()
+            self.LRcue_dict[trial_status.cue_flag].draw()
             self.flip()
             core.wait(0.5)
             self.flip()
