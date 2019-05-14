@@ -15,7 +15,11 @@ block_length = 2
 TRIAL_LENGTH = 52
 
 #defined sounds
-SoundNamedTuple = collections.namedtuple('SoundNamedTuple', ['introduction', 'inst_calc', 'inst_cue_num', 'inst_progress', 'firstblock', 'inst_cue_value', 'into_second', 'secondblock', 'into_demo', 'start_demo', 'finish_demo', 'confirmation', 'inst_fixa', 'summary_cue'])
+SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
+	'introduction', 'inst_calc','post_cue', 'inst_cue_num', 'inst_progress_1', 'inst_progress_2', 'inst_progress_3', 
+	'firstblock_1', 'firstblock_2', 'firstblock_3', 'firstblock_4', 'inst_cue_value_1', 'inst_cue_value_2', 'inst_cue_value_3', 'inst_cue_value_4', 
+	'inst_cue_value_5', 'into_second', 'secondblock_1', 'secondblock_2', 'secondblock_3', 'secondblock_4', 'secondblock_5', 'secondblock_6', 
+	'secondblock_7', 'into_demo', 'finish_instruction', 'start_demo', 'finish_demo', 'confirmation', 'inst_fixa', 'summary_cue'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 #instruction start---------------------------------------------------------------------
@@ -30,167 +34,180 @@ def instruction(win):
 		pos=(0,-200), lineColor='white',fillColor='white')
 	demo_cor_ans = visual.TextStim(win, pos=(0, -300), height=80, bold=True)
 
+	win.display_stimuli(
+		[visual.TextStim(win, text=u'課題説明', height=80, bold=True)],
+		sound=sound_namedtuple.introduction,
+		wait_time=2.,
+	)
+
+#1st block-----------------------------------------------------------------------------
+	win.msg_count.setText("0")
+	win.msg_answer.setText("7")
 	#set matrix
 	win.matrixstim_left.set_random_matrix(4, 6)
 	win.matrixstim_right.set_random_matrix(8, 3)
 
-
-	sound_namedtuple.introduction.play()
-	visual.TextStim(win, text='task instruction', height=80, bold=True).draw()
-	win.flip()
-	core.wait(8)
-
-	sound_namedtuple.inst_calc.play()
-	win.display_stimuli(
-		[win.fixation, win.matrixstim_left, win.matrixstim_right],
-		wait_time=35,
-	)
-
-	#1st block-----------------------------------------------------------------------------
-	sound_namedtuple.inst_progress.play()
-	win.msg_count.setText("0")
 	win.display_stimuli(
 		[win.msg_count],
-		wait_time=5,
+		sound=sound_namedtuple.inst_progress_1,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[emphasisrect_dict['msg_count'], win.msg_count],
-		wait_time=16,
+		sound=sound_namedtuple.inst_progress_2,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[win.msg_count],
-		wait_time=13
+		sound=sound_namedtuple.inst_progress_3,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[win.LRcue_dict[(True, False)]],
 		wait_time=0.5,
 	)
 	win.display_stimuli(
-		[], wait_time=0.5,
+		[],
+		wait_time=0.5,
 	)
-
-	sound_namedtuple.inst_cue_num.play()
-	core.wait(2)
+	win.display_stimuli(
+		[],
+		sound=sound_namedtuple.post_cue,
+		wait_time=1.
+	)
 	win.display_stimuli(
 		[win.LRcue_dict[(True, False)]],
-		wait_time=41,
+		sound=sound_namedtuple.inst_cue_num,
+		wait_time=1.
 	)
-
-	sound_namedtuple.firstblock.play()
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right],
-		wait_time=13,
+		sound=sound_namedtuple.firstblock_1,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right, emphasisrect_dict['matrixstim_left']],
-		wait_time=2,
+		sound=sound_namedtuple.firstblock_2,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right, emphasisrect_dict['matrixstim_right']],
-		wait_time=4,
+		sound=sound_namedtuple.firstblock_3,
+		wait_time=1.
 	)
-	win.msg_answer.setText("7")
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right, win.msg_answer],
-		wait_time=3,
-	)
-
-	sound_namedtuple.inst_cue_value.play()
-	win.display_stimuli(
-		[], wait_time=4,
+		sound=sound_namedtuple.firstblock_4,
+		wait_time=1.
 	)
 	win.display_stimuli(
-		[win.LRcue_dict[(True,False)]],
-		wait_time=7,
+		[],
+		sound=sound_namedtuple.inst_cue_value_1,
+		wait_time=1.
 	)
 	win.display_stimuli(
-		[win.LRcue_dict[(False,True)]],
-		wait_time=5,
+		[win.LRcue_dict[(True, False)]],
+		sound=sound_namedtuple.inst_cue_value_2,
+		wait_time=1.
 	)
 	win.display_stimuli(
-		[win.LRcue_dict[(True,True)]],
-		wait_time=3,
-	)	
-	win.display_stimuli(
-		[win.LRcue_dict[(False,False)]],
-		wait_time=13,
+		[win.LRcue_dict[(False, True)]],
+		sound=sound_namedtuple.inst_cue_value_3,
+		wait_time=1.
 	)
-
-	#2nd block-----------------------------------------------------------------------------
+	win.display_stimuli(
+		[win.LRcue_dict[(True, True)]],
+		sound=sound_namedtuple.inst_cue_value_4,
+		wait_time=1.
+	)
+	win.display_stimuli(
+		[win.LRcue_dict[(False, False)]],
+		sound=sound_namedtuple.inst_cue_value_5,
+		wait_time=1.
+	)
+#2nd block-----------------------------------------------------------------------------
+	win.msg_count.setText("1")
+	win.msg_answer.setText("13")
+	demo_cor_ans.setText("3")
 	#set matrix
 	win.matrixstim_left.set_random_matrix(4, 8)
 	win.matrixstim_right.set_random_matrix(1, 5)
 
-	sound_namedtuple.into_second.play()
-	win.msg_count.setText("1")
 	win.display_stimuli(
-		[win.msg_count],
-		wait_time=12,
+		[win.msg_count, emphasisrect_dict['msg_count']],
+		sound=sound_namedtuple.into_second,
+		wait_time=1.
 	)
-#	empha_rect.setAutoDraw(False)#???
 	win.display_stimuli(
-		[win.LRcue_dict[(False,False)]],
+		[win.LRcue_dict[(False, False)]],
 		wait_time=0.5,
 	)
 	win.display_stimuli(
-		[], wait_time=0.5,
+		[],
+		wait_time=0.5,
 	)
-
-	sound_namedtuple.secondblock.play()
+	win.display_stimuli(
+		[],
+		sound=sound_namedtuple.post_cue,
+		wait_time=1.
+	)
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right],
-		wait_time=16,
+		sound=sound_namedtuple.secondblock_1,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right, emphasisrect_dict['matrixstim_left']],
-		wait_time=3,
+		sound=sound_namedtuple.secondblock_2,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right, emphasisrect_dict['matrixstim_right']],
-		wait_time=4,
+		sound=sound_namedtuple.secondblock_3,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right],
-		wait_time=3,
+		sound=sound_namedtuple.secondblock_4,
+		wait_time=1.
 	)
-	win.msg_answer.setText('13')
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right, win.msg_answer],
-		wait_time=7,
+		sound=sound_namedtuple.secondblock_5,
+		wait_time=1.
 	)
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right, win.msg_answer, arrow],
-		wait_time=2,
+		sound=sound_namedtuple.secondblock_6,
+		wait_time=1.
 	)
-	demo_cor_ans.setText('3')
 	win.display_stimuli(
 		[win.fixation, win.matrixstim_left, win.matrixstim_right, win.msg_answer, arrow, demo_cor_ans],
-		wait_time=3,
+		sound=sound_namedtuple.secondblock_7,
+		wait_time=1.
 	)
-
-	sound_namedtuple.inst_fixa.play()
 	win.display_stimuli(
-		[], wait_time=14,
+		[win.fixation],
+		sound=sound_namedtuple.inst_fixa,
+		wait_time=1.
 	)
 
 #summary------------------------------------------------------------------------------
-	sound_namedtuple.summary_cue.play()
 	win.display_stimuli(
 		[
 			visual.TextStim(win, " V :  数字", bold=True, height=80, pos=(50,100)),
 			visual.TextStim(win, " N :  個数", bold=True, height=80, pos=(50,-100))
 		],
-		wait_time=17,
+		sound=sound_namedtuple.summary_cue,
+		wait_time=2.
 	)
 
 #start demo---------------------------------------------------------------------------
 def demo(win):
-	visual.TextStim(win, text='demonstration', height=80, bold=True).draw()
+	visual.TextStim(win, text='Wait...', height=80, bold=True).draw()
 	win.flip()
-
 	sound_namedtuple.start_demo.play()
-
-	core.wait(2)
+	core.wait(sound_namedtuple.start_demo.duration)
 
 	visual.TextStim(win, text='Start!', height=80, bold=True).draw()
 	win.flip()
@@ -259,12 +276,12 @@ def demo(win):
 	win.flip()
 
 	sound_namedtuple.finish_demo.play()
-	core.wait(4)
+	core.wait(sound_namedtuple.finish_demo.duration)
 
 #confirmation------------------------------------------------------------------------
 def display_confirmation(win):
 	sound_namedtuple.confirmation.play()
-	for text, pos in zip(['instruction → 1', 'demonstration → 2', 'exit → 3'], [(0, 200), (0, 0), (0, -200)]):
+	for text, pos in zip([u'説明 → 1', u'練習 → 2', u'本番 → 3'], [(0, 200), (0, 0), (0, -200)]):
 		visual.TextStim(win, text=text, height=80, bold=True, pos=pos).draw()
 	win.flip()
 
@@ -274,16 +291,14 @@ if __name__ == "__main__":
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 	
 	instruction(win)
-
 	win.flip()
+	sound_namedtuple.finish_instruction.play()
+	core.wait(sound_namedtuple.finish_instruction.duration)
 
+	visual.TextStim(win, text=u'練習', height=80, bold=True).draw()
+	win.flip()
 	sound_namedtuple.into_demo.play()
-	core.wait(4)
-
-	visual.TextStim(win, text='demonstration', height=80, bold=True).draw()
-	win.flip()
-
-	core.wait(15)
+	core.wait(sound_namedtuple.into_demo.duration)
 
 	demo(win)
 

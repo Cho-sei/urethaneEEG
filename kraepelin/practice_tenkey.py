@@ -1,6 +1,7 @@
 from psychopy import visual, sound, event, core
 import random
 import sys
+import collections
 
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)
@@ -14,7 +15,7 @@ win = visual.Window(units='pix', fullscr=True, allowGUI=False)
 inst_stim = visual.TextStim(win, height=80)
 ans_text = visual.TextStim(win, height=80, pos=(0,-100))
 
-opening_msg = visual.TextStim(win, 'Practice entering tenkey', height=80)
+opening_msg = visual.TextStim(win, text=u'テンキー入力練習', height=80)
 wait_msg = visual.TextStim(win, 'Wait...', height=80)
 start_msg = visual.TextStim(win, 'Start!', height=80)
 finish_msg = visual.TextStim(win, 'Finish!', height=80)
@@ -25,31 +26,25 @@ false_msg = visual.TextStim(win, '×', height=80, pos=(0,-200))
 
 stim_list = random.sample(KEY_LIST, len(KEY_LIST)) + random.sample(KEY_LIST, len(KEY_LIST))
 
-into_ten = sound.Sound('sounds/into_ten.wav')
-start_ten = sound.Sound('sounds/start_ten.wav')
-redo_ten = sound.Sound('sounds/redo_ten.wav')
-start_demo = sound.Sound('sounds/start_demo.wav')
-finish_demo = sound.Sound('sounds/finish_demo.wav')
+
+SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
+	'into_ten', 'start_ten', 'redo_ten', 'start_demo', 'finish_demo'])
+sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 
 #--start------------------------------------------------------------------------------
 opening_msg.draw()
 win.flip()
-
-into_ten.play()
-
-core.wait(32)
+sound_namedtuple.into_ten.play()
+core.wait(sound_namedtuple.into_ten.duration)
 
 wait_msg.draw()
 win.flip()
+sound_namedtuple.start_ten.play()
+core.wait(sound_namedtuple.start_ten.duration)
 
-start_ten.play()
-
-core.wait(12)
-
-start_demo.play()
-
-core.wait(4)
+sound_namedtuple.start_demo.play()
+core.wait(sound_namedtuple.start_demo.duration)
 
 while redo_flag:
 
@@ -98,14 +93,13 @@ while redo_flag:
     else:
         redo_msg.draw()
         win.flip()
-
-        redo_ten.play()
-
-        core.wait(7)
+        sound_namedtuple.redo_ten.play()
+        core.wait(sound_namedtuple.redo_ten.duration)
 
 finish_msg.draw()
 win.flip()
 
-finish_demo.play()
+sound_namedtuple.finish_demo.play()
+core.wait(sound_namedtuple.finish_demo.duration)
 
 event.waitKeys(keyList=['space'])
