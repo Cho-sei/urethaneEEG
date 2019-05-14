@@ -40,229 +40,160 @@ sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+
 
 #instruction start---------------------------------------------------------------------
 def instruction(win):
-	visual.TextStim(win, text='task instruction', height=80, bold=True).draw()
-	win.flip()
+	#set matrix
+	win.matrixstim_left.set_random_matrix(4, 6)
+	win.matrixstim_right.set_random_matrix(8, 3)
+
 
 	sound_namedtuple.introduction.play()
-
+	visual.TextStim(win, text='task instruction', height=80, bold=True).draw()
+	win.flip()
 	core.wait(8)
 
-	fixation.draw()
-	pos_left = random.sample(range(9), k=6)
-	pos_right = random.sample(range(9), k=3)
-	arrangement(4, 6, -200, pos_left)
-	arrangement(8, 3, 200, pos_right)
-	win.flip()
-
 	sound_namedtuple.inst_calc.play()
-
-	core.wait(35)
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right],
+		wait_time=35,
+	)
 
 	#1st block-----------------------------------------------------------------------------
-
-	count_fixation.setText("0")
-	count_fixation.draw()
-	win.flip()
-
 	sound_namedtuple.inst_progress.play()
-
-	core.wait(5)
-
+	win.msg_count.setText("0")
+	win.display_stimuli(
+		[win.msg_count],
+		wait_time=5,
+	)
 	empha_rect.setPos((0,0))
-	empha_rect.draw()
-	count_fixation.draw()
-	win.flip()
-
-	core.wait(16)
-
-	count_fixation.draw()
-	win.flip()
-
-	core.wait(13)
-
-	LRcue_dict[(True,False)].draw()
-	win.flip()
-
-	core.wait(0.5)
-
-	win.flip()
-
-	core.wait(0.5)
+	win.display_stimuli(
+		[empha_rect, win.msg_count],
+		wait_time=16,
+	)
+	win.display_stimuli(
+		[win.msg_count],
+		wait_time=13
+	)
+	win.display_stimuli(
+		[win.LRcue_dict[(True, False)]],
+		wait_time=0.5,
+	)
+	win.display_stimuli(
+		[], wait_time=0.5,
+	)
 
 	sound_namedtuple.inst_cue_num.play()
-
 	core.wait(2)
-
-	LRcue_dict[(True,False)].draw()
-	win.flip()
-
-	core.wait(41)
-
-	fixation.draw()
-	pos_left = random.sample(range(9), k=6)
-	pos_right = random.sample(range(9), k=3)
-	arrangement(4, 6, -200, pos_left)
-	arrangement(8, 3, 200, pos_right)
-	win.flip()
+	win.display_stimuli(
+		[win.LRcue_dict[(True, False)]],
+		wait_time=41,
+	)
 
 	sound_namedtuple.firstblock.play()
-
-	core.wait(13) 
-
-	fixation.draw()
-	arrangement(4, 6, -200, pos_left)
-	arrangement(8, 3, 200, pos_right)
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right],
+		wait_time=13,
+	)
 	empha_rect.setPos((-200, 0))
-	empha_rect.draw()
-	win.flip()
-
-	core.wait(2)
-
-	fixation.draw()
-	arrangement(4, 6, -200, pos_left)
-	arrangement(8, 3, 200, pos_right)
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right, empha_rect],
+		wait_time=2,
+	)
 	empha_rect.setPos((200, 0))
-	empha_rect.draw()
-	win.flip()
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right, empha_rect],
+		wait_time=4,
+	)
+	win.msg_answer.setText("7")
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right, win.msg_answer],
+		wait_time=3,
+	)
 
-	core.wait(4)
-
-	fixation.draw()
-	arrangement(4, 6, -200, pos_left)
-	arrangement(8, 3, 200, pos_right)
-	demo_ans.setText("7")
-	demo_ans.draw()
-	win.flip()
-
-	core.wait(3)
-
-	win.flip()
 	sound_namedtuple.inst_cue_value.play()
-
-	core.wait(4)
-
-	LRcue_dict[(True,False)].draw()
-	win.flip()
-
-	core.wait(7)
-
-	LRcue_dict[(False,True)].draw()
-	win.flip()
-
-	core.wait(5)
-	
-	LRcue_dict[(True,True)].draw()
-	win.flip()
-
-	core.wait(3)
-
-	LRcue_dict[(False,False)].draw()
-	win.flip()
-
-	core.wait(13)
-
+	win.display_stimuli(
+		[], wait_time=4,
+	)
+	win.display_stimuli(
+		[LRcue_dict[(True,False)]],
+		wait_time=7,
+	)
+	win.display_stimuli(
+		[LRcue_dict[(False,True)]],
+		wait_time=5,
+	)
+	win.display_stimuli(
+		[LRcue_dict[(True,True)]],
+		wait_time=3,
+	)	
+	win.display_stimuli(
+		[LRcue_dict[(False,False)]],
+		wait_time=13,
+	)
 
 	#2nd block-----------------------------------------------------------------------------
-
-	count_fixation.setText("1")
-	count_fixation.draw()
-	empha_rect.setAutoDraw(False)
-	win.flip()
+	#set matrix
+	win.matrixstim_left.set_random_matrix(4, 8)
+	win.matrixstim_right.set_random_matrix(1, 5)
 
 	sound_namedtuple.into_second.play()
-
-	core.wait(12)
-
-	LRcue_dict[(False,False)].draw()
-	win.flip()
-
-	core.wait(0.5)
-
-	win.flip()
-
-	core.wait(0.5)
-
-	fixation.draw()
-	pos_left = random.sample(range(9), k=8)
-	pos_right = random.sample(range(9), k=5)
-	arrangement(4, 8, -200, pos_left)
-	arrangement(1, 5, 200, pos_right)
-	win.flip()
+	win.msg_count.setText("1")
+	win.display_stimuli(
+		[win.msg_count],
+		wait_time=12,
+	)
+#	empha_rect.setAutoDraw(False)#???
+	win.display_stimuli(
+		[LRcue_dict[(False,False)]],
+		wait_time=0.5,
+	)
+	win.display_stimuli(
+		[], wait_time=0.5,
+	)
 
 	sound_namedtuple.secondblock.play()
-
-	core.wait(16)
-
-	fixation.draw()
-	arrangement(4, 8, -200, pos_left)
-	arrangement(1, 5, 200, pos_right)
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right],
+		wait_time=16,
+	)
 	empha_rect.setPos((-200, 0))
-	empha_rect.draw()
-	win.flip()
-
-	core.wait(3)
-
-	fixation.draw()
-	arrangement(4, 8, -200, pos_left)
-	arrangement(1, 5, 200, pos_right)
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right, empha_rect],
+		wait_time=3,
+	)
 	empha_rect.setPos((200, 0))
-	empha_rect.draw()
-	win.flip()
-
-	core.wait(4)
-
-	fixation.draw()
-	arrangement(4, 8, -200, pos_left)
-	arrangement(1, 5, 200, pos_right)
-	win.flip()
-
-	core.wait(3)
-
-	fixation.draw()
-	arrangement(4, 8, -200, pos_left)
-	arrangement(1, 5, 200, pos_right)
-	demo_ans.setText("13")
-	demo_ans.draw()
-	win.flip()
-
-	core.wait(7)
-
-	fixation.draw()
-	arrangement(4, 8, -200, pos_left)
-	arrangement(1, 5, 200, pos_right)
-	demo_ans.draw()
-	allow.draw()
-	win.flip()
-
-	core.wait(2)
-
-	fixation.draw()
-	arrangement(4, 8, -200, pos_left)
-	arrangement(1, 5, 200, pos_right)
-	demo_cor_ans.setText("3")
-	demo_ans.draw()
-	allow.draw()
-	demo_cor_ans.draw()
-	win.flip()
-
-	core.wait(3)
-
-	fixation.draw()
-	win.flip()
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right, empha_rect],
+		wait_time=4,
+	)
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right],
+		wait_time=3,
+	)
+	win.msg_answer.setText('13')
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right, win.msg_answer],
+		wait_time=7,
+	)
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right, win.msg_answer, arrow],
+		wait_time=2,
+	)
+	demo_cor_ans.setText('3')
+	win.display_stimuli(
+		[win.fixation, win.matrixstim_left, win.matrixstim_right, win.msg_answer, arrow, demo_cor_ans],
+		wait_time=3,
+	)
 
 	sound_namedtuple.inst_fixa.play()
-
-	core.wait(14)
+	win.display_stimuli(
+		[], wait_time=14,
+	)
 
 #summary------------------------------------------------------------------------------
-	summary_text1.draw()
-	summary_text2.draw()
-
-	win.flip()
-
 	sound_namedtuple.summary_cue.play()
-
-	core.wait(17)
+	win.display_stimuli(
+		[summary_text1, summary_text2],
+		wait_time=17,
+	)
 
 #start demo---------------------------------------------------------------------------
 def demo(win):
