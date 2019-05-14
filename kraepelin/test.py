@@ -1,18 +1,21 @@
-from psychopy import visual, core, event
+from psychopy import visual, core, event, gui
 
 win = visual.Window(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 
-Lcue = visual.Circle(win, radius=30, edges=64, pos=(-200, 0), fillColor='white')
-summary_text1 = visual.TextStim(win, " :  数字", bold=True, height=100, pos=(50,100))
-summary_text2 = visual.TextStim(win, " :  個数", bold=True, height=100, pos=(50,-100))
+output_num = visual.TextStim(win, height=80, bold=True)
 
-Lcue.setPos((-150, 85))
-Lcue.draw()
-summary_text1.draw()
-summary_text2.draw()
+dlg = gui.Dlg(title=u'回答')
+dlg.addField('answer:','')
 
+core.wait(3)
+
+win.setMouseVisible(True)
 win.flip()
 
-core.wait(5)
+dlg.show()
 
+output_num.setText(dlg.data[0])
+output_num.draw()
+win.flip()
 
+core.wait(3)
