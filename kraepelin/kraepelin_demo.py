@@ -44,22 +44,24 @@ count_fixation = visual.TextStim(win, pos=(0, 0), height=80, bold=True)
 
 text_view = visual.TextStim(win, height=50)
 
-summary_text1 = visual.TextStim(win, " V :  数字", bold=True, height=80, pos=(50,100))
-summary_text2 = visual.TextStim(win, " N :  個数", bold=True, height=80, pos=(50,-100))
+summary_text1 = visual.TextStim(win, u" V :  数字", bold=True, height=80, pos=(0,100))
+summary_text2 = visual.TextStim(win, u" N :  個数", bold=True, height=80, pos=(0,-100))
 
 
 #defined sounds
-SoundNamedTuple = collections.namedtuple('SoundNamedTuple', ['introduction', 'inst_calc', 'inst_cue_num', 'inst_progress', 'firstblock', 'inst_cue_value', 'into_second', 'secondblock', 'into_demo', 'start_demo', 'finish_demo', 'confirmation', 'inst_fixa', 'summary_cue'])
+SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
+	'introduction', 'inst_calc','post_cue', 'inst_cue_num', 'inst_progress_1', 'inst_progress_2', 'inst_progress_3', 
+	'firstblock_1', 'firstblock_2', 'firstblock_3', 'firstblock_4', 'inst_cue_value_1', 'inst_cue_value_2', 'inst_cue_value_3', 'inst_cue_value_4', 
+	'inst_cue_value_5', 'into_second', 'secondblock_1', 'secondblock_2', 'secondblock_3', 'secondblock_4', 'secondblock_5', 'secondblock_6', 
+	'secondblock_7', 'into_demo', 'finish_instruction', 'start_demo', 'finish_demo', 'confirmation', 'inst_fixa', 'summary_cue'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 #instruction start---------------------------------------------------------------------
 def instruction(win):
-	visual.TextStim(win, text='task instruction', height=80, bold=True).draw()
+	visual.TextStim(win, text=u'課題説明', height=80, bold=True).draw()
 	win.flip()
-
 	sound_namedtuple.introduction.play()
-
-	core.wait(8)
+	core.wait(sound_namedtuple.introduction.duration)
 
 	fixation.draw()
 	pos_left = random.sample(range(9), k=6)
@@ -67,32 +69,28 @@ def instruction(win):
 	arrangement(4, 6, -200, pos_left)
 	arrangement(8, 3, 200, pos_right)
 	win.flip()
-
 	sound_namedtuple.inst_calc.play()
-
-	core.wait(35)
+	core.wait(sound_namedtuple.inst_calc.duration)
 
 	#1st block-----------------------------------------------------------------------------
 
 	count_fixation.setText("0")
 	count_fixation.draw()
 	win.flip()
-
-	sound_namedtuple.inst_progress.play()
-
-	core.wait(5)
+	sound_namedtuple.inst_progress_1.play()
+	core.wait(sound_namedtuple.inst_progress_1.duration)
 
 	empha_rect.setPos((0,0))
 	empha_rect.draw()
 	count_fixation.draw()
 	win.flip()
-
-	core.wait(16)
+	sound_namedtuple.inst_progress_2.play()
+	core.wait(sound_namedtuple.inst_progress_2.duration)
 
 	count_fixation.draw()
 	win.flip()
-
-	core.wait(13)
+	sound_namedtuple.inst_progress_3.play()
+	core.wait(sound_namedtuple.inst_progress_3.duration)
 
 	LRcue_dict[(True,False)].draw()
 	win.flip()
@@ -103,14 +101,13 @@ def instruction(win):
 
 	core.wait(0.5)
 
+	sound_namedtuple.post_cue.play()
+	core.wait(sound_namedtuple.post_cue.duration)
+
+	LRcue_dict[(True,False)].draw()
+	win.flip()
 	sound_namedtuple.inst_cue_num.play()
-
-	core.wait(2)
-
-	LRcue_dict[(True,False)].draw()
-	win.flip()
-
-	core.wait(41)
+	core.wait(sound_namedtuple.inst_cue_num.duration)
 
 	fixation.draw()
 	pos_left = random.sample(range(9), k=6)
@@ -118,10 +115,8 @@ def instruction(win):
 	arrangement(4, 6, -200, pos_left)
 	arrangement(8, 3, 200, pos_right)
 	win.flip()
-
-	sound_namedtuple.firstblock.play()
-
-	core.wait(13) 
+	sound_namedtuple.firstblock_1.play()
+	core.wait(sound_namedtuple.firstblock_1.duration) 
 
 	fixation.draw()
 	arrangement(4, 6, -200, pos_left)
@@ -129,8 +124,8 @@ def instruction(win):
 	empha_rect.setPos((-200, 0))
 	empha_rect.draw()
 	win.flip()
-
-	core.wait(2)
+	sound_namedtuple.firstblock_2.play()
+	core.wait(sound_namedtuple.firstblock_2.duration)
 
 	fixation.draw()
 	arrangement(4, 6, -200, pos_left)
@@ -138,8 +133,8 @@ def instruction(win):
 	empha_rect.setPos((200, 0))
 	empha_rect.draw()
 	win.flip()
-
-	core.wait(4)
+	sound_namedtuple.firstblock_3.play()
+	core.wait(sound_namedtuple.firstblock_3.duration)
 
 	fixation.draw()
 	arrangement(4, 6, -200, pos_left)
@@ -147,33 +142,32 @@ def instruction(win):
 	demo_ans.setText("7")
 	demo_ans.draw()
 	win.flip()
-
-	core.wait(3)
+	sound_namedtuple.firstblock_4.play()
+	core.wait(sound_namedtuple.firstblock_4.duration)
 
 	win.flip()
-	sound_namedtuple.inst_cue_value.play()
-
-	core.wait(4)
+	sound_namedtuple.inst_cue_value_1.play()
+	core.wait(sound_namedtuple.inst_cue_value_1.duration)
 
 	LRcue_dict[(True,False)].draw()
 	win.flip()
-
-	core.wait(7)
+	sound_namedtuple.inst_cue_value_2.play()
+	core.wait(sound_namedtuple.inst_cue_value_2.duration)
 
 	LRcue_dict[(False,True)].draw()
 	win.flip()
-
-	core.wait(5)
+	sound_namedtuple.inst_cue_value_3.play()
+	core.wait(sound_namedtuple.inst_cue_value_3.duration)
 	
 	LRcue_dict[(True,True)].draw()
 	win.flip()
-
-	core.wait(3)
+	sound_namedtuple.inst_cue_value_4.play()
+	core.wait(sound_namedtuple.inst_cue_value_4.duration)
 
 	LRcue_dict[(False,False)].draw()
 	win.flip()
-
-	core.wait(13)
+	sound_namedtuple.inst_cue_value_5.play()
+	core.wait(sound_namedtuple.inst_cue_value_5.duration)
 
 
 	#2nd block-----------------------------------------------------------------------------
@@ -182,10 +176,8 @@ def instruction(win):
 	count_fixation.draw()
 	empha_rect.setAutoDraw(False)
 	win.flip()
-
 	sound_namedtuple.into_second.play()
-
-	core.wait(12)
+	core.wait(sound_namedtuple.into_second.duration)
 
 	LRcue_dict[(False,False)].draw()
 	win.flip()
@@ -196,16 +188,17 @@ def instruction(win):
 
 	core.wait(0.5)
 
+	sound_namedtuple.post_cue.play()
+	core.wait(sound_namedtuple.post_cue.duration)
+
 	fixation.draw()
 	pos_left = random.sample(range(9), k=8)
 	pos_right = random.sample(range(9), k=5)
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	win.flip()
-
-	sound_namedtuple.secondblock.play()
-
-	core.wait(16)
+	sound_namedtuple.secondblock_1.play()
+	core.wait(sound_namedtuple.secondblock_1.duration)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
@@ -213,8 +206,8 @@ def instruction(win):
 	empha_rect.setPos((-200, 0))
 	empha_rect.draw()
 	win.flip()
-
-	core.wait(3)
+	sound_namedtuple.secondblock_2.play()
+	core.wait(sound_namedtuple.secondblock_2.duration)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
@@ -222,15 +215,15 @@ def instruction(win):
 	empha_rect.setPos((200, 0))
 	empha_rect.draw()
 	win.flip()
-
-	core.wait(4)
+	sound_namedtuple.secondblock_3.play()
+	core.wait(sound_namedtuple.secondblock_3.duration)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
 	arrangement(1, 5, 200, pos_right)
 	win.flip()
-
-	core.wait(3)
+	sound_namedtuple.secondblock_4.play()
+	core.wait(sound_namedtuple.secondblock_4.duration)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
@@ -238,8 +231,8 @@ def instruction(win):
 	demo_ans.setText("13")
 	demo_ans.draw()
 	win.flip()
-
-	core.wait(7)
+	sound_namedtuple.secondblock_5.play()
+	core.wait(sound_namedtuple.secondblock_5.duration)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
@@ -247,8 +240,8 @@ def instruction(win):
 	demo_ans.draw()
 	allow.draw()
 	win.flip()
-
-	core.wait(2)
+	sound_namedtuple.secondblock_6.play()
+	core.wait(sound_namedtuple.secondblock_6.duration)
 
 	fixation.draw()
 	arrangement(4, 8, -200, pos_left)
@@ -258,34 +251,27 @@ def instruction(win):
 	allow.draw()
 	demo_cor_ans.draw()
 	win.flip()
-
-	core.wait(3)
+	sound_namedtuple.secondblock_7.play()
+	core.wait(sound_namedtuple.secondblock_7.duration)
 
 	fixation.draw()
 	win.flip()
-
 	sound_namedtuple.inst_fixa.play()
-
-	core.wait(14)
+	core.wait(sound_namedtuple.inst_fixa.duration)
 
 #summary------------------------------------------------------------------------------
 	summary_text1.draw()
 	summary_text2.draw()
-
 	win.flip()
-
 	sound_namedtuple.summary_cue.play()
-
-	core.wait(17)
+	core.wait(sound_namedtuple.summary_cue.duration)
 
 #start demo---------------------------------------------------------------------------
 def demo(win):
-	visual.TextStim(win, text='demonstration', height=80, bold=True).draw()
+	visual.TextStim(win, text='Wait...', height=80, bold=True).draw()
 	win.flip()
-
 	sound_namedtuple.start_demo.play()
-
-	core.wait(2)
+	core.wait(sound_namedtuple.start_demo.duration)
 
 	visual.TextStim(win, text='Start!', height=80, bold=True).draw()
 	win.flip()
@@ -354,45 +340,43 @@ def demo(win):
 	win.flip()
 
 	sound_namedtuple.finish_demo.play()
-	core.wait(4)
+	core.wait(sound_namedtuple.finish_demo.duration)
 
 #confirmation------------------------------------------------------------------------
 def display_confirmation(win):
-	visual.TextStim(win, text='instruction → 1', height=80, bold=True, pos=(0, 200)).draw()
-	visual.TextStim(win, text='demonstration → 2', height=80, bold=True, pos=(0, 0)).draw()
-	visual.TextStim(win, text='exit → 3', height=80, bold=True, pos=(0, -200)).draw()
+	visual.TextStim(win, text=u'説明 → 1', height=80, bold=True, pos=(0, 200)).draw()
+	visual.TextStim(win, text=u'練習 → 2', height=80, bold=True, pos=(0, 0)).draw()
+	visual.TextStim(win, text=u'本番 → 3', height=80, bold=True, pos=(0, -200)).draw()
 	win.flip()
 
 	sound_namedtuple.confirmation.play()
 
 if __name__ == "__main__":
 	
-	instruction()
-
+	instruction(win)
 	win.flip()
+	sound_namedtuple.finish_instruction.play()
+	core.wait(sound_namedtuple.finish_instruction.duration)
 
+	visual.TextStim(win, text=u'練習', height=80, bold=True).draw()
+	win.flip()
 	sound_namedtuple.into_demo.play()
-	core.wait(4)
+	core.wait(sound_namedtuple.into_demo.duration)
 
-	visual.TextStim(win, text='demonstration', height=80, bold=True).draw()
-	win.flip()
+	demo(win)
 
-	core.wait(15)
-
-	demo()
-
-	display_confirmation()
+	display_confirmation(win)
 
 	while True:
 		key = event.waitKeys(keyList=['1','2','3'])
 		if  '1' in key:
-			instruction()
+			instruction(win)
 		elif '2' in key:
-			demo()
+			demo(win)
 		else:
 			break
 		
-		display_confirmation()
+		display_confirmation(win)
 
 #--------------------------------------------------------
 #
