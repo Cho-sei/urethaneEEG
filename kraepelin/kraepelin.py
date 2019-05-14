@@ -1,11 +1,6 @@
-import csv
-import math
-import itertools
 import random
 import sys
 
-import numpy
-import pandas
 from psychopy import visual, core, event
 
 from kraepelin_stimuli import KraepelinWindow
@@ -77,6 +72,7 @@ def block(kraepelin_window, blocks):
             break
 
 if __name__ == "__main__":
+    import csv
     #set global escape
     event.globalKeys.add(key='escape', func=sys.exit)
 
