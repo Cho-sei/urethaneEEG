@@ -50,3 +50,7 @@ class MatrixStim:
         """
         for textstim in self.textstim_list:
             textstim.draw()
+
+    @property
+    def pos(self):
+        return numpy.array([textstim.pos for textstim in self.textstim_list]).mean(axis=0)
