@@ -234,6 +234,8 @@ def display_confirmation(win):
 
 if __name__ == "__main__":
 	from kraepelin_stimuli import KraepelinWindow
+
+	block_length = 2
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 	
 	#instruction(win)
@@ -246,7 +248,7 @@ if __name__ == "__main__":
 	sound_namedtuple.into_demo.play()
 	core.wait(sound_namedtuple.into_demo.duration)
 
-	demo(win, 2)
+	demo(win, block_length)
 
 	display_confirmation(win)
 
@@ -255,7 +257,7 @@ if __name__ == "__main__":
 		if  '1' in key:
 			instruction(win)
 		elif '2' in key:
-			demo(win)
+			demo(win, block_length)
 		else:
 			break
 		
