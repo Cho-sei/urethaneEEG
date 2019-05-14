@@ -8,10 +8,9 @@ import numpy
 import pandas
 from psychopy import visual, core, event
 
-from kraepelin_stimuli import get_fixation_stim, get_charcue_stim_dict, KraepelinMatrixStim
+from kraepelin_stimuli import KraepelinWindow
 from namedlist import namedlist
 #parameter
-BLOCK_DURATION = 60#[s]
 TRIAL_MAXLENGTH = 100
 BLOCK_LENGTH = 10
 
@@ -20,91 +19,62 @@ TrialStatus = namedlist(
     ['blocks', 'trials', 'cue_flag', 'response_time', 'response', 'correct_response', 'is_correct', 'stim_left', 'stim_right', 'trial_endtime']
 )
 
-class KraepelinWindow(visual.Window):
 
-    KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-#    KEY_LIST = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
+def block(kraepelin_window, blocks):
+    block_start = kraepelin_window.clock.getTime()
 
-    def __init__(self, *args, **keyargs):
-        super().__init__(*args, **keyargs)
-        self.msg_answer = visual.TextStim(self, pos=(0, -100), height=80, bold=True)
-        self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
+    kraepelin_window.matrixstim_left.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
 
-        self.fixation = get_fixation_stim(self)
-        self.LRcue_dict = get_charcue_stim_dict(self)
+    for trials in range(TRIAL_MAXLENGTH):
+        #make trial log
+        trial_status = TrialStatus()
+        trial_status.blocks = blocks + 1#add 1 for log
+        trial_status.trials = trials + 1#add 1 for log
+        trial_status.cue_flag = next(kraepelin_window.cueflag_cyclic_iter)
 
-        self.matrixstim_left = KraepelinMatrixStim(self, (50, 50), (-200, 0), height=50)
-        self.matrixstim_right = KraepelinMatrixStim(self, (50, 50), (200, 0), height=50)
+        #display count
+        kraepelin_window.msg_count.setText(trials)
+        kraepelin_window.msg_count.draw()
+        kraepelin_window.flip()
+        core.wait(1.)
 
-        cue_list = list(itertools.product((True, False), repeat=2))
-        self.cueflag_cyclic_iter = itertools.cycle(sum([random.sample(cue_list, k=len(cue_list)) for _ in range(100)],[]))
+        #display cue
+        kraepelin_window.LRcue_dict[trial_status.cue_flag].draw()
+        kraepelin_window.flip()
+        core.wait(0.5)
+        kraepelin_window.flip()
+        core.wait(0.5)
+        
+        #display fixation cross & stimuli
+        kraepelin_window.fixation.draw()
+        kraepelin_window.matrixstim_right.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
+        kraepelin_window.matrixstim_left.draw()
+        kraepelin_window.matrixstim_right.draw()
+        win.flip()
 
-    def block(self, blocks):
-        clock = core.Clock()
-        block_start = clock.getTime()
+        trial_status.response, trial_status.response_time = kraepelin_window.wait_response(block_start)
+        #check the answer
+        def choose_status(status_list, flags):
+            return sum([status.value if flag else status.number for status, flag in zip(status_list, flags)]) % 10
+        trial_status.correct_response = choose_status([kraepelin_window.matrixstim_left.matrix_status, kraepelin_window.matrixstim_right.matrix_status], trial_status.cue_flag)
+        trial_status.is_correct = trial_status.response == trial_status.correct_response
 
-        self.matrixstim_left.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
+        #display after answered
+        kraepelin_window.msg_answer.setText(trial_status.response)
+        kraepelin_window.msg_answer.draw()
+        win.flip()
+        core.wait(0.2)
 
-        for trials in range(TRIAL_MAXLENGTH):
-            #make trial log
-            trial_status = TrialStatus()
-            trial_status.blocks = blocks + 1#add 1 for log
-            trial_status.trials = trials + 1#add 1 for log
-            trial_status.cue_flag = next(self.cueflag_cyclic_iter)
+        #output log
+        trial_status.stim_left = kraepelin_window.matrixstim_left.matrix.reshape(-1,)
+        trial_status.stim_right = kraepelin_window.matrixstim_right.matrix.reshape(-1,)
+        trial_status.trial_endtime = kraepelin_window.clock.getTime() - block_start
+        yield trial_status
+        kraepelin_window.matrixstim_left.copy_status(kraepelin_window.matrixstim_right)
 
-            #display count
-            self.msg_count.setText(trials)
-            self.msg_count.draw()
-            self.flip()
-            core.wait(1.)
-
-            #display cue
-            self.LRcue_dict[trial_status.cue_flag].draw()
-            self.flip()
-            core.wait(0.5)
-            self.flip()
-            core.wait(0.5)
-            
-            #display fixation cross & stimuli
-            self.fixation.draw()
-            self.matrixstim_right.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
-            self.matrixstim_left.draw()
-            self.matrixstim_right.draw()
-            win.flip()
-
-            #enter keys and measure response time
-            key_start = clock.getTime()
-            block_time = key_start - block_start
-            keys = event.waitKeys(
-                maxWait=BLOCK_DURATION-block_time,
-                keyList=self.KEY_LIST
-            )
-            if keys == None:
-                break
-            trial_status.response_time = clock.getTime() - key_start
-            #check the answer
-            trial_status.response = self.KEY_LIST.index(keys[0])
-            def choose_status(status_list, flags):
-                return sum([status.value if flag else status.number for status, flag in zip(status_list, flags)]) % 10
-            trial_status.correct_response = choose_status([self.matrixstim_left.matrix_status, self.matrixstim_right.matrix_status], trial_status.cue_flag)
-            trial_status.is_correct = trial_status.response == trial_status.correct_response
-
-            #display after answered
-            self.msg_answer.setText(trial_status.response)
-            self.msg_answer.draw()
-            win.flip()
-            core.wait(0.2)
-
-            #output log
-            trial_status.stim_left = self.matrixstim_left.matrix.reshape(-1,)
-            trial_status.stim_right = self.matrixstim_right.matrix.reshape(-1,)
-            trial_status.trial_endtime = clock.getTime() - block_start
-            yield trial_status
-            self.matrixstim_left.copy_status(self.matrixstim_right)
-
-            #end block if no time to response next trial
-            if clock.getTime()-block_start > BLOCK_DURATION - 2.:
-                break
+        #end block if no time to response next trial
+        if kraepelin_window.clock.getTime()-block_start > kraepelin_window.BLOCK_DURATION - 2.:
+            break
 
 if __name__ == "__main__":
     #set global escape
@@ -132,7 +102,7 @@ if __name__ == "__main__":
         writer.writerow(TrialStatus._fields)
     
     for count_blocks in range(BLOCK_LENGTH):
-        for output_list in win.block(count_blocks):
+        for output_list in block(win, count_blocks):
             with open('result.csv', 'a') as log:
                 writer = csv.writer(log)
                 writer.writerow(output_list)

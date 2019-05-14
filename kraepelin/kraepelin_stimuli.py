@@ -1,8 +1,9 @@
 import collections
 import itertools
+import random
 
 import numpy
-from psychopy import visual
+from psychopy import core, visual, event
 
 from common_stimuli import MatrixStim
 
@@ -53,6 +54,46 @@ class KraepelinMatrixStim(MatrixStim):
         self.matrix_status = other.matrix_status
         self.set_matrix(other.matrix)
 
+class KraepelinWindow(visual.Window):
+
+    KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+#    KEY_LIST = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
+    BLOCK_DURATION = 60#[s]
+
+    def __init__(self, *args, **keyargs):
+        super().__init__(*args, **keyargs)
+        self.msg_answer = visual.TextStim(self, pos=(0, -100), height=80, bold=True)
+        self.msg_count = visual.TextStim(self, pos=(0, 0), height=80, bold=True)
+
+        self.fixation = get_fixation_stim(self)
+        self.LRcue_dict = get_charcue_stim_dict(self)
+
+        self.matrixstim_left = KraepelinMatrixStim(self, (50, 50), (-200, 0), height=50)
+        self.matrixstim_right = KraepelinMatrixStim(self, (50, 50), (200, 0), height=50)
+
+        cue_list = list(itertools.product((True, False), repeat=2))
+        self.cueflag_cyclic_iter = itertools.cycle(sum([random.sample(cue_list, k=len(cue_list)) for _ in range(100)],[]))
+
+        self.clock = core.Clock()
+
+    def display_stimuli(self, stimulus_list, wait_time):
+        for stimulus in stimulus_list:
+            stimulus.draw()
+        self.flip()
+        core.wait(wait_time)
+
+    def wait_response(self, block_start):
+        """wait keys & measure the response time
+        """
+        key_start = self.clock.getTime()
+        block_time = key_start - block_start
+        keys = event.waitKeys(
+            maxWait=self.BLOCK_DURATION-block_time,
+            keyList=self.KEY_LIST
+        )
+        if keys == None:
+            return None
+        return self.KEY_LIST.index(keys[0]), self.clock.getTime() - key_start
 
 if __name__ == "__main__":
     pass
