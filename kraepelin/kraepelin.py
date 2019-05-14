@@ -47,7 +47,7 @@ def block(kraepelin_window, blocks):
         kraepelin_window.matrixstim_right.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
         kraepelin_window.matrixstim_left.draw()
         kraepelin_window.matrixstim_right.draw()
-        win.flip()
+        kraepelin_window.flip()
 
         trial_status.response, trial_status.response_time = kraepelin_window.wait_response(block_start)
         #check the answer
@@ -59,7 +59,7 @@ def block(kraepelin_window, blocks):
         #display after answered
         kraepelin_window.msg_answer.setText(trial_status.response)
         kraepelin_window.msg_answer.draw()
-        win.flip()
+        kraepelin_window.flip()
         core.wait(0.2)
 
         #output log
