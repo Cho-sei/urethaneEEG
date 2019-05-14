@@ -1,111 +1,86 @@
-from psychopy import visual, sound, event, core, gui
 import random
-import sys
-import collections
-
+from psychopy import visual, sound, core, gui
 from kraepelin_stimuli import get_fixation_stim
 
-#set global escape
-event.globalKeys.add(key='escape', func=sys.exit)
-
-win = visual.Window(units='pix', fullscr=True, allowGUI=False)
-
-wait_msg = visual.TextStim(win, 'Wait...', height=80)
-start_msg = visual.TextStim(win, 'Start!', height=80)
-finish_msg = visual.TextStim(win, 'Finish!', height=80)
-
-
-SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
-	'into_EOresting', 'into_ECresting', 'into_subtract', 'finish_resting', 'answer_of_subtraction'])
-sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
-
-Beep1 = sound.Sound(value=1000, secs=1.0)
-Beep2 = sound.Sound(value=1000, secs=1.0)
-Beep1.setVolume(0.5)
-Beep2.setVolume(0.5)
-
-fixation = get_fixation_stim(win)
-
-dlg = gui.Dlg(title=u'回答')
-dlg.addField(u'答え:','')
-
 #start-----------------------------------------------------------------
+def start_waitmsg(func):
+	def wrapper(*args, **keyargs):#assert isinstance(args[0], visual.Window)
+		visual.TextStim(args[0], 'Wait...', height=80).draw()
+		args[0].flip()
+		core.wait(2.)
+		return func(*args, **keyargs)
+	return wrapper
 
-#eyes open------------------
-wait_msg.draw()
-win.flip()
+def restingstate_recording(win, wait_time):
+	visual.TextStim(win, 'Start!', height=80).draw()
+	win.flip()
+	core.wait(2)
 
-sound_namedtuple.into_EOresting.play()
-core.wait(sound_namedtuple.into_EOresting.duration)
+	get_fixation_stim(win).draw()
+	win.flip()
+	core.wait(wait_time)
 
-start_msg.draw()
-win.flip()
+	visual.TextStim(win, 'Finish!', height=80).draw()
+	win.flip()
 
-core.wait(2)
+@start_waitmsg
+def eyesopen_restingstate_recording(win, sounds):
+	sounds.into_EOresting.play()
+	core.wait(sounds.into_EOresting.duration)
 
-fixation.draw()
-win.flip()
+	restingstate_recording(win, 60)
 
-core.wait(60)
+	sounds.finish_resting.play()
+	core.wait(sounds.finish_resting.duration)
 
-finish_msg.draw()
-win.flip()
+@start_waitmsg
+def eyesclose_restingstate_recording(win, sounds):
+	beep = sound.Sound(value=1000, secs=1.0)
+	beep.setVolume(0.5)
 
-sound_namedtuple.finish_resting.play()
-core.wait(sound_namedtuple.finish_resting.duration)
+	sounds.into_ECresting.play()
+	core.wait(sounds.into_ECresting.duration)
+	beep.play()
 
-#eyes close------------------
+	restingstate_recording(win, 60)
 
-wait_msg.draw()
-win.flip() 
-sound_namedtuple.into_ECresting.play()
-core.wait(sound_namedtuple.into_ECresting.duration)
+	sounds.finish_resting.play()
+	core.wait(sounds.finish_resting.duration)
 
-Beep1.play()
+@start_waitmsg
+def subtractingstate_recording(win, sounds):
+	beep = sound.Sound(value=1000, secs=1.0)
+	beep.setVolume(0.5)
+	dlg = gui.Dlg(title=u'回答')
+	dlg.addField(u'答え:','')
 
-start_msg.draw()
-win.flip()
+	sounds.into_subtract.play()
+	core.wait(sounds.into_subtract.duration)
+	beep.play()
 
-core.wait(2)
+	restingstate_recording(win, 60)
 
-fixation.draw()
-win.flip()
+	sounds.finish_resting.play()
+	core.wait(sounds.finish_resting.duration)
 
-core.wait(60)
+	win.setMouseVisible(True)
+	win.flip()
+	sound_namedtuple.answer_of_subtraction.play()
+	return dlg.show()
 
-finish_msg.draw()
-win.flip()
+if __name__ == "__main__":
+	import collections
+	import sys
+	from psychopy import event
+	from kraepelin_stimuli import KraepelinWindow
+	#set global escape
+	event.globalKeys.add(key='escape', func=sys.exit)
 
-sound_namedtuple.finish_resting.play()
-core.wait(sound_namedtuple.finish_resting.duration)
+	win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
+	SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
+		'into_EOresting', 'into_ECresting', 'into_subtract', 'finish_resting', 'answer_of_subtraction'])
+	sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
-#subtraction------------------
-
-wait_msg.draw()
-win.flip()
-sound_namedtuple.into_subtract.play()
-core.wait(sound_namedtuple.into_subtract.duration)
-
-Beep2.play()
-
-start_msg.draw()
-win.flip()
-
-core.wait(2)
-
-fixation.draw()
-win.flip()
-
-core.wait(60)
-
-finish_msg.draw()
-win.flip()
-
-sound_namedtuple.finish_resting.play()
-core.wait(sound_namedtuple.finish_resting.duration)
-
-win.setMouseVisible(True)
-win.flip()
-sound_namedtuple.answer_of_subtraction.play()
-dlg.show()
-
+	eyesopen_restingstate_recording(win, sound_namedtuple)
+	eyesclose_restingstate_recording(win, sound_namedtuple)
+	print(subtractingstate_recording(win, sound_namedtuple))
