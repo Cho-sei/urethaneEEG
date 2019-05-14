@@ -80,11 +80,11 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
         writer = csv.writer(log)
         writer.writerow(TrialStatus._fields)
 
-    visual.TextStim(win, text='Wait...Press Enter', height=80, bold=True).draw()
-    win.flip()
+    visual.TextStim(kraepelin_window, text='Wait...Press Enter', height=80, bold=True).draw()
+    kraepelin_window.flip()
     event.waitKeys(keyList=['num_enter'])
     kraepelin_window.display_stimuli(
-        [visual.TextStim(win, text='Start!', height=80, bold=True)],
+        [visual.TextStim(kraepelin_window, text='Start!', height=80, bold=True)],
         wait_time=2.,
     )
 
@@ -94,8 +94,8 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
                 writer = csv.writer(log)
                 writer.writerow(output_list)
 
-    visual.TextStim(win, text='Finish! Press Enter', height=80, bold=True).draw()
-    win.flip()
+    visual.TextStim(kraepelin_window, text='Finish! Press Enter', height=80, bold=True).draw()
+    kraepelin_window.flip()
     event.waitKeys(keyList=['num_enter'])
 
 
