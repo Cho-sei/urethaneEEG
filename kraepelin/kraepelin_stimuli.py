@@ -76,12 +76,17 @@ class KraepelinWindow(visual.Window):
 
         self.clock = core.Clock()
 
-    def display_stimuli(self, stimulus_list, wait_time=None):
+    def display_stimuli(self, stimulus_list, sound=None, wait_time=0.):
+        if sound:
+            sound.play()
+            sound_wait = sound.duration
+        else:
+            sound_wait = 0
+
         for stimulus in stimulus_list:
             stimulus.draw()
         self.flip()
-        if wait_time:
-            core.wait(wait_time)
+        core.wait(wait_time + sound_wait)
 
     def wait_response(self, block_start):
         """wait keys & measure the response time
