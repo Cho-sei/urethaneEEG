@@ -49,7 +49,11 @@ def block(kraepelin_window, blocks):
         kraepelin_window.matrixstim_right.draw()
         kraepelin_window.flip()
 
-        trial_status.response, trial_status.response_time = kraepelin_window.wait_response(block_start)
+        response = kraepelin_window.wait_response(block_start)
+        if response:
+            trial_status.response, trial_status.response_time = response
+        else:
+            break
         #check the answer
         def choose_status(status_list, flags):
             return sum([status.value if flag else status.number for status, flag in zip(status_list, flags)]) % 10
