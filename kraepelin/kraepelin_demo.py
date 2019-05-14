@@ -6,12 +6,13 @@ import sys
 
 from psychopy import visual, core, event, sound
 
+from kraepelin import kraepelin_experiment
+
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)
 
 #parameter
 trial_duration = 60
-block_length = 2
 TRIAL_LENGTH = 52
 
 #defined sounds
@@ -203,77 +204,22 @@ def instruction(win):
 	)
 
 #start demo---------------------------------------------------------------------------
-def demo(win):
-	visual.TextStim(win, text='Wait...', height=80, bold=True).draw()
-	win.flip()
+def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
 	sound_namedtuple.start_demo.play()
 	core.wait(sound_namedtuple.start_demo.duration)
 
-	visual.TextStim(win, text='Start!', height=80, bold=True).draw()
-	win.flip()
+	kraepelin_window.display_stimuli(
+		[],
+		sound=sound_namedtuple.start_demo,
+	)
 
-	core.wait(2)
+	kraepelin_experiment(kraepelin_window, block_length, log_name=log_name)
 
-	for blocks in range(block_length):
-		matrixstim_left.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
-
-		rt_list = []
-		correct = 0
-		task_start = clock.getTime()
-
-		KEYLIST = ['0','1','2','3','4','5','6','7','8','9']
-
-		cueflag_list = [(False, False)]*(TRIAL_LENGTH//4) + [(False, True)]*(TRIAL_LENGTH//4) + [(True, False)]*(TRIAL_LENGTH//4) + [(True, True)]*(TRIAL_LENGTH//4)
-		random.shuffle(cueflag_list)
-		
-		for trials, cue_flag in enumerate(cueflag_list):
-			# display fixation
-			count_fixation.setText(trials)
-			count_fixation.draw()
-			win.flip()
-			core.wait(1)
-
-			#display cues
-			LRcue_dict[cue_flag].draw()			
-			win.flip()
-			core.wait(0.5)
-
-			win.flip()
-			core.wait(0.5)
-
-			#display numbers
-			fixation.draw()
-			matrixstim_right.set_random_matrix(random.randint(1, 9),random.randint(1, 9))
-			matrixstim_left.draw()
-			matrixstim_right.draw()
-			win.flip()
-
-			#enter keys and measure response time
-			key_start = clock.getTime()
-			task_time = clock.getTime() - task_start
-			keys = event.waitKeys(
-				maxWait=trial_duration-task_time,
-				keyList=KEYLIST)
-			if keys == None:
-				break
-			
-			key_end = clock.getTime()
-
-			rt = key_end - key_start
-			rt_list.append(rt)
-
-			#display after answered
-			answer_number = KEYLIST.index(keys[0])
-			answer.setText(answer_number)
-			answer.draw()
-			win.flip()
-
-			matrixstim_left.copy_status(matrixstim_right)
-
-			core.wait(0.2)
-
-	visual.TextStim(win, text='Finish!', height=80, bold=True).draw()
-	win.flip()
+	kraepelin_window.display_stimuli(
+		[],
+		sound=sound_namedtuple.finish_demo,
+		wait_time=1.,
+	)
 
 	sound_namedtuple.finish_demo.play()
 	core.wait(sound_namedtuple.finish_demo.duration)
@@ -290,7 +236,7 @@ if __name__ == "__main__":
 	from kraepelin_stimuli import KraepelinWindow
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 	
-	instruction(win)
+	#instruction(win)
 	win.flip()
 	sound_namedtuple.finish_instruction.play()
 	core.wait(sound_namedtuple.finish_instruction.duration)
@@ -300,7 +246,7 @@ if __name__ == "__main__":
 	sound_namedtuple.into_demo.play()
 	core.wait(sound_namedtuple.into_demo.duration)
 
-	demo(win)
+	demo(win, 2)
 
 	display_confirmation(win)
 

@@ -94,7 +94,7 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
 
     for count_blocks in range(block_length):
         for output_list in block(kraepelin_window, count_blocks):
-            with open('result.csv', 'a') as log:
+            with open(log_name, 'a') as log:
                 writer = csv.writer(log)
                 writer.writerow(output_list)
 
