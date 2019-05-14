@@ -353,8 +353,9 @@ def display_confirmation(win):
 
 if __name__ == "__main__":
 	from kraepelin_stimuli import KraepelinWindow
+	win = KraepelinWindow(fullScr=True)
 	
-	instruction()
+	instruction(win)
 
 	win.flip()
 
@@ -366,20 +367,20 @@ if __name__ == "__main__":
 
 	core.wait(15)
 
-	demo()
+	demo(win)
 
-	display_confirmation()
+	display_confirmation(win)
 
 	while True:
 		key = event.waitKeys(keyList=['1','2','3'])
 		if  '1' in key:
-			instruction()
+			instruction(win)
 		elif '2' in key:
-			demo()
+			demo(win)
 		else:
 			break
 		
-		display_confirmation()
+		display_confirmation(win)
 
 #--------------------------------------------------------
 #
