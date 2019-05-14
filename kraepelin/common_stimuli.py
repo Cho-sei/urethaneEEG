@@ -53,4 +53,6 @@ class MatrixStim:
 
     @property
     def pos(self):
+        """return mean of all of textstims.pos as matrix_stim.pos
+        """
         return numpy.array([textstim.pos for textstim in self.textstim_list]).mean(axis=0)
