@@ -48,25 +48,12 @@ summary_text1 = visual.TextStim(win, " V :  数字", bold=True, height=80, pos=(
 summary_text2 = visual.TextStim(win, " N :  個数", bold=True, height=80, pos=(50,-100))
 
 
-#define messages
-message_dict = dict(
-	inst='task instruction',
-	demo='demonstration',
-	wait='Wait...',
-	start='Start!',
-	finish='Finish!'
-)
-MessageNamedTuple = collections.namedtuple('MessageNamedTuple', message_dict.keys())
-def get_messages(win):
-	return MessageNamedTuple(**{key:visual.TextStim(win, text=value, height=80, bold=True)})
-
-
 #defined sounds
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', ['introduction', 'inst_calc', 'inst_cue_num', 'inst_progress', 'firstblock', 'inst_cue_value', 'into_second', 'secondblock', 'into_demo', 'start_demo', 'finish_demo', 'confirmation', 'inst_fixa', 'summary_cue'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 #instruction start---------------------------------------------------------------------
-def instruction():
+def instruction(win):
 	visual.TextStim(win, text='task instruction', height=80, bold=True).draw()
 	win.flip()
 
