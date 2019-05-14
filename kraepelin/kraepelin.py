@@ -1,4 +1,6 @@
+import csv
 import random
+import os
 import sys
 
 from psychopy import visual, core, event
@@ -71,39 +73,37 @@ def block(kraepelin_window, blocks):
         if kraepelin_window.clock.getTime()-block_start > kraepelin_window.BLOCK_DURATION - 2.:
             break
 
+def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
+    if os.path.exists(log_name):
+        raise RuntimeError("Log file({}) already exists.".format(log_name))
+    with open(log_name, 'w') as log:
+        writer = csv.writer(log)
+        writer.writerow(TrialStatus._fields)
+
+    visual.TextStim(win, text='Wait...Press Enter', height=80, bold=True).draw()
+    win.flip()
+    event.waitKeys(keyList=['num_enter'])
+    kraepelin_window.display_stimuli(
+        [visual.TextStim(win, text='Start!', height=80, bold=True)],
+        wait_time=2.,
+    )
+
+    for count_blocks in range(block_length):
+        for output_list in block(kraepelin_window, count_blocks):
+            with open('result.csv', 'a') as log:
+                writer = csv.writer(log)
+                writer.writerow(output_list)
+
+    visual.TextStim(win, text='Finish! Press Enter', height=80, bold=True).draw()
+    win.flip()
+    event.waitKeys(keyList=['num_enter'])
+
+
 if __name__ == "__main__":
-    import csv
     #set global escape
     event.globalKeys.add(key='escape', func=sys.exit)
 
     #window defined
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
-    #visual text
-    msg_wait = visual.TextStim(win, text='Wait...', height=80, bold=True)
-    msg_start = visual.TextStim(win, text='Start!', height=80, bold=True)
-    msg_finish = visual.TextStim(win, text='Finish!', height=80, bold=True)
-
-    msg_wait.draw()
-    win.flip()
-    event.waitKeys(keyList=['space'])
-
-    msg_start.draw()
-    win.flip()
-
-    core.wait(2)
-
-    with open('result.csv', 'w') as log:
-        writer = csv.writer(log)
-        writer.writerow(TrialStatus._fields)
-    
-    for count_blocks in range(BLOCK_LENGTH):
-        for output_list in block(win, count_blocks):
-            with open('result.csv', 'a') as log:
-                writer = csv.writer(log)
-                writer.writerow(output_list)
-        
-    msg_finish.draw()
-    win.flip()
-    event.waitKeys(keyList=['space'])
-	
+    kraepelin_experiment(win, BLOCK_LENGTH, 'result.csv')
