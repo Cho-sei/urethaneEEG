@@ -15,13 +15,6 @@ BLOCK_DURATION = 60#[s]
 TRIAL_MAXLENGTH = 100
 BLOCK_LENGTH = 10
 
-#----------------------------------------------------------------------------
-#   
-#   各セッション開始前にCueについてのサマリーを提示する
-#
-#
-#-------------------------------------------------------------------------------
-
 TrialStatus = namedlist(
     'TrialStatus',
     ['blocks', 'trials', 'cue_flag', 'response_time', 'response', 'correct_response', 'is_correct', 'stim_left', 'stim_right', 'trial_endtime']
