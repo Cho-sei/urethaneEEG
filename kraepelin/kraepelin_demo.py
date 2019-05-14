@@ -398,34 +398,35 @@ def display_confirmation():
 
 	confirmation.play()
 
-#main--------------------------------------------------------------------------------
-instruction()
-
-win.flip()
-
-into_demo.play()
-
-core.wait(4)
-
-msg_demo.draw()
-win.flip()
-
-core.wait(15)
-
-demo()
-
-display_confirmation()
-
-while True:
-	key = event.waitKeys(keyList=['1','2','3'])
-	if  '1' in key:
-		instruction()
-	elif '2' in key:
-		demo()
-	else:
-		break
+if __name__ == "__main__":
 	
+	instruction()
+
+	win.flip()
+
+	into_demo.play()
+
+	core.wait(4)
+
+	msg_demo.draw()
+	win.flip()
+
+	core.wait(15)
+
+	demo()
+
 	display_confirmation()
+
+	while True:
+		key = event.waitKeys(keyList=['1','2','3'])
+		if  '1' in key:
+			instruction()
+		elif '2' in key:
+			demo()
+		else:
+			break
+		
+		display_confirmation()
 
 #--------------------------------------------------------
 #
