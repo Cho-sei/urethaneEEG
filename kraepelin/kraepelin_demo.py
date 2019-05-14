@@ -1,27 +1,13 @@
-from psychopy import visual, core, event, sound
-import random
-import numpy as np
+import collections
 import itertools
 import math
+import random
 import sys
-import collections
 
-from kraepelin_stimuli import get_fixation_stim, get_charcue_stim_dict, KraepelinMatrixStim
+from psychopy import visual, core, event, sound
 
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)
-
-x = y = np.array([-50, 0, 50])
-
-def arrangement(text, num, position, posList):
-	text_view.setText(text)
-
-	matrix = list(itertools.product(x+position, y))
-	
-	for i in range(num):
-		text_view.setPos(matrix[posList[i]])
-		text_view.draw()
-
 
 #parameter
 trial_duration = 60
@@ -366,6 +352,7 @@ def display_confirmation(win):
 	sound_namedtuple.confirmation.play()
 
 if __name__ == "__main__":
+	from kraepelin_stimuli import KraepelinWindow
 	
 	instruction()
 
