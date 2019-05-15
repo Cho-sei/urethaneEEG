@@ -2,22 +2,25 @@ import collections
 import random
 
 from psychopy import visual, sound, event
+SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
+    'into_ten', 'start_ten', 'redo_ten', 'start_demo', 'finish_demo'])
+sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
-def practice_tenkey(kraepelin_window, sounds):
+def practice_tenkey(kraepelin_window):
     inst_stim = visual.TextStim(kraepelin_window, height=80)
     ans_text = visual.TextStim(kraepelin_window, height=80, pos=(0,-100))
 
     kraepelin_window.display_stimuli(
         [visual.TextStim(win, text=u'テンキー入力練習', height=80)],
-        sound=sounds.into_ten,
+        sound=sound_namedtuple.into_ten,
     )
     kraepelin_window.display_stimuli(
         [visual.TextStim(win, 'Wait...', height=80)],
-        sound=sounds.start_ten,
+        sound=sound_namedtuple.start_ten,
     )
     kraepelin_window.display_stimuli(
         [visual.TextStim(win, 'Wait...', height=80)],
-        sound=sounds.start_demo,
+        sound=sound_namedtuple.start_demo,
     )
 
     redo_flag = True
@@ -61,12 +64,12 @@ def practice_tenkey(kraepelin_window, sounds):
         else:
             kraepelin_window.display_stimuli(
                 [visual.TextStim(win, 'Redo', height=80)],
-                sound=sounds.redo_ten,
+                sound=sound_namedtuple.redo_ten,
             )
 
     kraepelin_window.display_stimuli(
         [visual.TextStim(win, 'Finish! Press Enter', height=80)],
-        sound=sounds.finish_demo,
+        sound=sound_namedtuple.finish_demo,
     )
     event.waitKeys(keyList=['num_enter'])
 
@@ -74,10 +77,6 @@ if __name__ == "__main__":
     import sys
     #set global escape
     event.globalKeys.add(key='escape', func=sys.exit)
-
-    SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
-        'into_ten', 'start_ten', 'redo_ten', 'start_demo', 'finish_demo'])
-    sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
