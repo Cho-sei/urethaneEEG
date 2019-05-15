@@ -2,6 +2,7 @@ import collections
 import random
 
 from psychopy import visual, sound, event
+
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
     'into_ten', 'start_ten', 'redo_ten', 'start_demo', 'finish_demo'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
@@ -81,4 +82,4 @@ if __name__ == "__main__":
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
-    practice_tenkey(win, sound_namedtuple)
+    practice_tenkey(win)
