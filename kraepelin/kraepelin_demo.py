@@ -202,12 +202,19 @@ def instruction(win):
 		sound=sound_namedtuple.summary_cue,
 		wait_time=2.
 	)
+	win.display_stimuli(
+		[],
+		sound=sound_namedtuple.finish_instruction,
+		wait_time=1.,
+	)
+
 
 #start demo---------------------------------------------------------------------------
 def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
-	sound_namedtuple.start_demo.play()
-	core.wait(sound_namedtuple.start_demo.duration)
-
+	kraepelin_window.display_stimuli(
+		[visual.TextStim(win, text=u'練習', height=80, bold=True)],
+		sound=sound_namedtuple.into_demo,
+	)
 	kraepelin_window.display_stimuli(
 		[],
 		sound=sound_namedtuple.start_demo,
@@ -238,18 +245,8 @@ if __name__ == "__main__":
 	block_length = 2
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 	
-	#instruction(win)
-	win.flip()
-	sound_namedtuple.finish_instruction.play()
-	core.wait(sound_namedtuple.finish_instruction.duration)
-
-	visual.TextStim(win, text=u'練習', height=80, bold=True).draw()
-	win.flip()
-	sound_namedtuple.into_demo.play()
-	core.wait(sound_namedtuple.into_demo.duration)
-
+	instruction(win)
 	demo(win, block_length)
-
 	display_confirmation(win)
 
 	while True:
