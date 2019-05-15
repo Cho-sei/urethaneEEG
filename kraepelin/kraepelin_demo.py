@@ -11,10 +11,6 @@ from kraepelin import kraepelin_experiment
 #set global escape
 event.globalKeys.add(key='escape', func=sys.exit)
 
-#parameter
-trial_duration = 60
-TRIAL_LENGTH = 52
-
 #defined sounds
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
 	'introduction', 'inst_calc','post_cue', 'inst_cue_num', 'inst_progress_1', 'inst_progress_2', 'inst_progress_3', 
