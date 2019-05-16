@@ -205,7 +205,7 @@ def instruction(win):
 #start demo---------------------------------------------------------------------------
 def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
 	kraepelin_window.display_stimuli(
-		[visual.TextStim(win, text=u'練習', height=80, bold=True)],
+		[visual.TextStim(kraepelin_window, text=u'練習', height=80, bold=True)],
 		sound=sound_namedtuple.into_demo,
 	)
 	kraepelin_window.display_stimuli(
