@@ -224,9 +224,6 @@ def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
 		wait_time=1.,
 	)
 
-	sound_namedtuple.finish_demo.play()
-	core.wait(sound_namedtuple.finish_demo.duration)
-
 #confirmation------------------------------------------------------------------------
 def display_confirmation(win):
 	sound_namedtuple.confirmation.play()
