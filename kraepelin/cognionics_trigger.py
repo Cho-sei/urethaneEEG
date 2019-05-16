@@ -10,7 +10,7 @@ class CognionicsTrigger:
         """send a binary to port as a trigger.
         Another thread is used avoiding blocking main experiment.
         """
-        assert len(char) == 1, "serial.write can send only 1 byte."
+        assert len(char) == 1, "cognionics usb can send only 1 byte."
         serialport_lock = threading.Lock()
         trigger_onset = threading.Thread(
             target=self._threadsafe_trigger, args=(self.serial_port, char.encode(), serialport_lock)
