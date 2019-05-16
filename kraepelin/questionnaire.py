@@ -56,6 +56,32 @@ def karolinska_sleepinessscale(win):
         'karolinska sleepiness scale'
     )
 
+odorant_ratingscale_keyargs = dict(
+    low=1, high=5,
+    showValue=False,
+    skipKeys=False,
+    tickMarks=list(range(1, 5)),
+    pos=(0, -350)
+)
+
+def odorant_questionaire(win):
+    return [control_ratingscale(
+        win,
+        visual.RatingScale(
+            win,
+            low=1, high=5,
+            showValue=False,
+            skipKeys=False,
+            tickMarks=list(range(1, 6)),
+            pos=(0, -350)
+        ),
+        [
+            visual.ImageStim(win, 'imgs/inst_smell.png', pos=(0, 400)),
+            visual.ImageStim(win, 'imgs/{}.png'.format(qname), pos=(0, -50))
+        ],
+        'odor ' + qname,
+    ) for qname in ('edibility', 'familiarity', 'intensity', 'pleasantness')]
+
 if __name__ == "__main__":
     import sys
     from psychopy import event
@@ -69,3 +95,4 @@ if __name__ == "__main__":
 
     print(fatigue_visualanalogscale(win))
     print(karolinska_sleepinessscale(win))
+    print(*odorant_questionaire(win))
