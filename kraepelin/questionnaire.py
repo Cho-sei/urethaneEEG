@@ -14,7 +14,7 @@ def control_ratingscale(win, ratingscale, stimuli_list, test_name, last_showtime
     core.wait(last_showtime)
 
     return dict(zip(
-        ratingscale_fieldnames,
+        ratingscale_keynames,
         [test_name, ratingscale.getRating(), ratingscale.getRT(), ratingscale.getHistory()]
     ))
 
