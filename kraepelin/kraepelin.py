@@ -31,41 +31,40 @@ def block(kraepelin_window, blocks):
 
         #display count
         kraepelin_window.msg_count.setText(trials)
-        kraepelin_window.msg_count.draw()
-        kraepelin_window.flip()
-        core.wait(1.)
-
+        kraepelin_window.display_stimuli(
+            [kraepelin_window.msg_count],
+            wait_time=1.,
+        )
         #display cue
-        kraepelin_window.LRcue_dict[trial_status.cue_flag].draw()
-        kraepelin_window.flip()
-        core.wait(0.5)
-        kraepelin_window.flip()
-        core.wait(0.5)
-        
+        kraepelin_window.display_stimuli(
+            [kraepelin_window.LRcue_dict[trial_status.cue_flag]],
+            wait_time=0.5,
+        )
+        kraepelin_window.display_stimuli(
+            [],
+            wait_time=0.5,
+        )
         #display fixation cross & stimuli
-        kraepelin_window.fixation.draw()
         kraepelin_window.matrixstim_right.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
-        kraepelin_window.matrixstim_left.draw()
-        kraepelin_window.matrixstim_right.draw()
-        kraepelin_window.flip()
-
+        kraepelin_window.display_stimuli(
+            [kraepelin_window.fixation, kraepelin_window.matrixstim_left, kraepelin_window.matrixstim_right],
+            wait_time=0.0,
+        )
         response = kraepelin_window.wait_response(block_start)
-        if response:
-            trial_status.response, trial_status.response_time = response
-        else:
+        if response is None:
             break
+        trial_status.response, trial_status.response_time = response
         #check the answer
         def choose_status(status_list, flags):
             return sum([status.value if flag else status.number for status, flag in zip(status_list, flags)]) % 10
         trial_status.correct_response = choose_status([kraepelin_window.matrixstim_left.matrix_status, kraepelin_window.matrixstim_right.matrix_status], trial_status.cue_flag)
         trial_status.is_correct = trial_status.response == trial_status.correct_response
-
         #display after answered
         kraepelin_window.msg_answer.setText(trial_status.response)
-        kraepelin_window.msg_answer.draw()
-        kraepelin_window.flip()
-        core.wait(0.2)
-
+        kraepelin_window.display_stimuli(
+            [kraepelin_window.msg_answer],
+            wait_time=0.2,
+        )
         #output log
         trial_status.stim_left = kraepelin_window.matrixstim_left.matrix.reshape(-1,)
         trial_status.stim_right = kraepelin_window.matrixstim_right.matrix.reshape(-1,)
