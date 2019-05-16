@@ -2,6 +2,7 @@ from kraepelin import kraepelin_experiment
 from kraepelin_demo import instruction, demo, display_confirmation
 from resting_state import eyesopen_restingstate_recording, eyesclose_restingstate_recording, subtractingstate_recording
 from questionnaire import ratingscale_keynames, fatigue_visualanalogscale, karolinska_sleepinessscale
+from practice_tenkey import practice_tenkey
 
 if __name__ == "__main__":
     import sys
@@ -24,7 +25,7 @@ if __name__ == "__main__":
     eyesclose_restingstate_recording(win)
     subtractingstate_recording(win)
 #practice 10-key
-
+    practice_tenkey(win)
 #instruction & demonstration
     block_length_demo = 2
     demo_trial = 1#for log.csv name
