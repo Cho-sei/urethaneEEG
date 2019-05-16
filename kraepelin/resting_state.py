@@ -29,12 +29,12 @@ def restingstate_recording(win, wait_time):
 @start_waitmsg
 def eyesopen_restingstate_recording(win):
 	sound_namedtuple.into_EOresting.play()
-	core.wait(sound_namedtuple.into_EOresting.duration)
+	core.wait(sound_namedtuple.into_EOresting.getDuration())
 
 	restingstate_recording(win, 60)
 
 	sound_namedtuple.finish_resting.play()
-	core.wait(sound_namedtuple.finish_resting.duration)
+	core.wait(sound_namedtuple.finish_resting.getDuration())
 
 @start_waitmsg
 def eyesclose_restingstate_recording(win):
@@ -42,13 +42,13 @@ def eyesclose_restingstate_recording(win):
 	beep.setVolume(0.5)
 
 	sound_namedtuple.into_ECresting.play()
-	core.wait(sound_namedtuple.into_ECresting.duration)
+	core.wait(sound_namedtuple.into_ECresting.getDuration())
 	beep.play()
 
 	restingstate_recording(win, 60)
 
 	sound_namedtuple.finish_resting.play()
-	core.wait(sound_namedtuple.finish_resting.duration)
+	core.wait(sound_namedtuple.finish_resting.getDuration())
 
 @start_waitmsg
 def subtractingstate_recording(win):
@@ -58,13 +58,13 @@ def subtractingstate_recording(win):
 	dlg.addField(u'答え:','')
 
 	sound_namedtuple.into_subtract.play()
-	core.wait(sound_namedtuple.into_subtract.duration)
+	core.wait(sound_namedtuple.into_subtract.getDuration())
 	beep.play()
 
 	restingstate_recording(win, 60)
 
 	sound_namedtuple.finish_resting.play()
-	core.wait(sound_namedtuple.finish_resting.duration)
+	core.wait(sound_namedtuple.finish_resting.getDuration())
 
 	win.setMouseVisible(True)
 	win.flip()
