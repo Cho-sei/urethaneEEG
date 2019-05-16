@@ -12,15 +12,15 @@ def practice_tenkey(kraepelin_window):
     ans_text = visual.TextStim(kraepelin_window, height=80, pos=(0,-100))
 
     kraepelin_window.display_stimuli(
-        [visual.TextStim(win, text=u'テンキー入力練習', height=80)],
+        [visual.TextStim(kraepelin_window, text=u'テンキー入力練習', height=80)],
         sound=sound_namedtuple.into_ten,
     )
     kraepelin_window.display_stimuli(
-        [visual.TextStim(win, 'Wait...', height=80)],
+        [visual.TextStim(kraepelin_window, 'Wait...', height=80)],
         sound=sound_namedtuple.start_ten,
     )
     kraepelin_window.display_stimuli(
-        [visual.TextStim(win, 'Wait...', height=80)],
+        [visual.TextStim(kraepelin_window, 'Wait...', height=80)],
         sound=sound_namedtuple.start_demo,
     )
 
@@ -31,7 +31,7 @@ def practice_tenkey(kraepelin_window):
         false_counter = 0
 
         kraepelin_window.display_stimuli(
-            [visual.TextStim(win, 'Start!', height=80)],
+            [visual.TextStim(kraepelin_window, 'Start!', height=80)],
             wait_time=2.,
         )
         for number in stim_list:
@@ -64,12 +64,12 @@ def practice_tenkey(kraepelin_window):
             redo_flag = False
         else:
             kraepelin_window.display_stimuli(
-                [visual.TextStim(win, 'Redo', height=80)],
+                [visual.TextStim(kraepelin_window, 'Redo', height=80)],
                 sound=sound_namedtuple.redo_ten,
             )
 
     kraepelin_window.display_stimuli(
-        [visual.TextStim(win, 'Finish! Press Enter', height=80)],
+        [visual.TextStim(kraepelin_window, 'Finish! Press Enter', height=80)],
         sound=sound_namedtuple.finish_demo,
     )
     event.waitKeys(keyList=['num_enter'])
