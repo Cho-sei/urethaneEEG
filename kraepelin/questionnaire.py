@@ -1,6 +1,8 @@
 from psychopy import core, visual
 
-def control_ratingscale(win, ratingscale, stimuli_list, last_showtime=0.5):
+ratingscale_keynames = ['name', 'rating', 'response_time', 'history']
+
+def control_ratingscale(win, ratingscale, stimuli_list, test_name, last_showtime=0.5):
     while ratingscale.noResponse:
         for stimulus in stimuli_list + [ratingscale]:
             stimulus.draw()
@@ -11,11 +13,10 @@ def control_ratingscale(win, ratingscale, stimuli_list, last_showtime=0.5):
     win.flip()
     core.wait(last_showtime)
 
-    return dict(
-        rating=ratingscale.getRating(),
-        response_time=ratingscale.getRT(),
-        histories=ratingscale.getHistory()
-    )
+    return dict(zip(
+        ratingscale_fieldnames,
+        [test_name, ratingscale.getRating(), ratingscale.getRT(), ratingscale.getHistory()]
+    ))
 
 def fatigue_visualanalogscale(win):
     return control_ratingscale(
@@ -35,7 +36,7 @@ def fatigue_visualanalogscale(win):
             visual.ImageStim(win, 'imgs/VAS_left.png', pos=(-500, -250)),
             visual.ImageStim(win, 'imgs/VAS_right.png', pos=(500, -250)),
         ],
-
+        'fatigue visual analog scale'
     )
 
 def karolinska_sleepinessscale(win):
@@ -52,6 +53,7 @@ def karolinska_sleepinessscale(win):
         [
             visual.ImageStim(win, 'imgs/inst_KASS.png')
         ],
+        'karolinska sleepiness scale'
     )
 
 if __name__ == "__main__":

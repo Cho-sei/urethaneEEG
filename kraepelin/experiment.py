@@ -1,6 +1,7 @@
 from kraepelin import kraepelin_experiment
 from kraepelin_demo import instruction, demo, display_confirmation
-from resting_state import eyesopen_restingstate_recording, subtractingstate_recording
+from resting_state import eyesopen_restingstate_recording, eyesclose_restingstate_recording, subtractingstate_recording
+from questionnaire import ratingscale_keynames, fatigue_visualanalogscale, karolinska_sleepinessscale
 
 if __name__ == "__main__":
     import sys
@@ -13,9 +14,15 @@ if __name__ == "__main__":
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
 #questionnaire
-
+    with open(logfile_name+"_questionnaire1.csv", 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
+        writer.writeheader()
+        writer.writerow(fatigue_visualanalogscale(win))
+        writer.writerow(karolinska_sleepinessscale(win))
 #resting-state EEG recording
-
+    eyesopen_restingstate_recording(win)
+    eyesclose_restingstate_recording(win)
+    subtractingstate_recording(win)
 #practice 10-key
 
 #instruction & demonstration
@@ -30,17 +37,22 @@ if __name__ == "__main__":
             instruction(win)
         elif '2' in key:
             demo_trial = demo_trial + 1
-            demo_result = logfile_name+'_demo{}.csv'.format(demo_trial)
+            demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
             demo(win, block_length_demo, log_name=demo_result)
         else:
             break
         display_confirmation(win)
 #kraepelin experiment
-    experiment_result = logfile_name+'_result.csv'
+    experiment_result = logfile_name+'_kraepelin.csv'
     block_length = 10
     kraepelin_experiment(win, block_length, log_name=experiment_result)
 #resting-state EEG recording
     eyesopen_restingstate_recording(win)
+    eyesclose_restingstate_recording(win)
     subtractingstate_recording(win)
 #questionnaire
-
+    with open(logfile_name+"_questionnaire2.csv", 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
+        writer.writeheader()
+        writer.writerow(fatigue_visualanalogscale(win))
+        writer.writerow(karolinska_sleepinessscale(win))
