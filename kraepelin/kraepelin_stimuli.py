@@ -1,5 +1,6 @@
 import collections
 import itertools
+import os
 import random
 
 import numpy
@@ -54,6 +55,7 @@ class KraepelinMatrixStim(MatrixStim):
         self.matrix_status = other.matrix_status
         self.set_matrix(other.matrix)
 
+get_sound_duration = lambda s:s.getDuration() if sys.platform.startswith('win') else lambda s:s.duration
 class KraepelinWindow(visual.Window):
 
     KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -79,7 +81,7 @@ class KraepelinWindow(visual.Window):
     def display_stimuli(self, stimulus_list, sound=None, wait_time=0.):
         if sound:
             sound.play()
-            sound_wait = sound.duration
+            sound_wait = get_sound_duration(sound)
         else:
             sound_wait = 0
 
