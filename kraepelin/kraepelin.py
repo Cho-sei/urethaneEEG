@@ -6,7 +6,9 @@ import sys
 from psychopy import visual, core, event
 
 from kraepelin_stimuli import KraepelinWindow
+from kraepelin_trigger import trigger_values
 from namedlist import namedlist
+from quick20_trigger import send_trigger
 #parameter
 TRIAL_MAXLENGTH = 100
 BLOCK_LENGTH = 10
@@ -30,12 +32,14 @@ def block(kraepelin_window, blocks):
         trial_status.cue_flag = next(kraepelin_window.cueflag_cyclic_iter)
 
         #display count
+        send_trigger(trigger_values.Kraepelin_CountFixation)
         kraepelin_window.msg_count.setText(trials)
         kraepelin_window.display_stimuli(
             [kraepelin_window.msg_count],
             wait_time=1.,
         )
         #display cue
+        send_trigger(trigger_values.Kraepelin_Cue)
         kraepelin_window.display_stimuli(
             [kraepelin_window.LRcue_dict[trial_status.cue_flag]],
             wait_time=0.5,
@@ -45,12 +49,15 @@ def block(kraepelin_window, blocks):
             wait_time=0.5,
         )
         #display fixation cross & stimuli
+        send_trigger(trigger_values.Kraepelin_Stim)
         kraepelin_window.matrixstim_right.set_random_matrix(random.randint(1, 9), random.randint(1, 9))
         kraepelin_window.display_stimuli(
             [kraepelin_window.fixation, kraepelin_window.matrixstim_left, kraepelin_window.matrixstim_right],
             wait_time=0.0,
         )
         response = kraepelin_window.wait_response(block_start)
+
+        send_trigger(trigger_values.Kraepelin_Resp)
         if response is None:
             break
         trial_status.response, trial_status.response_time = response
@@ -86,6 +93,8 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
     visual.TextStim(kraepelin_window, text='Wait...Press Enter', height=80, bold=True).draw()
     kraepelin_window.flip()
     event.waitKeys(keyList=['num_enter'])
+
+    send_trigger(trigger_values.Kraepelin_Start)
     kraepelin_window.display_stimuli(
         [visual.TextStim(kraepelin_window, text='Start!', height=80, bold=True)],
         wait_time=2.,
@@ -97,6 +106,7 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
                 writer = csv.writer(log)
                 writer.writerow(output_list)
 
+    send_trigger(trigger_values.Kraepelin_Fin)
     visual.TextStim(kraepelin_window, text='Finish! Press Enter', height=80, bold=True).draw()
     kraepelin_window.flip()
     event.waitKeys(keyList=['num_enter'])

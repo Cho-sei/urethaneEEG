@@ -6,7 +6,8 @@ import random
 from psychopy import visual, core, sound
 
 from kraepelin import kraepelin_experiment
-
+from kraepelin_trigger import trigger_values
+from quick20_trigger import send_trigger
 
 #defined sounds
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
@@ -18,6 +19,8 @@ sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+
 
 #instruction start---------------------------------------------------------------------
 def instruction(win):
+	send_trigger(trigger_values.Demo_Inst)
+
 	#components settings
 	emphasisrect_dict = {
 		key:visual.Rect(win, pos=stim.pos, width=200, height=200, lineColor='red', lineWidth=5)
@@ -204,6 +207,8 @@ def instruction(win):
 
 #start demo---------------------------------------------------------------------------
 def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
+	send_trigger(trigger_values.Demo_Start)
+
 	kraepelin_window.display_stimuli(
 		[visual.TextStim(kraepelin_window, text=u'練習', height=80, bold=True)],
 		sound=sound_namedtuple.into_demo,
@@ -220,6 +225,7 @@ def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
 		sound=sound_namedtuple.finish_demo,
 		wait_time=1.,
 	)
+	send_trigger(trigger_values.Demo_Fin)
 
 #confirmation------------------------------------------------------------------------
 def display_confirmation(win):

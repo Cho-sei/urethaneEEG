@@ -2,9 +2,12 @@ import collections
 import random
 from psychopy import visual, sound, core, gui
 from kraepelin_stimuli import get_fixation_stim
+from quick20_trigger import send_trigger
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
 	'into_EOresting', 'into_ECresting', 'into_subtract', 'finish_resting', 'answer_of_subtraction'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
+
+RECORDING_DURATION = 60#[s]
 
 #start-----------------------------------------------------------------
 def start_waitmsg(func):
@@ -15,30 +18,33 @@ def start_waitmsg(func):
 		return func(*args, **keyargs)
 	return wrapper
 
-def restingstate_recording(win, wait_time):
+def restingstate_recording(win, wait_time, trigger):
 	visual.TextStim(win, 'Start!', height=80).draw()
 	win.flip()
 	core.wait(2)
 
 	get_fixation_stim(win).draw()
 	win.flip()
+
+	send_trigger(trigger)
 	core.wait(wait_time)
+	send_trigger(trigger)
 
 	visual.TextStim(win, 'Finish!', height=80).draw()
 	win.flip()
 
 @start_waitmsg
-def eyesopen_restingstate_recording(win):
+def eyesopen_restingstate_recording(win, trigger):
 	sound_namedtuple.into_EOresting.play()
 	core.wait(sound_namedtuple.into_EOresting.getDuration())
 
-	restingstate_recording(win, 60)
+	restingstate_recording(win, RECORDING_DURATION, trigger)
 
 	sound_namedtuple.finish_resting.play()
 	core.wait(sound_namedtuple.finish_resting.getDuration())
 
 @start_waitmsg
-def eyesclose_restingstate_recording(win):
+def eyesclose_restingstate_recording(win, trigger):
 	beep = sound.Sound(value=1000, secs=1.0)
 	beep.setVolume(0.5)
 
@@ -46,13 +52,13 @@ def eyesclose_restingstate_recording(win):
 	core.wait(sound_namedtuple.into_ECresting.getDuration())
 	beep.play()
 
-	restingstate_recording(win, 60)
+	restingstate_recording(win, RECORDING_DURATION, trigger)
 
 	sound_namedtuple.finish_resting.play()
 	core.wait(sound_namedtuple.finish_resting.getDuration())
 
 @start_waitmsg
-def subtractingstate_recording(win):
+def subtractingstate_recording(win, trigger):
 	beep = sound.Sound(value=1000, secs=1.0)
 	beep.setVolume(0.5)
 	dlg = gui.Dlg(title=u'回答')
@@ -62,7 +68,7 @@ def subtractingstate_recording(win):
 	core.wait(sound_namedtuple.into_subtract.getDuration())
 	beep.play()
 
-	restingstate_recording(win, 60)
+	restingstate_recording(win, RECORDING_DURATION, trigger)
 
 	sound_namedtuple.finish_resting.play()
 	core.wait(sound_namedtuple.finish_resting.getDuration())

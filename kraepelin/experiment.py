@@ -5,6 +5,8 @@ from kraepelin_demo import instruction, demo, display_confirmation
 from resting_state import eyesopen_restingstate_recording, eyesclose_restingstate_recording, subtractingstate_recording
 from questionnaire import ratingscale_keynames, fatigue_visualanalogscale, karolinska_sleepinessscale
 from practice_tenkey import practice_tenkey
+from kraepelin_trigger import trigger_values
+from quick20_trigger import send_trigger
 
 if __name__ == "__main__":
     import sys
@@ -16,6 +18,7 @@ if __name__ == "__main__":
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
+    send_trigger(trigger_values.Experiment_Start)
 #questionnaire
     with open(logfile_name+"_questionnaire1.csv", 'w') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
@@ -23,9 +26,9 @@ if __name__ == "__main__":
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
 #resting-state EEG recording
-    eyesopen_restingstate_recording(win)
-    eyesclose_restingstate_recording(win)
-    subtractingstate_recording(win)
+    eyesopen_restingstate_recording(win, trigger_values.Pre_Resting_EO)
+    eyesclose_restingstate_recording(win, trigger_values.Pre_Resting_EC)
+    subtractingstate_recording(win, trigger_values.Pre_Resting_Sub)
 #practice 10-key
     practice_tenkey(win)
 #instruction & demonstration
@@ -50,9 +53,9 @@ if __name__ == "__main__":
     block_length = 10
     kraepelin_experiment(win, block_length, log_name=experiment_result)
 #resting-state EEG recording
-    eyesopen_restingstate_recording(win)
-    eyesclose_restingstate_recording(win)
-    subtractingstate_recording(win)
+    eyesopen_restingstate_recording(win, trigger_values.Post_Resting_EO)
+    eyesclose_restingstate_recording(win, trigger_values.Post_Resting_EC)
+    subtractingstate_recording(win, trigger_values.Post_Resting_Sub)
 #questionnaire
     with open(logfile_name+"_questionnaire2.csv", 'w') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
