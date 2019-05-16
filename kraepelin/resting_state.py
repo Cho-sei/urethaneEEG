@@ -1,3 +1,4 @@
+import collections
 import random
 from psychopy import visual, sound, core, gui
 from kraepelin_stimuli import get_fixation_stim
