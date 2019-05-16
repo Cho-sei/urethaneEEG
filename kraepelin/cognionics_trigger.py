@@ -3,8 +3,8 @@ import threading
 import time
 
 class CognionicsTrigger:
-    def __init__(self, port_name, **serial_keyargs):
-        self.serial_port = serial.Serial(port_name, baudrate=57600, **serial_keyargs)
+    def __init__(self, port_name, baudrate=57600, **serial_keyargs):
+        self.serial_port = serial.Serial(port_name, **serial_keyargs)
 
     def send_trigger(self, char):
         """send a binary to port as a trigger.
