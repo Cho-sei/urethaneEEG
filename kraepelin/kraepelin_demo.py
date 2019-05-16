@@ -2,14 +2,11 @@ import collections
 import itertools
 import math
 import random
-import sys
 
-from psychopy import visual, core, event, sound
+from psychopy import visual, core, sound
 
 from kraepelin import kraepelin_experiment
 
-#set global escape
-event.globalKeys.add(key='escape', func=sys.exit)
 
 #defined sounds
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
@@ -233,7 +230,13 @@ def display_confirmation(win):
 
 
 if __name__ == "__main__":
+	import sys
+	from psychopy import event
 	from kraepelin_stimuli import KraepelinWindow
+
+	#set global escape
+	event.globalKeys.add(key='escape', func=sys.exit)
+
 
 	block_length = 2
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
