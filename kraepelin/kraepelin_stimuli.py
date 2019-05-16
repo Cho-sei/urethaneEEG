@@ -2,6 +2,7 @@ import collections
 import itertools
 import os
 import random
+import sys
 
 import numpy
 from psychopy import core, visual, event
