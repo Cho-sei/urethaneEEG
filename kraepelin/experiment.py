@@ -41,7 +41,7 @@ if __name__ == "__main__":
     demo(win, block_length_demo, log_name=demo_result)
     display_confirmation(win)
     while True:
-        key = event.waitKeys(keyList=['1','2','3'])
+        key = event.waitKeys(keyList=['num_1','num_2','num_3'])
         if  '1' in key:
             instruction(win)
         elif '2' in key:

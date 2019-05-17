@@ -252,7 +252,7 @@ if __name__ == "__main__":
 	display_confirmation(win)
 
 	while True:
-		key = event.waitKeys(keyList=['1','2','3'])
+		key = event.waitKeys(keyList=['num_1','num_2','num_3'])
 		if  '1' in key:
 			instruction(win)
 		elif '2' in key:
@@ -262,9 +262,3 @@ if __name__ == "__main__":
 		
 		display_confirmation(win)
 
-#--------------------------------------------------------
-#
-#	まとめスライド
-#	Cueについて箇条書きor表にしてまとめ
-#
-#------------------------------------------------------
