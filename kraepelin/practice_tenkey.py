@@ -19,14 +19,17 @@ def practice_tenkey(kraepelin_window):
     kraepelin_window.display_stimuli(
         [visual.TextStim(kraepelin_window, text=u'テンキー入力練習', height=80)],
         sound=sound_namedtuple.into_ten,
+        wait_time=1.,
     )
     kraepelin_window.display_stimuli(
         [visual.TextStim(kraepelin_window, 'Wait...', height=80)],
         sound=sound_namedtuple.start_ten,
+        wait_time=1.,
     )
     kraepelin_window.display_stimuli(
         [visual.TextStim(kraepelin_window, 'Wait...', height=80)],
         sound=sound_namedtuple.start_demo,
+        wait_time=1.,
     )
 
     redo_flag = True
