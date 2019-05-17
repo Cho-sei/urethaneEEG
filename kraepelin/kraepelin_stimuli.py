@@ -62,6 +62,7 @@ class KraepelinWindow(visual.Window):
 #    KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     NUMKEY_NAME = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
     ENTER_NAME = ['return']
+    DELETE_NAME = ['delete', 'num_delete']
     BLOCK_DURATION = 60#[s]
 
     def __init__(self, *args, **keyargs):
