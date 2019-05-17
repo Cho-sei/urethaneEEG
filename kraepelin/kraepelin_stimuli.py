@@ -59,8 +59,8 @@ class KraepelinMatrixStim(MatrixStim):
 get_sound_duration = lambda s:s.getDuration() if sys.platform.startswith('win') else lambda s:s.duration
 class KraepelinWindow(visual.Window):
 
-    KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-#    KEY_LIST = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
+#    KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    KEY_LIST = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
     BLOCK_DURATION = 60#[s]
 
     def __init__(self, *args, **keyargs):
