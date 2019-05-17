@@ -36,7 +36,7 @@ def practice_tenkey(kraepelin_window):
     while redo_flag:
         send_trigger(trigger_values.Prac_ten_Start)
         #reset parameter
-        stim_list = sum([random.sample(range(1, len(kraepelin_window.KEY_LIST) + 1), k=len(kraepelin_window.KEY_LIST)) for _ in range(2)], [])
+        stim_list = sum([random.sample(range(len(kraepelin_window.KEY_LIST)), k=len(kraepelin_window.KEY_LIST)) for _ in range(2)], [])
         false_counter = 0
 
         kraepelin_window.display_stimuli(
