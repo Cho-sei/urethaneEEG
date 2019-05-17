@@ -36,7 +36,7 @@ def practice_tenkey(kraepelin_window):
     while redo_flag:
         send_trigger(trigger_values.Prac_ten_Start)
         #reset parameter
-        stim_list = sum([random.sample(range(len(kraepelin_window.KEY_LIST)), k=len(kraepelin_window.KEY_LIST)) for _ in range(2)], [])
+        stim_list = sum([random.sample(range(len(kraepelin_window.NUMKEY_NAME)), k=len(kraepelin_window.NUMKEY_NAME)) for _ in range(2)], [])
         false_counter = 0
 
         kraepelin_window.display_stimuli(
@@ -52,8 +52,8 @@ def practice_tenkey(kraepelin_window):
                     [inst_stim],
                     wait_time=0.,
                 )
-                keys = event.waitKeys(keyList=kraepelin_window.KEY_LIST)
-                answer_number = kraepelin_window.KEY_LIST.index(keys[0])
+                keys = event.waitKeys(keyList=kraepelin_window.NUMKEY_NAME)
+                answer_number = kraepelin_window.NUMKEY_NAME.index(keys[0])
                 ans_text.setText(answer_number)
                 send_trigger(trigger_values.Prac_ten_Resp)
 
@@ -83,7 +83,7 @@ def practice_tenkey(kraepelin_window):
         [visual.TextStim(kraepelin_window, 'Finish! Press Enter', height=80)],
         sound=sound_namedtuple.finish_demo,
     )
-    event.waitKeys(keyList=['num_enter'])
+    event.waitKeys(keyList=kraepelin_window.ENTER_NAME)
 
 if __name__ == "__main__":
     import sys

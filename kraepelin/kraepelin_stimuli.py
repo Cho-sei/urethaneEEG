@@ -60,7 +60,8 @@ get_sound_duration = lambda s:s.getDuration() if sys.platform.startswith('win') 
 class KraepelinWindow(visual.Window):
 
 #    KEY_LIST = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-    KEY_LIST = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
+    NUMKEY_NAME = ['num_0', 'num_1', 'num_2', 'num_3', 'num_4', 'num_5', 'num_6', 'num_7', 'num_8', 'num_9']
+    ENTER_NAME = ['return']
     BLOCK_DURATION = 60#[s]
 
     def __init__(self, *args, **keyargs):
@@ -98,11 +99,11 @@ class KraepelinWindow(visual.Window):
         block_time = key_start - block_start
         keys = event.waitKeys(
             maxWait=self.BLOCK_DURATION-block_time,
-            keyList=self.KEY_LIST
+            keyList=self.NUMKEY_NAME
         )
         if keys == None:
             return None
-        return self.KEY_LIST.index(keys[0]), self.clock.getTime() - key_start
+        return self.NUMKEY_NAME.index(keys[0]), self.clock.getTime() - key_start
 
 if __name__ == "__main__":
     pass

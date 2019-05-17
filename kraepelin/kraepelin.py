@@ -92,7 +92,7 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
 
     visual.TextStim(kraepelin_window, text='Wait...Press Enter', height=80, bold=True).draw()
     kraepelin_window.flip()
-    event.waitKeys(keyList=['num_enter'])
+    event.waitKeys(keyList=kraepelin_window.ENTER_NAME)
 
     send_trigger(trigger_values.Kraepelin_Start)
     kraepelin_window.display_stimuli(
@@ -109,7 +109,7 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
     send_trigger(trigger_values.Kraepelin_Fin)
     visual.TextStim(kraepelin_window, text='Finish! Press Enter', height=80, bold=True).draw()
     kraepelin_window.flip()
-    event.waitKeys(keyList=['num_enter'])
+    event.waitKeys(keyList=kraepelin_window.ENTER_NAME)
 
 
 if __name__ == "__main__":
