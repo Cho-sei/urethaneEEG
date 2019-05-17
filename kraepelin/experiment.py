@@ -37,7 +37,8 @@ if __name__ == "__main__":
     block_length_demo = 2
     demo_trial = 1#for log.csv name
     instruction(win)
-    demo(win, block_length_demo)
+    demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
+    demo(win, block_length_demo, log_name=demo_result)
     display_confirmation(win)
     while True:
         key = event.waitKeys(keyList=['1','2','3'])
