@@ -20,11 +20,13 @@ if __name__ == "__main__":
 
     send_trigger(trigger_values.Experiment_Start)
 #questionnaire
+    win.setMouseVisible(True)
     with open(logfile_name+"_questionnaire1.csv", 'w') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
+    win.setMouseVisible(False)
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Pre_Resting_EO)
     eyesclose_restingstate_recording(win, trigger_values.Pre_Resting_EC)
@@ -57,8 +59,10 @@ if __name__ == "__main__":
     eyesclose_restingstate_recording(win, trigger_values.Post_Resting_EC)
     subtractingstate_recording(win, trigger_values.Post_Resting_Sub)
 #questionnaire
+    win.setMouseVisible(True)
     with open(logfile_name+"_questionnaire2.csv", 'w') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
+    win.setMouseVisible(False)
