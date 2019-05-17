@@ -41,8 +41,8 @@ def instruction(win):
 	win.msg_count.setText("0")
 	win.msg_answer.setText("7")
 	#set matrix
-	win.matrixstim_left.set_random_matrix(4, 6)
-	win.matrixstim_right.set_random_matrix(8, 3)
+	win.matrixstim_left.set_random_matrix(6, 4)
+	win.matrixstim_right.set_random_matrix(3, 8)
 
 	win.display_stimuli(
 		[win.msg_count],
@@ -127,8 +127,8 @@ def instruction(win):
 	win.msg_answer.setText("13")
 	demo_cor_ans.setText("3")
 	#set matrix
-	win.matrixstim_left.set_random_matrix(4, 8)
-	win.matrixstim_right.set_random_matrix(1, 5)
+	win.matrixstim_left.set_random_matrix(8, 4)
+	win.matrixstim_right.set_random_matrix(5, 1)
 
 	win.display_stimuli(
 		[win.msg_count, emphasisrect_dict['msg_count']],
