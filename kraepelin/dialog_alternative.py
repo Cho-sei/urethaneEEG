@@ -5,15 +5,6 @@ def dialog_alternative(kraepelin_window):
     display_text.setText("")
     cursor_rect = visual.Rect(win, width=20, height=80)
     while True:
-        #get key & append | delete
-        keys = event.getKeys(keyList=kraepelin_window.NUMKEY_NAME + kraepelin_window.ENTER_NAME)
-        for key in keys:
-            if key in kraepelin_window.NUMKEY_NAME:
-                display_text.text += str(kraepelin_window.NUMKEY_NAME.index(key))
-            elif key in kraepelin_window.ENTER_NAME:
-                return int(display_text)
-            elif key in kraepelin_window.DELETE_NAME:
-                display_text.text.pop()
         #set cursor
         t = core.getTime()
 
@@ -22,6 +13,17 @@ def dialog_alternative(kraepelin_window):
             [display_text],
             wait_time=0.1,
         )
+       #get key & append | delete
+        keys = event.getKeys(keyList=kraepelin_window.NUMKEY_NAME+kraepelin_window.ENTER_NAME+kraepelin_window.DELETE_NAME)
+        if keys:#for debug
+            print(*keys)
+        for key in keys:
+            if key in kraepelin_window.NUMKEY_NAME:
+                display_text.text += str(kraepelin_window.NUMKEY_NAME.index(key))
+            elif key in kraepelin_window.DELETE_NAME:
+                display_text.text = display_text.text[:-1]
+            elif key in kraepelin_window.ENTER_NAME:
+                return int(display_text.text)
 
 
 if __name__ == "__main__":
