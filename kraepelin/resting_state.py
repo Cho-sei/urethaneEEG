@@ -1,6 +1,7 @@
 import collections
 import random
 from psychopy import visual, sound, core, gui
+from dialog_alternative import dialog_alternative
 from kraepelin_stimuli import get_fixation_stim
 from quick20_trigger import send_trigger
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
@@ -61,8 +62,6 @@ def eyesclose_restingstate_recording(win, trigger):
 def subtractingstate_recording(win, trigger):
 	beep = sound.Sound(value=1000, secs=1.0)
 	beep.setVolume(0.5)
-	dlg = gui.Dlg(title=u'回答')
-	dlg.addField(u'答え:','')
 
 	sound_namedtuple.into_subtract.play()
 	core.wait(sound_namedtuple.into_subtract.getDuration())
@@ -73,10 +72,9 @@ def subtractingstate_recording(win, trigger):
 	sound_namedtuple.finish_resting.play()
 	core.wait(sound_namedtuple.finish_resting.getDuration())
 
-	win.setMouseVisible(True)
 	win.flip()
 	sound_namedtuple.answer_of_subtraction.play()
-	return dlg.show()
+	return dialog_alternative(win, explain_stimuli=[visual.TextStim(win, "Input your answer & Press Enter")])
 
 if __name__ == "__main__":
 	import collections
