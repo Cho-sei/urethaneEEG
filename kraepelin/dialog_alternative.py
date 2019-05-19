@@ -1,18 +1,9 @@
 from psychopy import core, visual, event
 
-def dialog_alternative(kraepelin_window):
-    display_text = visual.TextStim(win, pos=(0, 0), bold=True)
+def dialog_alternative(kraepelin_window, explain_stimuli=None, display_pos=(0, 0)):
+    display_text = visual.TextStim(win, pos=display_pos, bold=True)
     display_text.setText("")
-    cursor_rect = visual.Rect(win, width=20, height=80)
     while True:
-        #set cursor
-        t = core.getTime()
-
-
-        kraepelin_window.display_stimuli(
-            [display_text],
-            wait_time=0.1,
-        )
        #get key & append | delete
         keys = event.getKeys(keyList=kraepelin_window.NUMKEY_NAME+kraepelin_window.ENTER_NAME+kraepelin_window.DELETE_NAME)
         if keys:#for debug
@@ -22,8 +13,13 @@ def dialog_alternative(kraepelin_window):
                 display_text.text += str(kraepelin_window.NUMKEY_NAME.index(key))
             elif key in kraepelin_window.DELETE_NAME:
                 display_text.text = display_text.text[:-1]
-            elif key in kraepelin_window.ENTER_NAME:
-                return int(display_text.text)
+        if set(keys) & set(kraepelin_window.ENTER_NAME):#if keys has ENTER_NAME element
+            return int(display_text.text)
+
+        kraepelin_window.display_stimuli(
+            [display_text]+(explain_stimuli if explain_stimuli else []),
+            wait_time=0.1,
+        )
 
 
 if __name__ == "__main__":
@@ -34,4 +30,4 @@ if __name__ == "__main__":
     win = KraepelinWindow(fullscr=True, units='pix')
     win.setMouseVisible(False)
 
-    print(dialog_alternative(win))
+    print(dialog_alternative(win, explain_stimuli=[visual.TextStim(win, "Input your answer & Press enter", pos=(0, 200))]))
