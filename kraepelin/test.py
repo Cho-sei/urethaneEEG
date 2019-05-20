@@ -1,10 +1,8 @@
-from psychopy import visual, core, event, gui
+import collections
+from psychopy import sound
 
-win = visual.Window(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
+SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
+	'into_subtract_1000', 'into_subtract_1012', 'into_subtract_1007', 'into_subtract_1004', 'into_EOresting', 'into_ECresting', 'finish_resting', 'answer_of_subtraction'])
+sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
-FVAS = visual.ImageStim(win, image='imgs/inst_FVAS.png', units='pix')
-
-FVAS.draw()
-win.flip()
-
-event.waitKeys(keyList=['space'])
+print(sound_namedtuple[1].duration)

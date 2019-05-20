@@ -8,6 +8,11 @@ from practice_tenkey import practice_tenkey
 from kraepelin_trigger import trigger_values
 from quick20_trigger import send_trigger
 
+SubtractFirst = 0
+SubtractSecond = 1
+SubtractThird = 2
+SubtractFourth = 3
+
 if __name__ == "__main__":
     import sys
     logfile_name = sys.argv[1]
@@ -30,7 +35,7 @@ if __name__ == "__main__":
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Pre_Resting_EO)
     eyesclose_restingstate_recording(win, trigger_values.Pre_Resting_EC)
-    subtractingstate_recording(win, trigger_values.Pre_Resting_Sub)
+    subtractingstate_recording(win, trigger_values.Pre_Resting_Sub, SubtractFirst)
 #practice 10-key
     practice_tenkey(win)
 #instruction & demonstration
@@ -58,7 +63,7 @@ if __name__ == "__main__":
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Post_Resting_EO)
     eyesclose_restingstate_recording(win, trigger_values.Post_Resting_EC)
-    subtractingstate_recording(win, trigger_values.Post_Resting_Sub)
+    subtractingstate_recording(win, trigger_values.Post_Resting_Sub, SubtractSecond)
 #questionnaire
     win.setMouseVisible(True)
     with open(logfile_name+"_questionnaire2.csv", 'w') as f:

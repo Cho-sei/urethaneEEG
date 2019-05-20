@@ -5,7 +5,7 @@ from dialog_alternative import dialog_alternative
 from kraepelin_stimuli import get_fixation_stim
 from quick20_trigger import send_trigger
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
-	'into_EOresting', 'into_ECresting', 'into_subtract', 'finish_resting', 'answer_of_subtraction'])
+	'into_subtract_1000', 'into_subtract_1012', 'into_subtract_1007', 'into_subtract_1004', 'into_EOresting', 'into_ECresting', 'finish_resting', 'answer_of_subtraction'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 RECORDING_DURATION = 60#[s]
@@ -59,11 +59,11 @@ def eyesclose_restingstate_recording(win, trigger):
 	core.wait(sound_namedtuple.finish_resting.getDuration())
 
 @start_waitmsg
-def subtractingstate_recording(win, trigger):
+def subtractingstate_recording(win, trigger, times):
 	beep = sound.Sound(value=1000, secs=1.0)
 	beep.setVolume(0.5)
 
-	sound_namedtuple.into_subtract.play()
+	sound_namedtuple[times].play()
 	core.wait(sound_namedtuple.into_subtract.getDuration())
 	beep.play()
 
