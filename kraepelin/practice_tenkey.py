@@ -7,7 +7,7 @@ from kraepelin_trigger import trigger_values
 from quick20_trigger import send_trigger
 
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
-    'into_ten', 'start_ten', 'redo_ten', 'start_demo', 'finish_demo'])
+    'into_ten', 'start_ten', 'redo_ten', 'start_demo', 'otsukaresama'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 def practice_tenkey(kraepelin_window):
@@ -81,7 +81,7 @@ def practice_tenkey(kraepelin_window):
 
     kraepelin_window.display_stimuli(
         [visual.TextStim(kraepelin_window, 'Finish! Press Enter', height=80)],
-        sound=sound_namedtuple.finish_demo,
+        sound=sound_namedtuple.otsukaresama,
     )
     event.waitKeys(keyList=kraepelin_window.ENTER_NAME)
 

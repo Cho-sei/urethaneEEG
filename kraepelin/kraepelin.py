@@ -3,7 +3,7 @@ import random
 import os
 import sys
 
-from psychopy import visual, core, event
+from psychopy import visual, core, event, sound
 
 from kraepelin_stimuli import KraepelinWindow
 from kraepelin_trigger import trigger_values
@@ -18,6 +18,8 @@ TrialStatus = namedlist(
     ['blocks', 'trials', 'cue_flag', 'response_time', 'response', 'correct_response', 'is_correct', 'stim_left', 'stim_right', 'trial_endtime']
 )
 
+start_experiment = sound.Sound('sounds/start_experiment.wav')
+otsukaresama = sound.Sound('sounds/otsukaresama.wav')
 
 def block(kraepelin_window, blocks):
     block_start = kraepelin_window.clock.getTime()
@@ -89,6 +91,9 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
     with open(log_name, 'w') as log:
         writer = csv.writer(log)
         writer.writerow(TrialStatus._fields)
+    
+    start_experiment.play()
+    core.wait(start_experiment.getDuration())
 
     visual.TextStim(kraepelin_window, text='Wait...Press Enter', height=80, bold=True).draw()
     kraepelin_window.flip()
@@ -107,6 +112,8 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
                 writer.writerow(output_list)
 
     send_trigger(trigger_values.Kraepelin_Fin)
+    otsukaresama.play()
+    core.wait(otsukaresama.getDuration())
     visual.TextStim(kraepelin_window, text='Finish! Press Enter', height=80, bold=True).draw()
     kraepelin_window.flip()
     event.waitKeys(keyList=kraepelin_window.ENTER_NAME)
