@@ -86,9 +86,7 @@ def block(kraepelin_window, blocks):
             break
 
 def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
-    if os.path.exists(log_name):
-        raise RuntimeError("Log file({}) already exists.".format(log_name))
-    with open(log_name, 'w') as log:
+    with open(log_name, 'x') as log:
         writer = csv.writer(log)
         writer.writerow(TrialStatus._fields)
     

@@ -34,7 +34,7 @@ if __name__ == "__main__":
     core.wait(2)
 #questionnaire
     win.setMouseVisible(True)
-    with open(logfile_name+"_questionnaire3.csv", 'w') as f:
+    with open(logfile_name+"_questionnaire3.csv", 'x') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     subtractingstate_recording(win, trigger_values.Post_Resting_Sub, SubtractFourth)
 #questionnaire
     win.setMouseVisible(True)
-    with open(logfile_name+"_questionnaire4.csv", 'w') as f:
+    with open(logfile_name+"_questionnaire4.csv", 'x') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
