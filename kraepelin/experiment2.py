@@ -43,7 +43,9 @@ if __name__ == "__main__":
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Pre_Resting_EO)
     eyesclose_restingstate_recording(win, trigger_values.Pre_Resting_EC)
-    subtractingstate_recording(win, trigger_values.Pre_Resting_Sub, SubtractThird)
+    subtract_result = subtractingstate_recording(win, trigger_values.Pre_Resting_Sub, SubtractFirst)
+    with open(logfile_name+"_subtract3.csv", 'x') as f:
+        f.write(str(subtract_result))
 #practice 10-key
     #practice_tenkey(win)
 #instruction & demonstration
@@ -71,7 +73,9 @@ if __name__ == "__main__":
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Post_Resting_EO)
     eyesclose_restingstate_recording(win, trigger_values.Post_Resting_EC)
-    subtractingstate_recording(win, trigger_values.Post_Resting_Sub, SubtractFourth)
+    subtract_result = subtractingstate_recording(win, trigger_values.Pre_Resting_Sub, SubtractFirst)
+    with open(logfile_name+"_subtract4.csv", 'x') as f:
+        f.write(str(subtract_result))
 #questionnaire
     win.setMouseVisible(True)
     with open(logfile_name+"_questionnaire4.csv", 'x') as f:
