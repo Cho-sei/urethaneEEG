@@ -32,6 +32,7 @@ def fatigue_visualanalogscale(win):
             tickMarks=[None, None],
             tickHeight=2,
             pos=(0,-250),
+            mouseOnly=True,
         ),
         [
             visual.ImageStim(win, 'imgs/inst_FVAS.png'),
@@ -51,6 +52,7 @@ def karolinska_sleepinessscale(win):
             skipKeys=None,#do not allow to skip answering
             tickMarks=list(range(1,10)),
             pos=(0,-350),
+            mouseOnly=True,
         ),
         [
             visual.ImageStim(win, 'imgs/inst_KASS.png')
@@ -58,16 +60,30 @@ def karolinska_sleepinessscale(win):
         'karolinska sleepiness scale'
     )
 
-odorant_ratingscale_keyargs = dict(
-    low=1, high=5,
-    showValue=False,
-    skipKeys=False,
-    tickMarks=list(range(1, 5)),
-    pos=(0, -350)
-)
 
-def odorant_questionaire(win):
-    return [control_ratingscale(
+def odorant_questionaire(win, intenstiy_threshold=2):
+    odorinst_textstim = visual.TextStim(win, 'imgs/intensity.png', pos=(0, 400))
+
+    odor_intensity_dict = control_ratingscale(
+        win,
+        visual.RatingScale(
+            win,
+            low=0, high=5,
+            showValue=False,
+            skipKeys=False,
+            tickMarks=list(range(0, 6)),
+            pos=(0, -350),
+            mouseOnly=True,
+        ),
+        [
+            odorinst_textstim,
+            visual.ImageStim(win, 'imgs/intensity.png', pos=(0, -50)),
+        ],
+        'odor intensity',
+    )
+    if odor_intensity_dict['rating'] < 2:
+        return [odor_intensity_dict]
+    return [odor_intensity_dict] + [control_ratingscale(
         win,
         visual.RatingScale(
             win,
@@ -75,14 +91,15 @@ def odorant_questionaire(win):
             showValue=False,
             skipKeys=False,
             tickMarks=list(range(1, 6)),
-            pos=(0, -350)
+            pos=(0, -350),
+            mouseOnly=True,
         ),
         [
-            visual.ImageStim(win, 'imgs/inst_smell.png', pos=(0, 400)),
+            odorinst_textstim,
             visual.ImageStim(win, 'imgs/{}.png'.format(qname), pos=(0, -50))
         ],
         'odor ' + qname,
-    ) for qname in ('edibility', 'familiarity', 'intensity', 'pleasantness')]
+    ) for qname in ('edibility', 'familiarity', 'pleasantness')]
 
 if __name__ == "__main__":
     import sys
