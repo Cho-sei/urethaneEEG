@@ -229,10 +229,15 @@ def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
 
 #confirmation------------------------------------------------------------------------
 def display_confirmation(kraepelin_window):
-	kraepelin_window.display_stimuli(
-		[visual.TextStim(kraepelin_window, text=text, height=80, bold=True, pos=pos) for text, pos in zip([u'説明 → 1', u'練習 → 2', u'本番 → 3'], [(0, 200), (0, 0), (0, -200)])],
-		sound=sound_namedtuple.confirmation,
-	)
+	key_list = ['num_1', 'num_2', 'num_3']
+
+	for text, pos in zip([u'説明 → 1', u'練習 → 2', u'本番 → 3'], [(0, 200), (0, 0), (0, -200)]):
+		visual.TextStim(kraepelin_window, text=text, height=80, bold=True, pos=pos).draw()
+	sound_namedtuple.confirmation.play()
+
+	key = event.waitKeys(keyList=key_list)[0]
+	sound_namedtuple.confirmation.stop()
+	return key_list.index(key)
 
 
 if __name__ == "__main__":

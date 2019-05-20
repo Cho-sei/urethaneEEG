@@ -58,18 +58,16 @@ if __name__ == "__main__":
     instruction(win)
     demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
     demo(win, block_length_demo, log_name=demo_result)
-    display_confirmation(win)
     while True:
-        key = event.waitKeys(keyList=['num_1','num_2','num_3'])
-        if  '1' in key:
+        selection = display_confirmation(win)
+        if selection == 0:
             instruction(win)
-        elif '2' in key:
+        elif selection == 1:
             demo_trial = demo_trial + 1
             demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
             demo(win, block_length_demo, log_name=demo_result)
         else:
             break
-        display_confirmation(win)
 #kraepelin experiment
     experiment_result = logfile_name+'_kraepelin_session1.csv'
     block_length = 10
