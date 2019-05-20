@@ -228,11 +228,11 @@ def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
 	send_trigger(trigger_values.Demo_Fin)
 
 #confirmation------------------------------------------------------------------------
-def display_confirmation(win):
-	sound_namedtuple.confirmation.play()
-	for text, pos in zip([u'説明 → 1', u'練習 → 2', u'本番 → 3'], [(0, 200), (0, 0), (0, -200)]):
-		visual.TextStim(win, text=text, height=80, bold=True, pos=pos).draw()
-	win.flip()
+def display_confirmation(kraepelin_window):
+	kraepelin_window.display_stimuli(
+		[visual.TextStim(kraepelin_window, text=text, height=80, bold=True, pos=pos) for text, pos in zip([u'説明 → 1', u'練習 → 2', u'本番 → 3'], [(0, 200), (0, 0), (0, -200)])],
+		sound=sound_namedtuple.confirmation,
+	)
 
 
 if __name__ == "__main__":
