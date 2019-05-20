@@ -1,6 +1,6 @@
 import collections
 import random
-from psychopy import visual, sound, core, gui
+from psychopy import visual, sound, core, event
 from dialog_alternative import dialog_alternative
 from kraepelin_stimuli import get_fixation_stim
 from quick20_trigger import send_trigger
@@ -20,6 +20,10 @@ def start_waitmsg(func):
 	return wrapper
 
 def restingstate_recording(win, wait_time, trigger):
+	visual.TextStim(win, 'Press Enter', height=80).draw()
+	win.flip()
+	event.waitKeys(keyList=['return', 'num_return', 'enter'])
+
 	visual.TextStim(win, 'Start!', height=80).draw()
 	win.flip()
 	core.wait(2)
