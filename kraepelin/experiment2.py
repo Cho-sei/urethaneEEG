@@ -1,5 +1,4 @@
 import csv
-import collections
 
 from kraepelin import kraepelin_experiment
 from kraepelin_demo import instruction, demo, display_confirmation
@@ -9,19 +8,15 @@ from practice_tenkey import practice_tenkey
 from kraepelin_trigger import trigger_values
 from quick20_trigger import send_trigger
 
+from psychopy import event, sound, core
+
 SubtractFirst = 0
 SubtractSecond = 1
 SubtractThird = 2
 SubtractFourth = 3
 
-from psychopy import event, core, sound
-
-SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
-    'opening', 'end_1st_session', 'start_2nd_session', 'ending'])
-sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
-
-opening = sound.Sound('sounds/opening.wav')
-end_1st_session = sound.Sound('sounds/end_1st_session.wav')
+start_2nd_session = sound.Sound('sounds/start_2nd_session.wav')
+ending = sound.Sound('sounds/ending.wav')
 
 if __name__ == "__main__":
     import sys
@@ -33,13 +28,13 @@ if __name__ == "__main__":
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
     send_trigger(trigger_values.Experiment_Start)
-#opening
-    opening.play()
-    core.wait(opening.getDuration())
+#start 2nd session
+    start_2nd_session.play()
+    core.wait(start_2nd_session.getDuration())
     core.wait(2)
 #questionnaire
     win.setMouseVisible(True)
-    with open(logfile_name+"_questionnaire1.csv", 'w') as f:
+    with open(logfile_name+"_questionnaire3.csv", 'w') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
@@ -48,44 +43,44 @@ if __name__ == "__main__":
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Pre_Resting_EO)
     eyesclose_restingstate_recording(win, trigger_values.Pre_Resting_EC)
-    subtractingstate_recording(win, trigger_values.Pre_Resting_Sub, SubtractFirst)
+    subtractingstate_recording(win, trigger_values.Pre_Resting_Sub, SubtractThird)
 #practice 10-key
-    practice_tenkey(win)
+    #practice_tenkey(win)
 #instruction & demonstration
-    block_length_demo = 2
-    demo_trial = 1#for log.csv name
-    instruction(win)
-    demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
-    demo(win, block_length_demo, log_name=demo_result)
-    display_confirmation(win)
-    while True:
-        key = event.waitKeys(keyList=['num_1','num_2','num_3'])
-        if  '1' in key:
-            instruction(win)
-        elif '2' in key:
-            demo_trial = demo_trial + 1
-            demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
-            demo(win, block_length_demo, log_name=demo_result)
-        else:
-            break
-        display_confirmation(win)
+#    block_length_demo = 2
+#    demo_trial = 1#for log.csv name
+#    instruction(win)
+#    demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
+#    demo(win, block_length_demo, log_name=demo_result)
+#    display_confirmation(win)
+#    while True:
+#        key = event.waitKeys(keyList=['num_1','num_2','num_3'])
+#        if  '1' in key:
+#            instruction(win)
+#        elif '2' in key:
+#            demo_trial = demo_trial + 1
+#            demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
+#            demo(win, block_length_demo, log_name=demo_result)
+#        else:
+#            break
+#        display_confirmation(win)
 #kraepelin experiment
-    experiment_result = logfile_name+'_kraepelin_session1.csv'
+    experiment_result = logfile_name+'_kraepelin_session2.csv'
     block_length = 10
     kraepelin_experiment(win, block_length, log_name=experiment_result)
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Post_Resting_EO)
     eyesclose_restingstate_recording(win, trigger_values.Post_Resting_EC)
-    subtractingstate_recording(win, trigger_values.Post_Resting_Sub, SubtractSecond)
+    subtractingstate_recording(win, trigger_values.Post_Resting_Sub, SubtractFourth)
 #questionnaire
     win.setMouseVisible(True)
-    with open(logfile_name+"_questionnaire2.csv", 'w') as f:
+    with open(logfile_name+"_questionnaire4.csv", 'w') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
     win.setMouseVisible(False)
-#ending of 1st session
-	win.flip()
-    end_1st_session.play()
-    core.wait(end_1st_session.getDuration())
+#ending
+    win.flip()
+    ending.play()
+    core.wait(ending.getDuration())

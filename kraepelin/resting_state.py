@@ -47,11 +47,11 @@ def eyesopen_restingstate_recording(win, trigger):
 @start_waitmsg
 def eyesclose_restingstate_recording(win, trigger):
 	beep = sound.Sound(value=1000, secs=1.0)
-	core.wait(2)
 	beep.setVolume(0.5)
 
 	sound_namedtuple.into_ECresting.play()
 	core.wait(sound_namedtuple.into_ECresting.getDuration())
+	core.wait(2)
 	beep.play()
 
 	restingstate_recording(win, RECORDING_DURATION, trigger)
@@ -65,7 +65,7 @@ def subtractingstate_recording(win, trigger, times):
 	beep.setVolume(0.5)
 
 	sound_namedtuple[times].play()
-	core.wait(sound_namedtuple.into_subtract.getDuration())
+	core.wait(sound_namedtuple[times].getDuration())
 	core.wait(2)
 	beep.play()
 
