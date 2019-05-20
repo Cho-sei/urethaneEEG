@@ -4,7 +4,7 @@ import collections
 from kraepelin import kraepelin_experiment
 from kraepelin_demo import instruction, demo, display_confirmation
 from resting_state import eyesopen_restingstate_recording, eyesclose_restingstate_recording, subtractingstate_recording
-from questionnaire import ratingscale_keynames, fatigue_visualanalogscale, karolinska_sleepinessscale
+from questionnaire import ratingscale_keynames, fatigue_visualanalogscale, karolinska_sleepinessscale, odorant_questionaire
 from practice_tenkey import practice_tenkey
 from kraepelin_trigger import trigger_values
 from quick20_trigger import send_trigger
@@ -44,6 +44,7 @@ if __name__ == "__main__":
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
+        writer.writerows(odorant_questionaire(win))
     win.setMouseVisible(False)
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Pre_Resting_EO)
@@ -84,6 +85,7 @@ if __name__ == "__main__":
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
+        writer.writerows(odorant_questionaire(win))
     win.setMouseVisible(False)
 #ending of 1st session
 	win.flip()
