@@ -1,6 +1,8 @@
-from psychopy import core, visual
+from psychopy import core, visual, sound
 
 ratingscale_keynames = ['name', 'rating', 'response_time', 'history']
+
+into_questionnaire = sound.Sound('sounds/into_questionnaire.wav')
 
 def control_ratingscale(win, ratingscale, stimuli_list, test_name, last_showtime=0.5):
     while ratingscale.noResponse:
@@ -92,6 +94,9 @@ if __name__ == "__main__":
 
     #window defined
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
+
+    into_questionnaire.play()
+    core.wait(into_questionnaire.getDuration())
 
     print(fatigue_visualanalogscale(win))
     print(karolinska_sleepinessscale(win))

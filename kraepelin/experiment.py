@@ -1,4 +1,5 @@
 import csv
+import collections
 
 from kraepelin import kraepelin_experiment
 from kraepelin_demo import instruction, demo, display_confirmation
@@ -13,17 +14,26 @@ SubtractSecond = 1
 SubtractThird = 2
 SubtractFourth = 3
 
+from psychopy import event, core, sound
+
+SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
+    'opening', 'end_1st_session', 'start_2nd_session', 'ending'])
+sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
+
 if __name__ == "__main__":
     import sys
     logfile_name = sys.argv[1]
 
-    from psychopy import event
     event.globalKeys.add(key='escape', func=sys.exit)
 
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
     send_trigger(trigger_values.Experiment_Start)
+#opening
+    sound_namedtuple.opening.play()
+    core.wait(sound_namedtuple.opening.getDuration())
+    core.wait(2)
 #questionnaire
     win.setMouseVisible(True)
     with open(logfile_name+"_questionnaire1.csv", 'w') as f:
@@ -72,3 +82,6 @@ if __name__ == "__main__":
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
     win.setMouseVisible(False)
+#ending of 1st session
+    sound_namedtuple.end_1st_session.play()
+    core.wait(sound_namedtuple.end_1st_session.getDuration())
