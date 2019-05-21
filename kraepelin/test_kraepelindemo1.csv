@@ -1,3 +1,0 @@
-blocks,trials,cue_flag,response_time,response,correct_response,is_correct,stim_left,stim_right,trial_endtime
-1,1,"(True, True)",1.3808389807263666,5,5,True,['' '7' '' '' '' '' '' '' ''],['8' '8' '' '8' '8' '8' '' '8' '8'],3.916959953176047
-1,2,"(True, False)",2.7095368039454115,2,2,True,['8' '8' '' '8' '8' '8' '' '8' '8'],['' '' '7' '' '' '' '7' '7' '7'],9.417529161386483

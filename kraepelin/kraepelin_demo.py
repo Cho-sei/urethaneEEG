@@ -3,7 +3,7 @@ import itertools
 import math
 import random
 
-from psychopy import visual, core, sound
+from psychopy import visual, core, sound, event
 
 from kraepelin import kraepelin_experiment
 from kraepelin_trigger import trigger_values
