@@ -233,6 +233,7 @@ def display_confirmation(kraepelin_window):
 
 	for text, pos in zip([u'説明 → 1', u'練習 → 2', u'本番 → 3'], [(0, 200), (0, 0), (0, -200)]):
 		visual.TextStim(kraepelin_window, text=text, height=80, bold=True, pos=pos).draw()
+	kraepelin_window.flip()
 	sound_namedtuple.confirmation.play()
 
 	key = event.waitKeys(keyList=key_list)[0]
@@ -252,18 +253,15 @@ if __name__ == "__main__":
 	block_length = 2
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 	
-	instruction(win)
-	demo(win, block_length)
-	display_confirmation(win)
+	#instruction(win)
+	#demo(win, block_length)
 
 	while True:
-		key = event.waitKeys(keyList=['num_1','num_2','num_3'])
-		if  '1' in key:
+		selection = display_confirmation(win)
+		if selection == 0:
 			instruction(win)
-		elif '2' in key:
-			demo(win, block_length)
+		elif selection == 1:
+			demo(win, block_length_demo, log_name=demo_result)
 		else:
 			break
-		
-		display_confirmation(win)
 

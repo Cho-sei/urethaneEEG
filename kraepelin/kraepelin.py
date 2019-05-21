@@ -87,9 +87,6 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
         writer = csv.writer(log)
         writer.writerow(TrialStatus._fields)
     
-    start_experiment.play()
-    core.wait(start_experiment.getDuration())
-
     visual.TextStim(kraepelin_window, text='Wait...Press Enter', height=80, bold=True).draw()
     kraepelin_window.flip()
     event.waitKeys(keyList=kraepelin_window.ENTER_NAME)
@@ -107,8 +104,6 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
                 writer.writerow(output_list)
 
     send_trigger(trigger_values.Kraepelin_Fin)
-    otsukaresama.play()
-    core.wait(otsukaresama.getDuration())
     visual.TextStim(kraepelin_window, text='Finish! Press Enter', height=80, bold=True).draw()
     kraepelin_window.flip()
     event.waitKeys(keyList=kraepelin_window.ENTER_NAME)

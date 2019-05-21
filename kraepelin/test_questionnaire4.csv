@@ -1,0 +1,4 @@
+name,rating,response_time,history
+fatigue visual analog scale,0.18,65.294,"[(None, 0.0), (0.18, 64.909), (0.18, 65.294)]"
+karolinska sleepiness scale,3,2.399,"[(None, 0.0), (3, 0.78), (3, 2.399)]"
+odor intensity,0,1.01,"[(None, 0.0), (0, 0.392), (0, 1.01)]"

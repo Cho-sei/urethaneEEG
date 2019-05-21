@@ -65,8 +65,6 @@ def karolinska_sleepinessscale(win):
 
 
 def odorant_questionaire(win, intenstiy_threshold=2):
-    odorinst_textstim = visual.TextStim(win, 'imgs/intensity.png', pos=(0, 400))
-
     odor_intensity_dict = control_ratingscale(
         win,
         visual.RatingScale(
@@ -79,7 +77,6 @@ def odorant_questionaire(win, intenstiy_threshold=2):
             mouseOnly=True,
         ),
         [
-            odorinst_textstim,
             visual.ImageStim(win, 'imgs/intensity.png', pos=(0, -50)),
         ],
         'odor intensity',
@@ -98,7 +95,6 @@ def odorant_questionaire(win, intenstiy_threshold=2):
             mouseOnly=True,
         ),
         [
-            odorinst_textstim,
             visual.ImageStim(win, 'imgs/{}.png'.format(qname), pos=(0, -50))
         ],
         'odor ' + qname,

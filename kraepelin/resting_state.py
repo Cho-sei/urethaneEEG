@@ -20,9 +20,6 @@ def start_waitmsg(func):
 	return wrapper
 
 def restingstate_recording(win, wait_time, trigger):
-	core.wait(2)
-	win.flip()
-
 	visual.TextStim(win, 'Start!', height=80).draw()
 	win.flip()
 	core.wait(2)
@@ -41,6 +38,7 @@ def restingstate_recording(win, wait_time, trigger):
 def eyesopen_restingstate_recording(win, trigger):
 	sound_namedtuple.into_EOresting.play()
 	core.wait(sound_namedtuple.into_EOresting.getDuration())
+	core.wait(2)
 
 	restingstate_recording(win, RECORDING_DURATION, trigger)
 
