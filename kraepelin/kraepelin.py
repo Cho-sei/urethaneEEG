@@ -18,9 +18,6 @@ TrialStatus = namedlist(
     ['blocks', 'trials', 'cue_flag', 'response_time', 'response', 'correct_response', 'is_correct', 'stim_left', 'stim_right', 'trial_endtime']
 )
 
-start_experiment = sound.Sound('sounds/start_experiment.wav')
-otsukaresama = sound.Sound('sounds/otsukaresama.wav')
-
 def block(kraepelin_window, blocks):
     block_start = kraepelin_window.clock.getTime()
 

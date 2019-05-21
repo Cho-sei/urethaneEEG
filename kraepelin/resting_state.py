@@ -20,9 +20,8 @@ def start_waitmsg(func):
 	return wrapper
 
 def restingstate_recording(win, wait_time, trigger):
-	visual.TextStim(win, 'Press Enter', height=80).draw()
+	core.wait(2)
 	win.flip()
-	event.waitKeys(keyList=['return', 'num_return', 'enter'])
 
 	visual.TextStim(win, 'Start!', height=80).draw()
 	win.flip()
