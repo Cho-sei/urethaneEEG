@@ -253,8 +253,8 @@ if __name__ == "__main__":
 	block_length = 2
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
 	
-	#instruction(win)
-	#demo(win, block_length)
+	instruction(win)
+	demo(win, block_length)
 
 	while True:
 		selection = display_confirmation(win)
