@@ -77,7 +77,7 @@ def subtractingstate_recording(win, trigger, times):
 
 	win.flip()
 	sound_namedtuple.answer_of_subtraction.play()
-	return dialog_alternative(win, explain_stimuli=[visual.TextStim(win, "Input your answer & Press Enter", height=80, pos=(0, 200))])
+	return dialog_alternative(win, explain_stimuli=[visual.TextStim(win, "Input your answer & Press Enter", height=80, pos=(0, 300))], height=80)
 
 if __name__ == "__main__":
 	import collections
