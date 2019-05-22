@@ -27,10 +27,11 @@ def practice_tenkey(kraepelin_window):
         wait_time=1.,
     )
     kraepelin_window.display_stimuli(
-        [visual.TextStim(kraepelin_window, 'Wait...', height=80)],
+        [visual.TextStim(kraepelin_window, 'Press Enter', height=80)],
         sound=sound_namedtuple.start_demo,
         wait_time=1.,
     )
+    event.waitKeys(keyList=kraepelin_window.ENTER_NAME)
 
     redo_flag = True
     while redo_flag:

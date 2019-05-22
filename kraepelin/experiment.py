@@ -97,3 +97,4 @@ if __name__ == "__main__":
     win.flip()
     sound_namedtuple.end_1st_session.play()
     core.wait(sound_namedtuple.end_1st_session.getDuration())
+    core.wait(2)
