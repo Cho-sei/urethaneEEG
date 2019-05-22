@@ -17,7 +17,7 @@ def dialog_alternative(kraepelin_window, explain_stimuli=None, display_pos=(0, 0
             return int(display_text.text)
 
         kraepelin_window.display_stimuli(
-            [display_text]+(explain_stimuli if explain_stimuli is None else []),
+            [display_text]+(explain_stimuli if explain_stimuli is not None else []),
             wait_time=0.1,
         )
 
