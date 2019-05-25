@@ -28,6 +28,8 @@ if __name__ == "__main__":
 
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
+    mouse = event.Mouse(win)
+    mouse.setExclusive(True)#disable mouse
 
     send_trigger(trigger_values.Experiment_Start)
 #opening
@@ -38,14 +40,14 @@ if __name__ == "__main__":
     core.wait(sound_namedtuple.alert_mouse.getDuration())
     core.wait(2)
 #questionnaire
-    win.setMouseVisible(True)
+    mouse.setExclusive(False)
     with open(logfile_name+"_questionnaire1.csv", 'x') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
         writer.writerows(odorant_questionaire(win))
-    win.setMouseVisible(False)
+    mouse.setExclusive(True)
 #resting-state EEG recording
     eyesopen_restingstate_recording(win, trigger_values.Pre_Resting_EO)
     eyesclose_restingstate_recording(win, trigger_values.Pre_Resting_EC)
@@ -85,14 +87,14 @@ if __name__ == "__main__":
     with open(logfile_name+"_subtract2.csv", 'x') as f:
         f.write(str(subtract_result))
 #questionnaire
-    win.setMouseVisible(True)
+    mouse.setExclusive(False)
     with open(logfile_name+"_questionnaire2.csv", 'x') as f:
         writer = csv.DictWriter(f, fieldnames=ratingscale_keynames)
         writer.writeheader()
         writer.writerow(fatigue_visualanalogscale(win))
         writer.writerow(karolinska_sleepinessscale(win))
         writer.writerows(odorant_questionaire(win))
-    win.setMouseVisible(False)
+    mouse.setExclusive(True)
 #ending of 1st session
     win.flip()
     sound_namedtuple.end_1st_session.play()
