@@ -24,7 +24,7 @@ if __name__ == "__main__":
     import sys
     logfile_name = sys.argv[1]
 
-    event.globalKeys.add(key='escape', func=sys.exit)
+    event.globalKeys.add(key='escape', func=core.quit)
 
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)

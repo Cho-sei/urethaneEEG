@@ -1,7 +1,6 @@
 import csv
 import random
 import os
-import sys
 
 from psychopy import visual, core, event, sound
 
@@ -111,7 +110,7 @@ def kraepelin_experiment(kraepelin_window, block_length, log_name='result.csv'):
 
 if __name__ == "__main__":
     #set global escape
-    event.globalKeys.add(key='escape', func=sys.exit)
+    event.globalKeys.add(key='escape', func=core.quit)
 
     #window defined
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)

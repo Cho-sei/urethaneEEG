@@ -23,8 +23,7 @@ def dialog_alternative(kraepelin_window, explain_stimuli=None, **text_keyargs):
 
 
 if __name__ == "__main__":
-    import sys
-    event.globalKeys.add(key='escape', func=sys.exit)
+    event.globalKeys.add(key='escape', func=core.quit)
 
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(fullscr=True, units='pix')

@@ -87,9 +87,9 @@ def practice_tenkey(kraepelin_window):
     event.waitKeys(keyList=kraepelin_window.ENTER_NAME)
 
 if __name__ == "__main__":
-    import sys
     #set global escape
-    event.globalKeys.add(key='escape', func=sys.exit)
+    from psychopy import core
+    event.globalKeys.add(key='escape', func=core.quit)
 
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)

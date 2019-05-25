@@ -242,12 +242,11 @@ def display_confirmation(kraepelin_window):
 
 
 if __name__ == "__main__":
-	import sys
 	from psychopy import event
 	from kraepelin_stimuli import KraepelinWindow
 
 	#set global escape
-	event.globalKeys.add(key='escape', func=sys.exit)
+	event.globalKeys.add(key='escape', func=core.quit)
 
 
 	block_length = 2

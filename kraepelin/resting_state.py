@@ -81,11 +81,10 @@ def subtractingstate_recording(win, trigger, times):
 
 if __name__ == "__main__":
 	import collections
-	import sys
 	from psychopy import event
 	from kraepelin_stimuli import KraepelinWindow
 	#set global escape
-	event.globalKeys.add(key='escape', func=sys.exit)
+	event.globalKeys.add(key='escape', func=core.quit)
 
 	win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
