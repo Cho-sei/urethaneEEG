@@ -36,9 +36,6 @@ if __name__ == "__main__":
     sound_namedtuple.opening.play()
     core.wait(sound_namedtuple.opening.getDuration())
     core.wait(1)
-    sound_namedtuple.alert_mouse.play()
-    core.wait(sound_namedtuple.alert_mouse.getDuration())
-    core.wait(2)
 #questionnaire
     mouse.setExclusive(False)
     with open(logfile_name+"_questionnaire1.csv", 'x') as f:
