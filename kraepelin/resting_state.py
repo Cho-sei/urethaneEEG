@@ -80,7 +80,7 @@ def subtractingstate_recording(win, trigger, times):
 	return dialog_alternative(win, explain_stimuli=[
 		visual.TextStim(win, u"回答を入力してください", height=40, pos=(0, 250)),
 		visual.TextStim(win, u"Enter : 決定", height=40, pos=(0, 300)),
-		visual.TextStim(win, u"Delete : 1字戻る", height=40, pos=(0, 350)),
+#		visual.TextStim(win, u"Delete : 1字戻る", height=40, pos=(0, 350)),
 		])
 
 if __name__ == "__main__":
