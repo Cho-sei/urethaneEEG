@@ -92,6 +92,6 @@ if __name__ == "__main__":
 
 	win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
-	eyesopen_restingstate_recording(win)
-	eyesclose_restingstate_recording(win)
-	print(subtractingstate_recording(win))
+	eyesopen_restingstate_recording(win, 'a')
+	eyesclose_restingstate_recording(win, 'a')
+	print(subtractingstate_recording(win, 'a', 1))
