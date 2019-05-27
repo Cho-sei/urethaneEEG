@@ -15,7 +15,7 @@ SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
 	'firstblock_1', 'firstblock_2', 'firstblock_3', 'firstblock_4', 'inst_cue_value_1', 'inst_cue_value_2', 'inst_cue_value_3', 'inst_cue_value_4', 
 	'inst_cue_value_5', 'into_second', 'secondblock_1', 'secondblock_2', 'secondblock_3', 'secondblock_4', 'secondblock_5', 'secondblock_6', 
 	'secondblock_7', 'into_demo', 'finish_instruction', 'start_demo', 'finish_demo', 'confirmation', 'inst_fixa', 'summary_cue',
-	'end_demosession'])
+	'opening', 'end_demosession'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 #instruction start---------------------------------------------------------------------
@@ -258,14 +258,14 @@ if __name__ == "__main__":
 	demo_logfilename = lambda n : logfile_name+'_instruction_demo{}.csv'.format(n)
 
 	#wait start
-	visual.TextStim(win, "Start!", height=80)
+	visual.TextStim(win, text="Start!", height=80).draw()
 	win.flip()
-	event.waitKeys(['space'])
+	event.waitKeys(keyList=['space'])
 
 	#opening
-    sound_namedtuple.opening.play()
-    core.wait(sound_namedtuple.opening.getDuration())
-    core.wait(1)
+	sound_namedtuple.opening.play()
+	core.wait(sound_namedtuple.opening.getDuration())
+	core.wait(1)
 	#practice 10-key
 	practice_tenkey(win)
 
@@ -288,6 +288,6 @@ if __name__ == "__main__":
 	core.wait(sound_namedtuple.end_demosession.getDuration())
 
 	#wait end
-	visual.TextStim(win, "Finish!", height=80)
+	visual.TextStim(win, text="Finish!", height=80).draw()
 	win.flip()
-	event.waitKeys(['space'])
+	event.waitKeys(keyList=['space'])
