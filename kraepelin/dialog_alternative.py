@@ -29,4 +29,8 @@ if __name__ == "__main__":
     win = KraepelinWindow(fullscr=True, units='pix')
     win.setMouseVisible(False)
 
-    print(dialog_alternative(win, explain_stimuli=[visual.TextStim(win, "Input your answer & Press enter", pos=(0, 200))]))
+    print(dialog_alternative(win, explain_stimuli=[
+			visual.TextStim(win, u"回答を入力してください",  height=40, pos=(0, 250)),
+			visual.TextStim(win, u"Enter : 決定", height=40, pos=(0, 300)),
+			visual.TextStim(win, u"Delete : 1字戻る", height=40, pos=(0, 350)),
+		]))
