@@ -14,7 +14,8 @@ SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
 	'introduction', 'inst_calc','post_cue', 'inst_cue_num', 'inst_progress_1', 'inst_progress_2', 'inst_progress_3', 
 	'firstblock_1', 'firstblock_2', 'firstblock_3', 'firstblock_4', 'inst_cue_value_1', 'inst_cue_value_2', 'inst_cue_value_3', 'inst_cue_value_4', 
 	'inst_cue_value_5', 'into_second', 'secondblock_1', 'secondblock_2', 'secondblock_3', 'secondblock_4', 'secondblock_5', 'secondblock_6', 
-	'secondblock_7', 'into_demo', 'finish_instruction', 'start_demo', 'finish_demo', 'confirmation', 'inst_fixa', 'summary_cue'])
+	'secondblock_7', 'into_demo', 'finish_instruction', 'start_demo', 'finish_demo', 'confirmation', 'inst_fixa', 'summary_cue',
+	'end_demosession'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 #instruction start---------------------------------------------------------------------
@@ -245,23 +246,48 @@ if __name__ == "__main__":
 	import sys
 	from psychopy import event
 	from kraepelin_stimuli import KraepelinWindow
+	from practice_tenkey import practice_tenkey
+
+	logfile_name = sys.argv[1]
 
 	#set global escape
-	event.globalKeys.add(key='escape', func=sys.exit)
-
+	event.globalKeys.add(key='escape', func=core.quit)
 
 	block_length = 2
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
-	
-	instruction(win)
-	demo(win, block_length)
+	demo_logfilename = lambda n : logfile_name+'_instruction_demo{}.csv'.format(n)
 
+	#wait start
+	visual.TextStim(win, "Start!", height=80)
+	win.flip()
+	event.waitKeys(['space'])
+
+	#opening
+    sound_namedtuple.opening.play()
+    core.wait(sound_namedtuple.opening.getDuration())
+    core.wait(1)
+	#practice 10-key
+	practice_tenkey(win)
+
+	demo_trial = 1
+	instruction(win)
+	demo_result = demo_logfilename(demo_trial)
+	demo(win, block_length, log_name = demo_result)
 	while True:
 		selection = display_confirmation(win)
 		if selection == 0:
 			instruction(win)
 		elif selection == 1:
-			demo(win, block_length_demo, log_name=demo_result)
+			demo_trial = demo_trial + 1
+			demo_result = logfile_name + '_instruction_demo{}.csv'.format(demo_trial)
+			demo(win, block_length, log_name=demo_result)
 		else:
 			break
 
+	sound_namedtuple.end_demosession.play()
+	core.wait(sound_namedtuple.end_demosession.getDuration())
+
+	#wait end
+	visual.TextStim(win, "Finish!", height=80)
+	win.flip()
+	event.waitKeys(['space'])

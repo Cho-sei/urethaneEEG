@@ -1,7 +1,7 @@
 from psychopy import core, visual, event
 
-def dialog_alternative(kraepelin_window, explain_stimuli=None, display_pos=(0, 0)):
-    display_text = visual.TextStim(kraepelin_window, pos=display_pos, bold=True)
+def dialog_alternative(kraepelin_window, explain_stimuli=None, **text_keyargs):
+    display_text = visual.TextStim(kraepelin_window, **text_keyargs)
     display_text.setText("")
     while True:
        #get key & append | delete
@@ -23,8 +23,7 @@ def dialog_alternative(kraepelin_window, explain_stimuli=None, display_pos=(0, 0
 
 
 if __name__ == "__main__":
-    import sys
-    event.globalKeys.add(key='escape', func=sys.exit)
+    event.globalKeys.add(key='escape', func=core.quit)
 
     from kraepelin_stimuli import KraepelinWindow
     win = KraepelinWindow(fullscr=True, units='pix')

@@ -101,12 +101,11 @@ def odorant_questionaire(win, intenstiy_threshold=2):
     ) for qname in ('edibility', 'familiarity', 'pleasantness')]
 
 if __name__ == "__main__":
-    import sys
     from psychopy import event
 
     from kraepelin_stimuli import KraepelinWindow
     #set global escape
-    event.globalKeys.add(key='escape', func=sys.exit)
+    event.globalKeys.add(key='escape', func=core.quit)
 
     #window defined
     win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)

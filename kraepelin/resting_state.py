@@ -77,18 +77,21 @@ def subtractingstate_recording(win, trigger, times):
 
 	win.flip()
 	sound_namedtuple.answer_of_subtraction.play()
-	return dialog_alternative(win, explain_stimuli=[visual.TextStim(win, "Input your answer & Press Enter", height=80, pos=(0, 200))])
+	return dialog_alternative(win, explain_stimuli=[
+		visual.TextStim(win, "回答を入力してください", height=80, pos=(100, 300)),
+		visual.TextStim(win, "Enter : 決定", height=80, pos=(0, 300)),
+		visual.TextStim(win, "Delete : 1字戻る", height=80, pos=(-100, 300)),
+		], height=80)
 
 if __name__ == "__main__":
 	import collections
-	import sys
 	from psychopy import event
 	from kraepelin_stimuli import KraepelinWindow
 	#set global escape
-	event.globalKeys.add(key='escape', func=sys.exit)
+	event.globalKeys.add(key='escape', func=core.quit)
 
 	win = KraepelinWindow(units='pix', fullscr=True, allowGUI=False)
 
-	eyesopen_restingstate_recording(win)
-	eyesclose_restingstate_recording(win)
-	print(subtractingstate_recording(win))
+	eyesopen_restingstate_recording(win, 'a')
+	eyesclose_restingstate_recording(win, 'a')
+	print(subtractingstate_recording(win, 'a', 1))
