@@ -17,7 +17,7 @@ SubtractFourth = 3
 from psychopy import event, core, sound, visual
 
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
-    'opening', 'end_1st_session', 'alert_mouse', 'start_experiment', 'otsukaresama'])
+    'start_1st_session', 'end_1st_session', 'start_experiment', 'otsukaresama'])
 sound_namedtuple = SoundNamedTuple(**{soundname:sound.Sound('sounds/'+soundname+'.wav') for soundname in SoundNamedTuple._fields})
 
 if __name__ == "__main__":
@@ -37,6 +37,12 @@ if __name__ == "__main__":
     event.waitKeys(keyList=['space'])
 
     send_trigger(trigger_values.Experiment_Start)
+
+#start 1st session
+    sound_namedtuple.start_1st_session.play()
+    core.wait(sound_namedtuple.start_1st_session.getDuration())
+    core.wait(2)
+
 #questionnaire
     mouse.setExclusive(False)
     with open(logfile_name+"_questionnaire1.csv", 'x') as f:
