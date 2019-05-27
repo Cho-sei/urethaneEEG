@@ -51,26 +51,6 @@ if __name__ == "__main__":
     subtract_result = subtractingstate_recording(win, trigger_values.Pre_Resting_Sub, SubtractThird)
     with open(logfile_name+"_subtract3.csv", 'x') as f:
         f.write(str(subtract_result))
-#practice 10-key
-    """
-    practice_tenkey(win)
-#instruction & demonstration  
-    block_length_demo = 2
-    demo_trial = 1#for log.csv name
-    instruction(win)
-    demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
-    demo(win, block_length_demo, log_name=demo_result)
-    while True:
-        selection = display_confirmation(win)
-        if selection == 0:
-            instruction(win)
-        elif selection == 1:
-            demo_trial = demo_trial + 1
-            demo_result = logfile_name+'_kraepelindemo{}.csv'.format(demo_trial)
-            demo(win, block_length_demo, log_name=demo_result)
-        else:
-            break
-    """
 #kraepelin experiment
     experiment_result = logfile_name+'_kraepelin_session2.csv'
     block_length = 10
