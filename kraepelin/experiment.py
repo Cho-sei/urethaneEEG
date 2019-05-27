@@ -32,10 +32,6 @@ if __name__ == "__main__":
     mouse.setExclusive(True)#disable mouse
 
     send_trigger(trigger_values.Experiment_Start)
-#opening
-    sound_namedtuple.opening.play()
-    core.wait(sound_namedtuple.opening.getDuration())
-    core.wait(1)
 #questionnaire
     mouse.setExclusive(False)
     with open(logfile_name+"_questionnaire1.csv", 'x') as f:

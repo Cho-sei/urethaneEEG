@@ -242,24 +242,31 @@ def display_confirmation(kraepelin_window):
 
 
 if __name__ == "__main__":
+	import sys
 	from psychopy import event
 	from kraepelin_stimuli import KraepelinWindow
 	from practice_tenkey import practice_tenkey
+
+	logfile_name = sys.argv[1]
 
 	#set global escape
 	event.globalKeys.add(key='escape', func=core.quit)
 
 	block_length = 2
 	win = KraepelinWindow(size=(1920, 1080), units='pix', fullscr=True, allowGUI=False)
+	demo_logfilename = lambda n : logfile_name+'_instruction_demo{}.csv'.format(n)
 
 	#wait start
 	visual.TextStim(win, "Start!", height=80)
 	win.flip()
 	event.waitKeys(['space'])
-	
-	practice_tenkey(win)
 
-	demo_logfilename = lambda n : logfile_name+'_instruction_demo{}.csv'.format(n)
+	#opening
+    sound_namedtuple.opening.play()
+    core.wait(sound_namedtuple.opening.getDuration())
+    core.wait(1)
+
+	practice_tenkey(win)
 
 	demo_trial = 1
 	instruction(win)
