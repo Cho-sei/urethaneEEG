@@ -14,7 +14,7 @@ SubtractSecond = 1
 SubtractThird = 2
 SubtractFourth = 3
 
-from psychopy import event, core, sound
+from psychopy import event, core, sound, visual
 
 SoundNamedTuple = collections.namedtuple('SoundNamedTuple', [
     'start_2nd_session', 'ending', 'start_experiment', 'otsukaresama'])
@@ -31,6 +31,10 @@ if __name__ == "__main__":
     mouse = event.Mouse(win)
     mouse.setExclusive(True)#disable mouse
 
+    #wait start
+    visual.TextStim(win, text="Start!", height=80).draw()
+    win.flip()
+    event.waitKeys(keyList=['space'])
     send_trigger(trigger_values.Experiment_Start)
 #start 2nd session
     sound_namedtuple.start_2nd_session.play()
@@ -79,3 +83,8 @@ if __name__ == "__main__":
     sound_namedtuple.ending.play()
     core.wait(sound_namedtuple.ending.getDuration())
     core.wait(2)
+
+#wait end
+    visual.TextStim(win, text="Finish!", height=80).draw()
+    win.flip()
+    event.waitKeys(keyList=['space'])
