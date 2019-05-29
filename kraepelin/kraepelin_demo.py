@@ -213,6 +213,7 @@ def demo(kraepelin_window, block_length, log_name='result_demo.csv'):
 	kraepelin_window.display_stimuli(
 		[visual.TextStim(kraepelin_window, text=u'練習', height=80, bold=True)],
 		sound=sound_namedtuple.into_demo,
+		wait_time = 1.,
 	)
 	kraepelin_window.display_stimuli(
 		[],
