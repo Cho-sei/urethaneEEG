@@ -13,7 +13,7 @@ def dialog_alternative(kraepelin_window, explain_stimuli=None, **text_keyargs):
                 display_text.text += str(kraepelin_window.NUMKEY_NAME.index(key))
             elif key in kraepelin_window.DELETE_NAME:
                 display_text.text = display_text.text[:-1]
-        if set(keys) & set(kraepelin_window.ENTER_NAME):#if keys has ENTER_NAME element
+        if display_text.text and set(keys) & set(kraepelin_window.ENTER_NAME):#if keys has ENTER_NAME element
             return int(display_text.text)
 
         kraepelin_window.display_stimuli(
